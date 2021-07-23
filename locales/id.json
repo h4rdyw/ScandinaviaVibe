@@ -1,0 +1,22 @@
+{
+    "general": {
+      "404": {
+        "title": "Tidak Ditemukan",
+        "subtext_html": "Halaman yang dicari tidak ditemukan"
+      },
+      "cart": {
+        "title": "Keranjang",
+        "subtext_html": "Keranjang Belanja Anda"
+      },
+      "Blog": {
+        "title": "Blog"
+      },
+      "layout" : {
+        "login_text" : "Masuk",
+        "logout_text" : "Keluar",
+        "register_text" : "Registrasi",
+        "account_text" : "Akun",
+        "forgot_password_text": "Lupa Password"
+      }      
+    }
+  }

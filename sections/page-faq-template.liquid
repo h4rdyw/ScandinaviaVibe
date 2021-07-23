@@ -1,0 +1,58 @@
+<div class="container">
+    <div class="row my-5">
+        <h3 class="text-center">FAQs</h3>
+    </div>
+    <div class="div accordion accordion-flush" id="accordionFAQ">
+    {% for block in section.blocks %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="collapse-header-{{ block.id }}">
+                <button
+                class="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapse-{{ block.id }}"
+                aria-expanded="false"
+                aria-controls="{{ block.id}}">
+                {{ block.settings.title }}
+                </button>
+                </h2>
+        </div>
+        <div class="accordion-collapse collapse p-3"
+            id="collapse-{{ block.id }}"
+            aria-labelledby="collapse-header-{{ block.id }}"
+            data-bs-parent=#accordionFAQ
+        >
+            {{ block.settings.answer}}
+        </div>
+
+    {% endfor %}   
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "FAQ",
+        "blocks": [
+            {
+                "type": "faq",
+                "name": "FAQ Items",
+                "settings": [
+                    {
+                        "type": "text",
+                        "id": "title",
+                        "label": "Title",
+                        "default": "FAQ Title Example"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "answer",
+                        "label": "Answer"
+                    }
+                    
+                ]
+            }
+        ]
+        
+        
+    }
+{% endschema %}

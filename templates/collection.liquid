@@ -1,0 +1,142 @@
+<div class="container">
+  {% paginate collection.products by 4 %}
+  <div class="row my-5">
+    <h1 class="text-center">{{ collection.title }}</h1>
+  </div>
+<div class="row justify-content-center">
+
+  <div class="col justify-content-center">
+    <p>Sort by :</p>
+    <select name="sorting" id="sort_by" class="form-select form-select-sm w-25">
+      {% for option in collection.sort_options %}
+        <option value="{{ option.value }}"
+        {% if option.value == collection.sort_by %}
+          selected="selected"
+        {% endif %}
+      >{{ option.name }}</option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <div class="col justify-content-center">
+      <div class="clearfix filter">
+      {% if collection.handle == 'collection' %}
+        <p>Browse by type:</p>
+        <select class="coll-filter-2">
+        <option value="">All</option>
+        {% for product_type in collection.all_types %}
+        {% if current_tags contains product_type %}
+        <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+        {% else %}
+        <option value="{{ product_type | handle }}">{{ product_type }}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+      {% endif %}
+      </div>     
+
+      
+  </div>
+
+  {% comment %} <div class="col justify-content-center">
+    <div class="clearfix filter">
+    {% if collection.handle == 'collection' %}
+      <p>Browse by tag:</p>
+      <select class="coll-filter">
+      <option value="">All</option>
+      {% for tag in collection.all_tags %}
+      {% if current_tags contains tag %}
+      <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+      {% else %}
+      <option value="{{ tag | handle }}">{{ tag }}</option>
+      {% endif %}
+      {% endfor %}
+      </select>
+    {% endif %}
+    </div>         
+  </div> {% endcomment %}
+</div>
+  <div class="row justify-content-center my-5">
+    {% for product in collection.products %}
+      {% assign image = product.featured_media.preview_image %}
+      <div class="col-3 g-2">
+        <div class="card" style="width: 18rem; height: 275px;">
+          {% if image != blank %}  
+          <img class="card-img-top" style="height: 200px;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}">
+  
+          {% else %}          
+              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+  
+          {% endif %}
+  
+          <div class="card-body">
+              <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>    
+              <p>{{ product.price | money_without_trailing_zeros }}</p>            
+          </div>        
+        </div>
+      </div>
+      
+     
+    {% else %}
+      <p>no matches</p>
+    {% endfor %}
+  
+  </div>
+  
+  {% render 'pagination' , paginate: paginate %}
+  {% endpaginate %}
+
+</div>
+
+
+
+{% comment %} <script>  
+
+  var collFilters = jQuery('.coll-filter');
+  collFilters.change(function() {
+  var newTags = [];
+  collFilters.each(function() { 
+  if (jQuery(this).val()) {
+  newTags.push(jQuery(this).val());
+  }
+  });
+  if (newTags.length) {
+  var query = newTags.join('+');
+  window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('tag', query);
+  } 
+  else {
+  {% if collection.handle %}
+  window.location.href = '/collections/{{ collection.handle }}';
+  {% elsif collection.products.first.type == collection.title %}
+  window.location.href = '{{ collection.title | url_for_type }}';
+  {% elsif collection.products.first.vendor == collection.title %}
+  window.location.href = '{{ collection.title | url_for_vendor }}';
+  {% endif %}
+  }
+  });
+</script> {% endcomment %}
+<script>  
+
+  var collFilters2 = jQuery('.coll-filter-2');
+  collFilters2.change(function() {
+  var newTags2 = [];
+  collFilters2.each(function() { 
+  if (jQuery(this).val()) {
+  newTags2.push(jQuery(this).val());
+  }
+  });
+  if (newTags2.length) {
+  var query = newTags2.join('+');
+  window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
+  } 
+  else {
+  {% if collection.handle %}
+  window.location.href = '/collections/{{ collection.handle }}';
+  {% elsif collection.products.first.type == collection.title %}
+  window.location.href = '{{ collection.title | url_for_type }}';
+  {% elsif collection.products.first.vendor == collection.title %}
+  window.location.href = '{{ collection.title | url_for_vendor }}';
+  {% endif %}
+  }
+  });
+</script>

@@ -1,0 +1,52 @@
+<!-- /templates/customers/account.liquid -->
+<div class="container my-5">
+  {% if customer.default_address %}
+    <h1 class="mb-3">Account</h1>
+    <div class="row">
+    <div class="col-12 col-md-4">
+    <h3>Account Details</h3>
+    <p>{{ customer.default_address | format_address }}</p>
+    <a href="{{ routes.account_addresses_url }}" class="btn btn-light">View Addresses</a>
+    <span class="badge bg-success">{{ customer.addresses_count}}</span>
+    </div>
+    </div>     
+  {% endif %}
+  
+  <div class="col-12 col-md-8 mt-4">
+    <h3 class="mb-3">Orders</h3>
+    {% paginate customer.orders by 10 %}
+    {% if customer.orders.size != 0 %}
+    <table class="table table-bordered">
+    <thead>
+    <tr>
+    <th>Order #</th>
+    <th>Fulfillment Status</th>
+    <th>Payment Status</th>
+    <th>Order Date</th>
+    <th>Amount</th>
+    </tr>
+    </thead>
+    <tbody>
+      {% for order in customer.orders %}
+        <!-- order details here -->
+        <tr>
+        <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+        <td><span class="badge bg-primary">{{ order.fulfillment_status_label }}</span></td>
+        <td><span class="badge bg-success">{{ order.financial_status_label }}</span></td>
+        <td>{{ order.created_at | time_tag: format: 'date' }}</td>
+        <td>{{ order.total_price | money_without_trailing_zeros }}</td>
+        </tr>
+      {% endfor %}   
+    </tbody>
+    </table>
+    {% else %}
+    <p>You haven't placed any orders yet.</p>
+  {% endif %}
+    {{ paginate | default_pagination }}
+    {% endpaginate %}
+  
+  </div>
+  <div id="customer_orders">
+  </div>
+  
+</div>

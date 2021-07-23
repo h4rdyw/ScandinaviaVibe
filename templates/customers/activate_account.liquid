@@ -1,0 +1,41 @@
+<!-- /templates/customers/activate_account.liquid -->
+<div class="container my-5">
+  <h1 class="lead">Activate Account</h1>
+  <div class="row">
+    {% form 'activate_customer_password' %}
+      {% include 'form-error', form:form %}
+        <div class="col-12">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" name="customer[password]" id="activate_password1"/>
+        </div>
+        <div class="col-12">
+          <label for="password_confirmation" class="form-label">Password Confirmation</label>
+          <input type="password" name="customer[password_confirmation]" id="activate_password2"/>
+        </div>
+        <div class="col-12">
+          <input type="submit" class="btn btn-primary w-100 rounded-0" value="Activate Account" />
+        </div>
+        <div class="col-12">
+          <input type="submit" name="decline" class="btn btn-primary" value="Decline Invitation" />
+        </div>
+
+    {% endform %}
+  </div>
+  
+</div>
+{% comment %} {% form 'activate_customer_password' %}
+{{ form.errors | default_errors }}
+<div class="password">
+  <label for="password">Password</label>
+  <input type="password" name="customer[password]" />
+</div>
+<div class="password_confirm">
+  <label for="password_confirmation">Password Confirmation</label>
+  <input type="password" name="customer[password_confirmation]" />
+</div>
+<div class="action_bottom">
+  <input type="submit" value="Activate Account" />
+  <span>or</span>
+  <input type="submit" name="decline" value="Decline Invitation" />
+</div>
+{% endform %} {% endcomment %}
