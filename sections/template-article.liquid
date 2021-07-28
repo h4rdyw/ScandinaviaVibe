@@ -1,0 +1,242 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign number_of_comments = article.comments_count %}
+{% if comment and comment.created_at %}
+  {% assign number_of_comments = article.comments_count %}
+{% endif %}
+
+
+{% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
+{% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'abbreviated_date' }}</time>{% endcapture %}
+
+
+ <article itemscope itemstype="https://schema.org/BlogPosting">
+  <div class="container my-5">
+    <div class="row">
+      <div class="col-12 col-md-8 my-2">
+        <div class="article-section">
+          {% for block in section.blocks %}
+            {% case block.type %}
+                {% when 'featured_image' %}
+                    {% if article.image != blank %}
+                        <img src="{{ article.image | img_url: 'master' }}" class="img-fluid eounded w-100">    
+                      {% endif %}
+
+                {% when 'title' %}
+                    <div class="article-title my-2"><h1 class="display-4">{{ article.title }}</h1></div>
+
+                {% when 'article_meta' %}
+                    <div class="article-meta my-2"><p class="lead">{{ author }} / {{ date }}</p> </div>
+
+                {% when 'content' %}    
+                    <div class="my-2">{{ article.content }}</div>
+                
+                    
+                {% when 'excerpt' %}                     
+                    <div class="my-4">{{ article.excerpt }}</div>   
+
+                {% else %}
+
+                              
+            {% endcase %}
+              
+          {% endfor %}  
+
+          {% for block in section.blocks %}
+            {% assign item = block.settings %}
+            {% if block.type == 'video_url' %}
+                
+              
+              <div class="my-4">
+              <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+            </div>   
+            
+            {% endif %}
+            
+          {% endfor %}
+        </div>
+        <div class="comment-section">
+          {% if blog.comments_enabled? %}
+            <h2>{{ number_of_comments }} comment{% if number_of_comments > 1 %}s{% endif %%}</h2>
+            {% paginate article.comments by 5 %}
+              {% for comment in article.comments %}
+                <div class="card shadow rounded-8 my-3">
+                  <div class="card-header">
+                    {{ comment.author }} @ {{ comment.created_at | date: format: 'short' }}
+                  </div>
+
+                  <div class="card-body">{{ comment.content }}</div>
+                  
+                </div>
+              {% endfor %}
+              {% render 'pagination', paginate: paginate %}
+            {% endpaginate %}
+          
+            <div>
+              {% form 'new_comment', article %}
+              
+                {% include 'form-error', form: form %}
+                
+                <div class="my-5 p-2 bg-light">
+                  <h3> Your thoughts</h3>
+                  <div class="form-floating my-3">    
+                  <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+                  <label for="CommentAuthor">name</label>  
+                </div>
+                
+                <div class="form-floating my-3">              
+                <input class="form-control" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+                <label for="CommentEmail">email</label>  
+                </div>
+
+                <div class="form-floating my-3">    
+                <label for="CommentBody">message</label>
+                <textarea class="form-control" name="comment[body]" id="CommentBody" placeholder="message">{{ form.body }}</textarea>
+                </div>
+                </div>
+                
+                <input type="submit" value="post">
+              {% endform %}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      
+      {% comment %} <div class="col12 col-md-4">Sidebar</div> {% endcomment %}
+       <div class="col12 col-md-4">
+            <div class="sidebar-section">
+              {% for block in section.blocks %}
+                {% assign item = block.settings %}
+
+                {% case block.type %}
+                  {% when 'image' %}
+               
+                    <div class="mb-4">
+                        <h2 class="h2">{{ item.title }}</h2>
+                        <a href="{{ item.url }}">
+                            <img src="{{ item.image | img_url: 'medium' }}" class="w-100">
+                        </a>             
+                    </div>          
+                    {% when 'video_url' %}
+
+                    {% comment %} <div class="mb04">
+                        <h3 class="h3">{{ item.title }}</h3>
+                        <p>{{ item.description }}</p>
+
+                    </div>    {% endcomment %}
+                 {% else %}   
+                    <div class="mb04">
+                      <h3 class="h3">{{ item.title }}</h3>
+                      <p>{{ item.description }}</p>
+                    </div>
+                  {% endcase %}
+                
+              {% endfor %}
+            </div>
+        </div>
+
+    </div>
+  </div>
+</article>
+
+
+ {% schema %}
+     {
+         "name": "Article Section",
+         "tag": "section",
+         "blocks": [
+             {
+                 "type": "featured_image",
+                 "name": "Featured Image",
+                 "limit": 1
+             },
+             {
+                "type": "title",
+                "name": "Article Title",
+                "limit": 1
+            },
+            {
+                "type": "article_meta",
+                "name": "Article Meta",
+                "limit": 1
+            },
+            {
+                "type": "content",
+                "name": "Content",
+                "limit": 1
+            },
+            {
+              "type": "excerpt",
+              "name": "Article Excerpt",
+              "limit": 1
+          },
+          {
+            "name": "Video",
+            "type": "video_url",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Video Title"
+
+                },
+                {
+                    "type": "video_url",
+                    "id": "video_url",
+                    "accept": ["youtube","vimeo"],                    
+                    "label": "Video URL"
+                },
+                {
+                    "type": "url",
+                    "id": "link",
+                    "label": "Link"
+                }
+            ]
+        },
+          {
+            "name" : "SidebarImage",
+            "type" : "image",
+            "settings" : [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Sidebar Title"
+
+                },
+                {
+                    "type": "image_picker",
+                    "id": "image",
+                    "label": "image"
+                },
+                {
+                    "type": "url",
+                    "id": "url",
+                    "label": "Link"
+                }
+            ]
+        },
+        {
+          "name": "Sidebar Text",
+          "type": "text",
+          "settings": [
+              {
+                  "type": "text",
+                  "id": "title",
+                  "label": "Title",
+                  "default": "Sidebar Title"
+
+              },
+              {
+                  "type": "richtext",
+                  "id": "description",
+                  "label": "Description"
+              }
+          ]
+        }
+      ]
+     }
+ {% endschema %}
+
+ 
+{% comment %}theme-check-enable{% endcomment %}

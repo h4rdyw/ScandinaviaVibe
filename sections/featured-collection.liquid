@@ -1,13 +1,15 @@
- <section class="container py-4">
-     <h2 class="text-center">{{ section.settings.title }}</h2>
-     <div class="row g-3 py-5">
+{% comment %}theme-check-disable{% endcomment %}
+
+<section class="container py-4">
+     <h2 class="text-center my-3">{{ section.settings.title }}</h2>
+     <div class="row g-3 row-cols-xl-6 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-1 py-5">
         {% for product in collections[section.settings.featured_collection].products %}
         {% assign image = product.featured_media.preview_image %}
         <div class="col">
-            <div class="card" style="width: 18rem; height: 275px;">
+            <div class="card">
                 {% if image != blank %}
         
-                <img class="card-img-top" style="height: 200px;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}">
+                <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
         
                 {% else %}
                 
@@ -56,3 +58,4 @@
     ]
 }
 {% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

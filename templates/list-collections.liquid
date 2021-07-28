@@ -1,3 +1,5 @@
+{% comment %}theme-check-disable{% endcomment %}
+
 {% for collection in collections %}
   {% unless collection.handle == 'frontpage' %}
     {% capture collection_title %}{{ collection.title | escape }}{% endcapture %}
@@ -15,3 +17,4 @@
     {% endfor %}
   {% endunless %}
 {% endfor %}
+{% comment %}theme-check-enable{% endcomment %}

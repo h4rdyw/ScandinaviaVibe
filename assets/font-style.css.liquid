@@ -1,0 +1,31 @@
+{% assign font_header = settings.header_text_font %}
+{% assign font_body = settings.body_text_font %}
+{% assign root_font_size = settings.root_font_size_pct %}
+{% comment %} {% assign font_size = settings.body_font_size_pct %} {% endcomment %}
+
+{{ font_header | font_face }}
+{{ font_body | font_face }}
+
+{% if root_font_size == 62 %}
+    :root {
+        font-size: 62.5%;
+    }
+{% else %}        
+
+:root {
+    font-size: {{ root_font_size }}%;
+}
+
+{% endif %}
+
+{% comment %} html {
+    font-size: {{ root_font_size }}%;
+} {% endcomment %}
+
+h1,h2,h3,h4,h5.h6,button {
+    font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
+}
+
+body {
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+}

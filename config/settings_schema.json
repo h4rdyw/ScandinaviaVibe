@@ -1,10 +1,10 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "Themekit template theme",
+    "theme_name": "ScandinaviaVibe",
     "theme_version": "1.0.0",
-    "theme_author": "Shopify",
-    "theme_documentation_url": "https://github.com/Shopify/themekit",
+    "theme_author": "HardyW",
+    "theme_documentation_url": "https://github.com/h4rdyw/ScandinaviaVibe",
     "theme_support_url": "https://github.com/Shopify/themekit/issues"
   },
   {
@@ -15,6 +15,59 @@
         "id": "navbar_color",
         "label": "NavBar Background Color",
         "default": "#000"
+      }
+    ]
+  },
+  {
+    "name": "Typoghraphy",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Heading Font Style"
+      },
+      {
+        "type": "font_picker",
+        "id": "header_text_font",
+        "label": "Font",
+        "default": "mono"
+      },
+      {
+        "type": "header",
+        "content": "Body Font Style"
+      },
+      {
+        "type": "font_picker",
+        "id": "body_text_font",
+        "label": "Font",
+        "default": "mono"
+      },
+      {
+        "type": "header",
+        "content": "Root HTML Font Size"
+      },
+      {
+        "type": "range",
+        "id": "root_font_size",
+        "label": "Font Size",
+        "default": 16,
+        "unit": "px",
+        "min": 13,
+        "max": 25,
+        "step": 1
+      },
+      {
+        "type": "header",
+        "content": "Root Font %"
+      },
+      {
+        "type": "range",
+        "id": "root_font_size_pct",
+        "label": "Root Font Size %",
+        "default": 80,
+        "unit": "%",
+        "min": 62,
+        "max": 200,
+        "step": 1
       }
     ]
   }

@@ -1,6 +1,8 @@
+{% comment %}theme-check-disable{% endcomment %}
+
 <footer class="footer-section bg-light py-5 mt-5">
     <div class="container">
-        <div class="row row-cols-{{ section.settings.col_num }}">
+        <div class="row row-cols-1 row-cols-md-{{ section.settings.col_num }}">
             {% for block in section.blocks %}
                 {% assign item = block.settings %}
                 {% if block.type == 'link_list' %}
@@ -28,6 +30,15 @@
             {% endfor %}
         </div>
     </div>
+    {% if section.settings.enable_payment_type_icons %}
+        <div class="container justify-content-center d-flex">
+            {% for payment_type in shop.enabled_payment_types %}
+                <img src="{{ payment_type | payment_type_img_url}}">
+                
+            {% endfor %}
+            </div>        
+    {% endif %}
+    
 </footer>
 {{ 'bootstrap.min.js' | asset_url | script_tag }}
 {{ 'application.js' | asset_url | script_tag }}
@@ -44,8 +55,13 @@
                 "max": 4,
                 "label": "Number of columns"
 
+            },
+            {
+                "type": "checkbox",
+                "id": "enable_payment_type_icons",
+                "label": "Show Payment Type Icons",
+                "default": true
             }
-
         ],
         "blocks": [
             {
@@ -90,3 +106,4 @@
         ]
     }
 {% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

@@ -1,0 +1,226 @@
+<!--/ page handle diffrentiates with each page -->
+{% comment %}theme-check-disable{% endcomment %}
+
+
+<div class="container-fluid">
+    <div class="row">
+      {% assign page_handle = page.handle %}
+  
+      {% if section.blocks.size > 0 %}
+  
+        {% for block in section.blocks %}
+          <!--/ ONLY print specific page data -->
+          {% if block.settings.page_handle == page_handle %}
+            <div class="col">
+              {% assign item = block.settings %}
+                {% case block.type %}
+                    {% when 'text_block' %}
+                      
+                      <div class="mb-4">
+                        <h1 class="h3">{{ item.page_title }}</h1>  
+                        <h2 class="h2">{{ item.title }}</h2>
+                        {% if item.image %}
+                          <a href="{{ item.url }}">
+                            <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy>
+                        </a>       
+                        {% endif %}
+                        
+                        <p>{{ item.description }}</p>        
+                      </div>      
+                      
+                    {% when 'text' %}
+                      
+                        <div class="mb-4">
+                          <h2 class="h2">{{ item.title }}</h2>
+                            
+                          <p>{{ item.description }}</p>        
+                        </div>          
+      
+                    {% when 'video_url' %}
+                      <h1 class="h3">{{ item.page_title }}</h1> 
+                      <div class="my-4">
+                        {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
+                        <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                      </div>   
+                    {% comment %} {% when 'richtext' %}     {% endcomment %}
+                      <div class="my-4"><p>{{ item.description }}</p></div>   
+                {% endcase %}  
+           
+              </div>             
+            
+          {% endif %}
+            
+        {% endfor %}
+  
+      {% endif %}
+    </div>
+  </div>
+  
+  {% schema %}
+    {
+      "name": "Dynamic Section 2",
+      "class": "index-section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Common Title"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "text_block",
+          "name": "Page Management",        
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Common Title"
+            },
+                {
+              "type": "page",
+              "id": "page_handle",
+              "label": "Select a page"
+            },
+            {
+              "type": "text",
+              "id": "page_title",
+              "label": "Page title"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "Image"
+          },
+            {
+              "type": "url",
+              "id": "link",
+              "label": "URL"
+          },
+          {
+            "type": "richtext",
+            "id": "description",
+            "label": "Description"
+        } 
+          ]
+        },
+        {
+          "type": "video_url",
+          "name": "Video",       
+          "settings": [
+              {
+                  "type": "text",
+                  "id": "title",
+                  "label": "Common Title"               
+  
+              },
+              {
+                  "type": "video_url",
+                  "id": "video_url",
+                  "accept": ["youtube","vimeo"],                    
+                  "label": "Video URL"
+              },
+              
+              {
+                "type": "page",
+                "id": "page_handle",
+                "label": "Select a page"
+              },
+              {
+                "type": "text",
+                "id": "page_title",
+                "label": "Video Page Title"
+              },
+              {
+                "type": "richtext",
+                "id": "description",
+                "label": "Video Description"
+            } 
+  
+          ]
+      }
+      ]
+    }
+  {% endschema %}
+  
+  
+  {% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
+      <script type="text/javascript" src="./assets/iframeResizer.min.js"></script>
+      <script type="text/javascript" src="./assets/iframeResizer.contentWindow.js"></script> {% endcomment %}
+      <script>
+        iFrameResize({autoResize: true, log: true ,
+          minHeight: '310px',
+          minWidth: '100%',
+          heightCalculationMethod: 'taggedElement'
+        }, '#iFrameSection')
+      </script>
+      
+  
+      {% comment %} <script type="text/javascript">
+        
+  
+        var callbackDisplay = 'p#callback'
+  
+        iFrameResize({
+          log: true, // Enable console logging
+          inPageLinks: true,
+          onResized: function (messageData) {
+            // Callback fn when resize is received
+            $(callbackDisplay).html(
+              '<b>Frame ID:</b> ' +
+                messageData.iframe.id +
+                ' <b>Height:</b> ' +
+                messageData.height +
+                ' <b>Width:</b> ' +
+                messageData.width +
+                ' <b>Event type:</b> ' +
+                messageData.type
+            )
+          },
+          onMouseEnter: function (messageData) {
+            // Callback fn when mouse enters iframe
+            $(callbackDisplay).html(
+              '<b>Frame ID:</b> ' +
+                messageData.iframe.id +
+                ' <b>ScreenX:</b> ' +
+                messageData.screenX +
+                ' <b>ScreenY:</b> ' +
+                messageData.screenY +
+                ' <b>Event type:</b> ' +
+                messageData.type
+              )
+          },
+          onMouseLeave: function (messageData) {
+            // Callback fn when mouse enters iframe
+            $(callbackDisplay).html(
+              '<b>Frame ID:</b> ' +
+                messageData.iframe.id +
+                ' <b>ScreenX:</b> ' +
+                messageData.screenX +
+                ' <b>ScreenY:</b> ' +
+                messageData.screenY +
+                ' <b>Event type:</b> ' +
+                messageData.type
+            )
+          },
+          onMessage: function (messageData) {
+            // Callback fn when message is received
+            $(callbackDisplay).html(
+              '<b>Frame ID:</b> ' +
+                messageData.iframe.id +
+                ' <b>Message:</b> ' +
+                messageData.message
+            )
+            alert(messageData.message)
+            document
+              .getElementsByTagName('iframe')[0]
+              .iFrameResizer.sendMessage('Hello back from parent page')
+          },
+          onClosed: function (id) {
+            // Callback fn when iFrame is closed
+            $(callbackDisplay).html('<b>IFrame (</b>' + id + '<b>) removed from page.</b>')
+          },
+  
+        })
+      </script> {% endcomment %}
+      {% comment %}theme-check-enable{% endcomment %}

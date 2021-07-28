@@ -1,0 +1,177 @@
+<!--/ page handle diffrentiates with each page -->
+{% comment %}theme-check-disable{% endcomment %}
+<div class="container">   
+      {% assign page_handle = page.handle %}
+  
+      {% if section.blocks.size > 0 %}
+  
+        {% for block in section.blocks %}
+          <!--/ ONLY print specific page data -->
+          {% if block.settings.page_handle == page_handle %}
+            
+            {% assign item = block.settings %}
+            {% case block.type %}
+              {% when 'text_block' %}
+                
+                <div class="mb-4">
+                  <h1 class="h3">{{ item.page_title }}</h1>  
+                  <h2 class="h2">{{ item.title }}</h2>
+                  <a href="{{ item.url }}">
+                      <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy>
+                  </a>     
+                  <p>{{ item.img_description }}</p>        
+                </div>      
+                
+              {% when 'text' %}
+                
+                  <div class="mb-4">
+                    <h2 class="h2">{{ item.title }}</h2>
+                      
+                    <p>{{ item.description }}</p>        
+                  </div>          
+
+              {% when 'video_url' %}
+                <h1 class="h3">{{ item.page_title }}</h1> 
+                <div class="my-4">
+                  {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
+                  <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                </div>   
+              {% comment %} {% when 'richtext' %}     {% endcomment %}
+                <div class="my-4"><p>{{ item.description }}</p></div>   
+              {% endcase %}  
+           
+            <!--/ To print content of particular page -->
+            {% comment %}
+              {% assign page_content = block.settings.page_handle %}  
+                  {{ pages[page_content].content }}
+            {% endcomment %}
+            {% if block.type == 'video_url' %}                   
+                    
+              
+            
+            {% endif %}
+          {% endif %}
+        {% endfor %}
+  
+      {% endif %}
+  </div>
+  {% schema %}
+    {
+      "name": "Dynamic Sidebar",
+      "class": "index-section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Common Title"
+        }
+      ],
+      "blocks": [
+        {
+          "type": "text_block",
+          "name": "Page Management",        
+          "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Common Title"
+            },
+                {
+              "type": "page",
+              "id": "page_handle",
+              "label": "Select a page"
+            },
+            {
+              "type": "text",
+              "id": "page_title",
+              "label": "Page title"
+            },
+            {
+              "type": "image_picker",
+              "id": "image",
+              "label": "image"
+          },
+            {
+              "type": "url",
+              "id": "url",
+              "label": "Link"
+          },
+          {
+            "type": "richtext",
+            "id": "img_description",
+            "label": "Image Description"
+        } 
+          ]
+        },
+        {
+          "type": "video_url",
+          "name": "Video",       
+          "settings": [
+              {
+                  "type": "text",
+                  "id": "title",
+                  "label": "Common Title"               
+  
+              },
+              {
+                  "type": "video_url",
+                  "id": "video_url",
+                  "accept": ["youtube","vimeo"],                    
+                  "label": "Video URL"
+              },
+              
+              {
+                "type": "page",
+                "id": "page_handle",
+                "label": "Select a page"
+              },
+              {
+                "type": "text",
+                "id": "page_title",
+                "label": "Video Page Title"
+              },
+              {
+                "type": "richtext",
+                "id": "description",
+                "label": "Video Description"
+            } 
+  
+          ]
+      },
+      {
+        "name": "Sidebar Text",
+        "type": "text",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title",
+                "default": "Sidebar Title"
+
+            },
+            {
+                "type": "richtext",
+                "id": "description",
+                "label": "Sidebar Description"
+            },
+            {
+              "type": "page",
+              "id": "page_handle",
+              "label": "Select a page"
+            }
+        ]
+      }
+      ]
+    }
+  {% endschema %}
+
+  <script>
+    iFrameResize({autoResize: true, log: true ,
+      minHeight: '200px',
+      minWidth: '100%',
+      heightCalculationMethod: 'lowestElement'
+    }, '#iFrameSideBar')
+  </script>
+  
+  
+    {% comment %}theme-check-enable{% endcomment %}

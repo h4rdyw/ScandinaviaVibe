@@ -1,10 +1,10 @@
-html {
-  font-size: 70%;
-}
+// html {
+//   font-size: 80%;
+// }
 
-body {
-  font-family: 'Nunito', sans-serif;
-}
+// body {
+//   font-family: 'Nunito', sans-serif;
+// }
 
 .inner-hero-section {
   position: relative;
@@ -19,6 +19,9 @@ body {
   top: 0;
   bottom: 0;
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
   z-index: -1;
 }
 
@@ -26,4 +29,53 @@ body {
   width: 100%;
   max-width: 330px;
   margin: auto;
+}
+
+.dropup {
+  position:relative;
+  display: inline-block;
+}
+
+.localeBtn {
+  background-color: #3298DB;
+  padding: 6px;
+  font-size: 20px;
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+  border-radius: 50%;
+  max-width: 70px;
+  max-height: 70px;
+  box-shadow: -1px 8px 20px 0px #00000066;  
+  z-index: 9999;
+}
+
+.localeBtn img {
+  width: 50px;
+  height: 50px;
+  z-index: 9999;
+}
+
+.dropup-content {
+  display: none;
+  position: fixed;
+  bottom: 75px;
+  right: 25px;
+  min-width: 210px;
+  z-index: 999;
+  background-color: #f1f1f1f1;
+  box-shadow: -1px 0px 20px 0px #00000066;
+}
+
+
+.dropup:hover .dropup-content {
+  display: block;
+ 
+}
+.dropup-content a {
+  display: block;
+  font-size: 17px;
+  padding: 15px 10px;
+  display: block;
+  text-align: center;
 }

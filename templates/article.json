@@ -1,0 +1,37 @@
+{
+  "name": "Article Layout Template",
+  "wrapper": "div#article_main.container.my-5",
+  "sections": {
+     "template": {
+      "type": "template-article",    
+      "wrapper": "div#article_content1.col12.col-md-4",
+      "blocks": {
+        "featured_image": {
+          "type": "featured_image"
+        },
+        "title": {
+          "type": "title"
+        },
+        "article_meta": {
+          "type": "article_meta"
+        },
+        "content": {
+          "type": "content"
+        },
+        "excerpt": {
+          "type": "excerpt"
+        }
+        
+      },
+      "block_order": [
+        "featured_image",
+        "title",
+        "article_meta",
+        "content",
+        "sidebar1"
+      ]
+    }
+    
+  },
+  "order": ["template"]
+}

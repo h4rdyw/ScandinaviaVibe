@@ -10,20 +10,32 @@
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
     />
+    {% comment %}theme-check-disable{% endcomment %}
     {{ content_for_header }}
     <!-- Header hook for plugins -->
     {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
     {{ 'application.css.scss' | asset_url | stylesheet_tag }}
+    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    {{ 'font-style.css' | asset_url | stylesheet_tag }}
+
+    {{ 'iframeResizer.min.js' | asset_url | script_tag }}
+    {{ 'iframeResizer.contentWindow.js' | asset_url | script_tag }} 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    {% comment %} <script type="text/javascript" src="./../assets/iframeResizer.min.js"></script>
+    <script type="text/javascript" src="./../assets/iframeResizer.contentWindow.js"></script> {% endcomment %}
+
   </head>
   <body>
+    {% section 'translation' %}
     {% section 'header' %}
 
     <main role="main">
       {{ content_for_layout }}
     </main>
-
+    
     {% section 'footer-section' %}
 
+    
+{% comment %}theme-check-enable{% endcomment %}
   </body>
 </html>

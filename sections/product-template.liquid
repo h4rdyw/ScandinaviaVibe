@@ -1,3 +1,5 @@
+{% comment %}theme-check-disable{% endcomment %}
+
 {% assign current_product = product.selected_or_first_available_variant %} 
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
 
@@ -6,10 +8,12 @@
         <div class="col-md-6 col-12">
             <img class="img-fluid"
                 src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
-                {% for image in product.image %} 
+                {% for image in product.images %} 
                 <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}"> 
                 {% endfor%}
+                <div class="col-md-6 col-12"><p>{{ product.description }}</p></div>
         </div>
+        
         <div class="col-md-6 col-12">
             <h1>{{ product.title }}</h1>
             <p>{{ current_product.price | money_without_trailing_zeros }}</p>
@@ -52,3 +56,4 @@
     }]
 }
 {% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

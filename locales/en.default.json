@@ -5,8 +5,8 @@
       "subtext_html": "The page you were looking for does not exist"
     },
     "cart": {
-      "title": "Keranjang",
-      "subtext_html": "Keranjang Belanja Anda"
+      "title": "Cart",
+      "subtext_html": "Your Shopping Cart"
     },
     "Blog": {
       "title": "Blog"
@@ -14,7 +14,7 @@
     "layout" : {
       "login_text" : "Login",
       "logout_text" : "Logout",
-      "register_text" : "Registrasi",
+      "register_text" : "Register",
       "account_text" : "Account",
       "forgot_password_text": "Forgot Password"
 

@@ -1,3 +1,5 @@
+{% comment %}theme-check-disable{% endcomment %}
+
 <section class="inner-hero-section" style="object-fit: cover;">
   {% if section.settings.image != blank %}
     <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}">
@@ -53,3 +55,4 @@
   }]
 } 
 {% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

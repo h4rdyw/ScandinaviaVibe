@@ -1,41 +1,46 @@
-<div class="container">
+{% comment %}theme-check-disable{% endcomment %}
+
+<section class="container py-4">
   {% paginate collection.products by 4 %}
-  <div class="row my-5">
+  
     <h1 class="text-center">{{ collection.title }}</h1>
-  </div>
-<div class="row justify-content-center">
+ 
+  <div class="row">
 
-  <div class="col justify-content-center">
-    <p>Sort by :</p>
-    <select name="sorting" id="sort_by" class="form-select form-select-sm w-25">
-      {% for option in collection.sort_options %}
-        <option value="{{ option.value }}"
-        {% if option.value == collection.sort_by %}
-          selected="selected"
-        {% endif %}
-      >{{ option.name }}</option>
-      {% endfor %}
-    </select>
-  </div>
-
-  <div class="col justify-content-center">
-      <div class="clearfix filter">
-      {% if collection.handle == 'collection' %}
-        <p>Browse by type:</p>
-        <select class="coll-filter-2">
-        <option value="">All</option>
-        {% for product_type in collection.all_types %}
-        {% if current_tags contains product_type %}
-        <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
-        {% else %}
-        <option value="{{ product_type | handle }}">{{ product_type }}</option>
-        {% endif %}
-        {% endfor %}
-        </select>
-      {% endif %}
-      </div>     
-
+    <div class="row row-cols-md-2">
+      <div class="col">
+        <div class="clearfix filter">
+          <p>Sort by :</p>
+          <select name="sorting" id="sort_by" class="form-select form-select-sm w-auto">
+            {% for option in collection.sort_options %}
+              <option value="{{ option.value }}"
+              {% if option.value == collection.sort_by %}
+                selected="selected"
+              {% endif %}
+            >{{ option.name }}</option>
+            {% endfor %}
+          </select>
+        </div>  
+      </div>
       
+      <div class="col">
+        <div class="clearfix filter">
+          {% if collection.handle == 'collection' %}
+            <p>Browse type:</p>
+            <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
+            <option value="">All</option>
+            {% for product_type in collection.all_types %}
+            {% if current_tags contains product_type %}
+            <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+            {% else %}
+            <option value="{{ product_type | handle }}">{{ product_type }}</option>
+            {% endif %}
+            {% endfor %}
+            </select>
+          {% endif %}
+        </div>   
+    
+      </div>
   </div>
 
   {% comment %} <div class="col justify-content-center">
@@ -55,39 +60,41 @@
     {% endif %}
     </div>         
   </div> {% endcomment %}
-</div>
-  <div class="row justify-content-center my-5">
+
+ <div class="row g-3 row-cols-xl-6 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols- 1 py-5">
+
     {% for product in collection.products %}
       {% assign image = product.featured_media.preview_image %}
-      <div class="col-3 g-2">
-        <div class="card" style="width: 18rem; height: 275px;">
-          {% if image != blank %}  
-          <img class="card-img-top" style="height: 200px;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}">
-  
-          {% else %}          
-              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-  
-          {% endif %}
-  
-          <div class="card-body">
-              <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>    
-              <p>{{ product.price | money_without_trailing_zeros }}</p>            
-          </div>        
+        <div class="col">
+          <div class="card">
+            {% if image != blank %}  
+            <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
+    
+            {% else %}          
+                {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+    
+            {% endif %}
+    
+            <div class="card-body">
+                <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>    
+                <p>{{ product.price | money_without_trailing_zeros }}</p>            
+            </div>        
+          </div>
         </div>
-      </div>
+        
       
      
-    {% else %}
-      <p>no matches</p>
-    {% endfor %}
+      {% else %}
+        <p>no matches</p>
+      {% endfor %}
   
   </div>
   
   {% render 'pagination' , paginate: paginate %}
   {% endpaginate %}
 
-</div>
 
+</section>
 
 
 {% comment %} <script>  
@@ -117,7 +124,7 @@
 </script> {% endcomment %}
 <script>  
 
-  var collFilters2 = jQuery('.coll-filter-2');
+  var collFilters2 = jQuery('#filter_by_type');
   collFilters2.change(function() {
   var newTags2 = [];
   collFilters2.each(function() { 
@@ -140,3 +147,4 @@
   }
   });
 </script>
+{% comment %}theme-check-enable{% endcomment %}
