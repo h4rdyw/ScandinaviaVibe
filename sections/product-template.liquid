@@ -21,20 +21,26 @@
             {% form 'product', product, class:"product-form, id:"AddToCartForm %}
                 <div class="mb-3">
                     <select name="id" id="productSelect" class="form-select">
+                        {% assign availability_count = 0 %}    
+
                         {% for variant in product.variants %}
                         {% if variant.available %}
+                            {% assign availability = availability_count | plus: 1 %}
                             <option value="{{ variant.id }}"> {{ variant.title }} {{ variant.price | money_without_trailing_zeros}}</option>
                         {% else %}
                             <option value="{{ variant.id }}" disabled="disabled"> {{ variant.title }}</option>
                         {% endif %}
-
+                       
                         {% endfor %}
+
+
                     </select>
+
                 </div>
                 <div class="mb-3">
                     <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
                 </div>
-                <button type="submit" name="add" id="AddToCart" class="btn btn-secondary btn-lg w-100">Add to Cart</button>
+                <button type="submit" name="add" id="AddToCart" class="btn btn-secondary btn-lg w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
                 {% if section.settings.dynamic_button_checkbox== true %}                
                 {{ form  | payment_button }}
                 {% endif %}
@@ -43,6 +49,39 @@
       </div>
 </div>
 
+<div class="container">
+    <section id="product_recommendation" class="row content-justify-center my-5">
+        <div class="text-center"><h1>Also in store</h1></div>
+        <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
+    </section>
+</div>
+
+
+<script>  
+    var productRecommendationBody = document.getElementById('product_recommendation_body');
+    fetch('/recommendations/products.json?product_id={{ product.id }}')
+    .then(resp => resp.json())
+    .then(({ products }) =>{
+        console.log(products);
+        if(products.length > 0) {
+            products.forEach(function(product,index) {
+            var card;
+            card = `<div class="col d-flex">`;
+            card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
+
+            if(product.images.length > 0) {
+                card += `<img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${product.images[0]}">`;
+            }          
+            card += `<div class="card-body bg-light">`;
+            card += `<h6><a href="${product.url}">${product.title}</a></h6>`;
+            card += `<p>{{ product.price | money_without_trailing_zeros }}</p>`;
+            card +=  `</div></div></div>`;
+            productRecommendationBody.innerHTML += card;
+        });
+    }
+    });
+
+</script>
 
 {% schema %}
 {

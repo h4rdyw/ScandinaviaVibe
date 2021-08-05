@@ -2,7 +2,7 @@
 
 <footer class="footer-section bg-light py-5 mt-5">
     <div class="container">
-        <div class="row row-cols-1 row-cols-md-{{ section.settings.col_num }}">
+        <div class="row row-cols-1 row-cols-lg-{{ section.settings.col_num }} row-cols-md-{{ section.settings.col_num | minus : 2 }} d-flex">
             {% for block in section.blocks %}
                 {% assign item = block.settings %}
                 {% if block.type == 'link_list' %}
@@ -18,14 +18,11 @@
                         </ul>
                     </div>    
                  {% else if block.type == 'text' %}
-                 <div class="row">
                     <div class="col">
                         <img src="{{ item.logo | img_url: 'medium' }}" class="mb-5">
                             <h5>{{ item.title }}</h5>
                             <p>{{ item.description }}</p>
-                     </div>                            
-                </div>
-               
+                     </div>                                           
                 {% endif %}                
             {% endfor %}
         </div>
@@ -40,8 +37,8 @@
     {% endif %}
     
 </footer>
-{{ 'bootstrap.min.js' | asset_url | script_tag }}
-{{ 'application.js' | asset_url | script_tag }}
+{% comment %} {{ 'bootstrap.min.js' | asset_url | script_tag }}
+{{ 'application.js' | asset_url | script_tag }} {% endcomment %}
     
 {% schema %}
     {

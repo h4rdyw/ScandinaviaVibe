@@ -1,0 +1,34 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+{%- assign product_short_description =  product_original_description | truncatewords: 2, '...' -%}
+
+{%- assign product_descriptions = product_original_description | split: '$$$$$$' -%}
+{%- assign product_descriptions_length = product_descriptions.size -%}
+
+{% if product_descriptions_length > 1 %}
+
+  {%- assign product_short_description = product_descriptions[0] -%}
+  {%- assign product_description = product_descriptions[1] -%}
+
+{%- else -%}  
+  
+  {%- assign product_short_description = product_short_description -%}   
+  {%- assign product_description = product_descriptions[0] -%}
+
+{%- endif -%} 
+
+{%- if description_type == 'short' -%}
+
+  {{ product_short_description }}
+
+{%- else if description_type == 'long'  -%}    
+
+  {{ product_description }} 
+
+{%- endif -%}
+
+
+{% comment %} <div class="short-description">{{ product_short_description }}</div>
+<div class="description">{{ product_description }}</div> {% endcomment %}
+
+{% comment %}theme-check-enable{% endcomment %}

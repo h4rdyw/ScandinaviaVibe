@@ -7,16 +7,36 @@
 {{ font_body | font_face }}
 
 {% if root_font_size == 62 %}
-    :root {
+    <!-- default font size is 62.50% of 1rem (16px) root , settings does not allow faction, set it here -->
+    html {
         font-size: 62.5%;
     }
 {% else %}        
 
-:root {
+html {
     font-size: {{ root_font_size }}%;
+    
 }
 
 {% endif %}
+
+ {% comment %} @include media-breakpoint-up(sm) {
+    html {
+      font-size: 1.6rem;
+    }
+  }
+  
+  @include media-breakpoint-up(md) {
+    html {
+      font-size: 1.4rem;
+    }
+  }
+  
+  @include media-breakpoint-up(lg) {
+    html {
+      font-size: 1.6rem;
+    }
+  }  {% endcomment %}
 
 {% comment %} html {
     font-size: {{ root_font_size }}%;

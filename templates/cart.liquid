@@ -2,21 +2,24 @@
 
 {% if cart.item_count > 0 %}
 
-<div class="container">
+<div class="container-fluid">
     <div class="my-5">
       <h2 class="text-center">{{ 'general.cart.title' | t }}</h2>
     </div>
     <div class="my-5">
       <form action="/cart" method="POST" class="row" novalidate>
         <div class="col-12 col-md-8">
+            
           <div class="card">
             <div class="card-body">
               <table class="table table-borderless">
                 <thead>
+                  <tr>
                   <th colspan="2">Product</th>
                   <th>Price</th>
                   <th>Qty</th>
                   <th>Total</th>
+                </tr>
                 </thead>
                 <tbody>
                   {% for item in cart.items %}
@@ -33,7 +36,7 @@
                       </td>
                       <td>{{ item.price | money }}</td>
                       <td>
-                        <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0">
+                        <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="999">
                       </td>
                       <td>
                         {% if item.original_line_price != item.line_price %}{{ item.original_line_price | money }}{% endif %}
@@ -43,27 +46,21 @@
                     </tr>
                   {% endfor %}
                 </tbody>
-              </table>
-          
-            </div>
+              </table>          
           </div>
+        </div>
         </div> 
         <div class="col-12 col-md-4">
-          <div class="card">
-            <div class="card-body">
-              <p class="h3">Total :</p>
-              <p>{{ cart.total_price | money }}</p>
-              <div class="d-grid gap-2">
-                <button type="submit" class="btn btn-primary" name="update">Update</button>
-                <button type="submit" class="btn btn-primary" name="checkout">Checkout</button>
-              
+              <div class="card">
+                <div class="card-body">
+                  <h1 class="h4">Total :</h1>
+                  <h5 class="h5">{{ cart.total_price | money }}</h5>
+                  <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary" name="update">Update</button>
+                    <button type="submit" class="btn btn-primary" name="checkout">Checkout</button>              
+                  </div>            
+                </div>
               </div>
-
-              
-              
-            </div>
-            
-          </div>
         </div> 
       </form>
     </div>

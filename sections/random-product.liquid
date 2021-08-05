@@ -1,0 +1,185 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% if section.blocks.size > 0 %}
+  
+    {% for block in section.blocks %}
+        {% comment %} {{ block.settings.position }}  {% endcomment %}
+        {% if block.settings.position == 'sidebar' %}        
+
+        <div class="row-cols-1 mx-4 my-2">
+
+        {% else %}
+        <div class="row row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 d-flex py-5">                
+        {% endif %}
+    
+      <!--/ ONLY print specific page data -->
+      {% if block.settings.page_handle == page_handle %}
+        
+        {% assign item = block.settings %}
+        {% assign number_of_products = item.number_of_products %}
+        {% comment %} {% assign offset_products = item.offset_products %} {% endcomment %}
+        <!--/ Start Random  -->
+        {% capture legal_hours %}*9*11*13*15*17*19*21*23*1*3*5*7*{% endcapture %}
+        {% capture current_hour %}*{{ 'now' | date: "%H" }}*{% endcapture %}
+
+        {% unless legal_hours contains current_hour %}
+    
+             {% comment %} Odd Hours  {% endcomment %}
+            {% assign offset_products = item.offset_products %}
+            {% assign min = 0 %}
+            {% assign max = offset_products %}
+            {% assign diff = max | minus: min %}
+            {% assign random_number = "now" | date: "%S" | modulo: diff | plus: min %}            
+
+            {% for product in collections[item.featured_collection].products limit: number_of_products offset: random_number %}
+    
+                {% assign image = product.featured_media.preview_image %}
+
+                {% if item.position == 'sidebar' %}        
+                <div class="col d-flex mx-auto">
+
+                {% else %}
+                <div class="col d-flex">
+                {% endif %}
+                
+                
+                    <div class="card flex-fill border-0">
+                        {% if image != blank %}  
+                        <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
+                
+                        {% else %}          
+                            {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                
+                        {% endif %}
+                
+                        <div class="card-body">
+                            <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
+                            <p>{{ product.price | money_without_trailing_zeros }}</p>            
+                        </div>        
+                    </div>
+                </div>  
+           
+                
+                
+
+            {% else %}
+                <p></p>
+            {% endfor %}
+        
+        
+        {% else %}
+            {% comment %} Even Hours  {% endcomment %}
+            {% assign offset_products = item.offset_products %}
+            {% assign min = 0 %}
+            {% assign max = offset_products %}
+            {% assign diff = max | minus: min %}
+            {% assign random_number = "now" | date: "%N" | modulo: diff | plus: min %}  
+            
+            {% for product in collections[item.featured_collection].products limit: number_of_products offset: random_number %}
+        
+            {% assign image = product.featured_media.preview_image %}
+
+            {% if item.position == 'sidebar' %}      
+                <div class="col d-flex mx-auto">
+            {% else %}
+                <div class="col d-flex">
+            {% endif %}
+
+                <div class="card flex-fill border-0">
+
+                    {% if image != blank %}  
+                        <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
+                
+                        {% else %}          
+                            {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}                
+                        {% endif %}
+                
+                        <div class="card-body">
+                            <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
+                            <p>{{ product.price | money_without_trailing_zeros }}</p>            
+                        </div>        
+                </div>
+            </div>  
+                
+        
+            
+            {% endfor %}
+        {% endunless %}
+   
+
+      {% endif %}  
+      
+      
+      
+      </div> 
+   
+    {% endfor %}
+{% endif %}
+
+
+
+
+{% schema %}
+{
+    "name": "Random Product",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Common Title"
+
+         }
+
+        ],
+    "blocks": [
+
+        {
+            "type": "text_block",
+            "name": "Page Management",        
+            "settings": [
+            {
+            "type": "page",
+            "id": "page_handle",
+            "label": "Select a page"
+            },
+            {
+                "type": "collection",
+                "id": "featured_collection",
+                "label": "Collection"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "default": "Featured Collection",
+                "label": "Title"
+            },
+            {
+                "type": "text",
+                "id": "position",
+                "default": "sidebar",
+                "label": "Section Position: sidebar or content"
+            },
+            {
+                "type": "range",
+                "id": "number_of_products",
+                "label": "Number of Products to Show",
+                "default": 10,
+                "min": 1,
+                "max": 100,
+                "step": 1
+            },
+            {
+                "type": "range",
+                "id": "offset_products",
+                "label": "Random Offset Max",
+                "default": 5,
+                "min": 5,
+                "max": 100,
+                "step": 1
+            }                
+        ]
+    }
+    ]
+}
+{% endschema %}
+ {% comment %}theme-check-enable{% endcomment %}

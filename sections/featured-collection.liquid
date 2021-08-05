@@ -1,24 +1,44 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign offset_products = section.settings.offset_products %}
+{% assign number_of_products = section.settings.number_of_products %}
+{% assign randomize = section.settings.randomize %}
+
+            {% assign min = 0 %}
+            {% assign max = offset_products %}
+            {% assign diff = max | minus: min %}
+            {% assign random_number = "now" | date: "%S" | modulo: diff | plus: min %}            
+
+            {% assign limit_products = "limit: " | append: number_of_products %}
+            {% assign offset_products = "offset: " | append: random_number %}
+
 
 <section class="container py-4">
      <h2 class="text-center my-3">{{ section.settings.title }}</h2>
-     <div class="row g-3 row-cols-xl-6 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-1 py-5">
-        {% for product in collections[section.settings.featured_collection].products %}
-        {% assign image = product.featured_media.preview_image %}
-        <div class="col">
-            <div class="card">
+     <div class="row d-flex g-3 row-cols-xl-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-5">
+
+{% if randomize == true  %}
+   
+
+        {% for product in collections[section.settings.featured_collection].products limit: number_of_products offset: random_number %}
+
+
+            {% assign image = product.featured_media.preview_image %}
+        <div class="col d-flex">
+            <div class="card d-flex flex-fill border-0 shadow-sm">
                 {% if image != blank %}
         
-                <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
-        
+                    <a href="#" id="productInfoAnchor" product-handle="{{ product.handle }}" 
+                        product-price="{{ product.price | money_without_trailing_zeros }}"
+                       ><img class="card-img-top" style="max-height: 150px; object-fit: cover;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}" 
+                      ></a>        
                 {% else %}
                 
                     {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
         
                 {% endif %}
         
-                <div class="card-body">
-                    <h3><a href="{{ product.url }}">{{ product.title }}</a></h3>    
+                <div class="card-body bg-light">
+                    <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
                     <p>{{ product.price | money_without_trailing_zeros }}</p>
                     
                 </div>
@@ -28,11 +48,75 @@
         </div>
         
          {% endfor %}   
+        {% else %} 
+        {% for product in collections[section.settings.featured_collection].products limit: number_of_products %}
+
+
+            {% assign image = product.featured_media.preview_image %}
+        <div class="col d-flex">
+            <div class="card d-flex flex-fill border-0 shadow-sm">
+                {% if image != blank %}
+        
+                    <a href="#" id="productInfoAnchor" product-handle="{{ product.handle }}" 
+                        product-price="{{ product.price | money_without_trailing_zeros }}"
+                       ><img class="card-img-top" style="max-height: 150px; object-fit: cover;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}" 
+                      ></a>        
+                {% else %}
+                
+                    {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+        
+                {% endif %}
+        
+                <div class="card-body bg-light">
+                    <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
+                    <p>{{ product.price | money_without_trailing_zeros }}</p>
+                    
+                </div>
+                
+        
+            </div>
+        </div>
+        
+         {% endfor %}  
+
+        {% endif %}
+
 
      </div>
-    
+     
  </section>
+ <div class="modal fade" id="productInfoModal" tabIndex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-class" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                      <div class="col-12 col-md-6">
+                        <img class="img-fluid" style="max-height: 200px;" src="" id="productInfoImg" alt="">
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <h1 id="productInfoTitle"></h1>
+                        <h3 id="productInfoPrice"></h3>
+                        <p id="productInfoDescription"></p>
+                      </div>
+                </div>             
+            </div>
+            <div class="modal-footer">
+            <form action="#" id="addToCartForm" class="row">
+              <select name="id" id="modalItemID" class="form-select col-auto">
+              </select>
+            <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
+            <button type="submit" id="btnAddToCart" class="btn btn-success col-auto">Add to Cart</button>
 
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 
 {% schema %}
 {
     "name": "Featured Collection",
@@ -48,7 +132,32 @@
         "id": "title",
         "default": "Featured Collection",
         "label": "Title"
-    }      
+    },
+    {
+        "type": "range",
+        "id": "number_of_products",
+        "label": "Number of Products to Show",
+        "default": 10,
+        "min": 1,
+        "max": 25,
+        "step": 1
+    },
+    {
+        "type": "checkbox",
+        "id": "randomize",
+        "default": true,
+        "label": "Randomize"
+
+    },
+    {
+        "type": "range",
+        "id": "offset_products",
+        "label": "Random Offset Max",
+        "default": 5,
+        "min": 5,
+        "max": 100,
+        "step": 1
+    }                
     ],
     "presets": [
     {

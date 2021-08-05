@@ -1,0 +1,6 @@
+{% comment %}theme-check-disable{% endcomment %}
+{%- assign min = 0 -%}
+{%- assign max = 25 -%}
+{%- assign diff = max | minus: min -%}
+{%- assign random_number = "now" | date: "%N" | modulo: diff | plus: min -%}
+  {% comment %}theme-check-enable{% endcomment %}

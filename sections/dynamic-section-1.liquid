@@ -25,9 +25,12 @@
                 {% comment %} <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:315px;width:560px;border:none;overflow:hidden;"></iframe> {% endcomment %}
 
                 {% comment %} <iframe id="iFrame" src="https://www.youtube.com/embed/{{ item.video_url.id }}" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'  style="height:315px;width:460px;border:none;overflow:hidden;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                <iframe id="iFrameSection" src="https://www.youtube.com/embed/{{ item.video_url.id }}"  style="min-width:100%;border:none;overflow:hidden;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                <div data-iframe-height="iFrameResizer">
 
-              
+
+                <iframe id="iFrameSection" src="https://www.youtube.com/embed/{{ item.video_url.id }}"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+
+                </div> 
             {% comment %} {% when 'richtext' %}     {% endcomment %}
             <div class="my-4">{{ item.description }}</div>   
 
@@ -142,11 +145,21 @@
     <script type="text/javascript" src="./assets/iframeResizer.min.js"></script>
     <script type="text/javascript" src="./assets/iframeResizer.contentWindow.js"></script> {% endcomment %}
     <script>
-      iFrameResize({autoResize: true, log: true ,
-        minHeight: '310px',
+      
+      iFrameResize({log: false ,
+        autoResize: true,
+        checkOrigin: false,
+        minHeight: 315,
         minWidth: '100%',
+        sizeHeight: true,
+        sizeWidth: true,
+        warningTimeout: 0,        
         heightCalculationMethod: 'taggedElement'
       }, '#iFrameSection')
+    </script>
+
+    <script>
+      
     </script>
     
 

@@ -1,3 +1,6 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <div class="container">
     <a class="navbar-brand" href="#">ScandinaviaVibe</a>
@@ -32,7 +35,7 @@
         </li>
         {% endif %} {% endfor %}
         <li class="nav-item">
-          <a class="nav-link" href="/cart">Cart</a>
+          <a class="nav-link" href="{{ routes.cart_url }}" >{{ 'general.cart.title' | t }} <span id="numberOfCartItems" class="badge bg-light rounded-pill">0</spanid=class=> </a>
         </li>
       </ul>
 
@@ -56,11 +59,20 @@
             {% endif %} 
         {% endif %}
       </ul>
-       <form action="search" method="GET" role="search">
-       <input type="text" name="q" value="{{ search.terms | escape }}"> 
+       <form action="{{ routes.search_url }}" method="GET" role="search">
+       <input class="text-muted" type="text" placeholder=" search product or tag..." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
       </form>
     </div>
   </div>
 </nav>
 
+<div class="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasSearchResult" aria-labelledby="offcanvasLabel">
+  <div class="offcanvas-header">
+    <h5 class="offcanvas-title" id="offcanvasLabel">Product Search Result</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body" id="search_results_body">  
+    </div>
+</div>
 
+{% comment %}theme-check-enable{% endcomment %}

@@ -1,0 +1,262 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% if section.blocks.size > 0 %}
+
+    {% for block in section.blocks %}
+        {% assign collection_handle = block.settings.feature_collection %}
+        <!--/ ONLY print specific page data -->
+
+        {% if block.settings.page_handle == page_handle %}
+           {% comment %} "FirstCheck Dynamic Collection: {{ collection_handle }} {% endcomment %}
+
+            {% for collection in collections %}
+                {% if collection.handle == collection_handle %}
+                    {% comment %} "Collection Handle: {{ collection_handle }} {% endcomment %}
+                    {% assign paginate_data = collection %}
+                    {% comment %} {% paginate collection.products by 2 %}
+                    {% render 'pagination' , paginate: paginate %}
+                    {% endpaginate %}  {% endcomment %}
+                    {% comment %} <h1>{{ collection.title }}</h1> {% endcomment %}
+                {% endif %}
+           {% endfor %}        
+        {% endif%}
+    {% endfor %}
+{% endif %}     
+
+<section class="container-fluid py-4">
+    
+    {% paginate paginate_data.products by 6 %}
+    
+
+    {% if section.blocks.size > 0 %}
+
+        {% for block in section.blocks %}
+            {% assign collection_handle = block.settings.feature_collection %}
+            <!--/ ONLY print specific page data -->
+
+            {% if block.settings.page_handle == page_handle %}
+               {% comment %} "ON PAGE Dynamic Collection: {{ collection_handle }}
+    
+                {% for collection in collections %}
+                    {% if collection.handle == collection_handle %}
+                        "Collection Handle: {{ collection_handle }}
+                        
+                        <h1>{{ collection.title }}</h1>
+                    {% endif %}
+                    {% endfor %}         {% endcomment %}
+
+              
+
+               
+   
+                <div class="row">
+            
+                    {% comment %} <div class="row row-cols-md-2">
+                        <div class="col">
+                            <div class="clearfix filter">
+                                <p>Sort by :</p>
+                                <select name="sorting" id="sort_by" class="form-select form-select-sm w-auto">
+                                {% for option in paginate_data.sort_options %}
+                                    <option value="{{ option.value }}"
+                                    {% if option.value == paginate_data.sort_by %}
+                                    selected="selected"
+                                    {% endif %}
+                                >{{ option.name }}</option>
+                                {% endfor %}
+                                </select>
+                            </div>  
+                        </div>
+                        
+                        <div class="col">
+                            <div class="clearfix filter">
+                                <p>Browse type:</p>
+                                <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
+                                <option value="">All</option>
+                                {% for product_type in paginate_data.all_types %}
+                                {% if current_tags contains product_type %}
+                                <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+                                {% else %}
+                                <option value="{{ product_type | handle }}">{{ product_type }}</option>
+                                {% endif %}
+                                {% endfor %}
+                                </select>
+                            </div>                       
+                        </div>
+                    </div> {% endcomment %}
+  
+    
+  
+                    <div class="row d-flex g-3 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-2 align-items-stretch py-2">
+
+                        {% for product in paginate_data.products %}
+                            {% assign image = product.featured_media.preview_image %}
+                            <div class="col d-flex">
+                                <div class="card flex-fill border-0">
+                                    {% if image != blank %}  
+                                    <a href="{{ product.url }}"><img class="card-img-top" style="max-height: 150px; object-fit: cover;"  src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
+                            
+                                    {% else %}          
+                                        {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                            
+                                    {% endif %}
+                            
+                                    <div class="card-body bg-light">
+                                        <h6><a href="{{ product.url }}">{{ product.title }}</a></h6>    
+                                        <p>{{ product.price | money_without_trailing_zeros }}</p>            
+                                    </div>        
+                                </div>
+                            </div>  
+                            
+
+                        {% else %}
+                            <p>no matches</p>
+                        {% endfor %}
+                        
+                        {% comment %} {% for collection in collections %}
+                            {% if collection.handle == collection_handle %}
+                            
+                            
+                                {% assign paginate_data = collection %}
+                                
+
+                                {% for product in collection.products %}
+                                    {% assign image = product.featured_media.preview_image %}
+                                    <div class="col">
+                                        <div class="card">
+                                            {% if image != blank %}  
+                                            <a href="{{ product.url }}"><img class="card-img-top" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
+                                    
+                                            {% else %}          
+                                                {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                                    
+                                            {% endif %}
+                                    
+                                            <div class="card-body">
+                                                <div class="lead"><a href="{{ product.url }}">{{ product.title }}</a></div>    
+                                                <p>{{ product.price | money_without_trailing_zeros }}</p>            
+                                            </div>        
+                                        </div>
+                                    </div>  
+                                    
+
+                                {% else %}
+                                    <p>no matches</p>
+                                {% endfor %}
+                                
+
+                            {% endif %}
+                            
+                        {% endfor %} {% endcomment %}
+                    </div>
+
+                        
+                        
+                </div>
+
+                    
+  
+            {% endif %}
+        
+        {% endfor %}
+        
+    {% endif %}   
+    
+                    
+    <div class="row">
+        {% render 'pagination' , paginate: paginate %}
+    </div>
+    
+    {% endpaginate %}
+  </section>
+
+  {% schema %}
+     {
+         "name": "Dynamic Collection",
+         "settings": [
+             {
+                "type": "collection",
+                "id": "feature_collection",
+                "label": "Feature collection"
+             }             
+         ],
+         "blocks": [
+            {
+              "type": "collection",
+              "name": "Feature collection",   
+              "settings": [
+                {
+                  "type": "text",
+                  "id": "title",
+                  "label": "Common Title"
+                },
+                    {
+                  "type": "page",
+                  "id": "page_handle",
+                  "label": "Select a page"
+                },
+                {
+                "type": "collection",
+                "id": "feature_collection",
+                "label": "Feature collection"
+             }             
+            ]
+        }
+                
+       ]
+     }
+ {% endschema %}
+  
+
+  
+  {% comment %} <script>  
+  
+    var collFilters = jQuery('.coll-filter');
+    collFilters.change(function() {
+    var newTags = [];
+    collFilters.each(function() { 
+    if (jQuery(this).val()) {
+    newTags.push(jQuery(this).val());
+    }
+    });
+    if (newTags.length) {
+    var query = newTags.join('+');
+    window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('tag', query);
+    } 
+    else {
+    {% if collection.handle %}
+    window.location.href = '/collections/{{ collection.handle }}';
+    {% elsif collection.products.first.type == collection.title %}
+    window.location.href = '{{ collection.title | url_for_type }}';
+    {% elsif collection.products.first.vendor == collection.title %}
+    window.location.href = '{{ collection.title | url_for_vendor }}';
+    {% endif %}
+    }
+    });
+  </script> {% endcomment %}
+  <script>  
+  
+    var collFilters2 = jQuery('#filter_by_type');
+    collFilters2.change(function() {
+    var newTags2 = [];
+    collFilters2.each(function() { 
+    if (jQuery(this).val()) {
+    newTags2.push(jQuery(this).val());
+    }
+    });
+    if (newTags2.length) {
+    var query = newTags2.join('+');
+    window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
+    } 
+    else {
+    {% if paginate_data.handle %}
+    window.location.href = '/collections/{{ paginate_data.handle }}';
+    {% elsif paginate_data.products.first.type == paginate_data.title %}
+    window.location.href = '{{ paginate_data.title | url_for_type }}';
+    {% elsif paginate_data.products.first.vendor == paginate_data.title %}
+    window.location.href = '{{ paginate_data.title | url_for_vendor }}';
+    {% endif %}
+    }
+    });
+  </script>
+  {% comment %}theme-check-enable{% endcomment %}
+ 
