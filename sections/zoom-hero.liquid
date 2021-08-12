@@ -1,0 +1,150 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% for block in section.blocks %}
+{% if block.settings.page_handle == page_handle  or template == 'index' %}
+  {% if block.type == 'hero_block' %}
+  {% assign hero_url = block.settings.hero_img_url %}
+
+
+  {% if block.settings.image != blank %}
+    {% assign hero_url = block.settings.image | img_url: 'master' %} 
+  {% else %}
+     {% assign hero_url = block.settings.hero_img_url %}
+  {% endif%}
+
+    <div class="hero-container">
+      <div class="hero"></div>
+      <div class="hero-stuff">
+          <h1>{{ block.settings.title }}</h1>
+          <a href="{{ block.settings.button_link }}" class="btn btn-secondary">{{ block.settings.button_label }}</a>
+      </div>
+    </div>    
+    <div class="container my-2 mx-auto">
+      <div class="row text-center"><p>{{ block.settings.description }}</p></div>
+    </div>
+    
+    
+  {% endif %}
+{% endif %} 
+{% endfor %}
+
+{% schema %} 
+{ 
+  "name": "Zoomin Hero", 
+  "class": "hero-section", 
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Common Title"
+      }
+    ],
+  "blocks": [
+    {
+      "type": "hero_block",
+      "name": "Zoomin Hero ",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        { "type": "image_picker", 
+          "id": "image", 
+          "label": "Heading Background Title"
+        },
+        { "type": "url", 
+            "id": "hero_img_url", 
+            "label": "Image URL" 
+        },
+        { "type": "text", 
+          "id": "title", 
+          "default": "Example Heading",
+          "label": "Heading Title"
+        },
+        { "type": "richtext", 
+          "id": "description", 
+          "default": "<p>Example paragraph</p>",
+          "label": "Description" 
+        },
+        { "type": "text", 
+          "id": "button_label", 
+          "default": "Button",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link", 
+        "label": "Button Link" 
+        }
+      ]
+    }
+  ],
+    
+      "presets": [
+      {
+        "category": "Hero",
+        "name": "Zoomin Hero"
+      }
+    ]
+}
+
+{% endschema %}
+{% comment %}theme-check-enable{% endcomment %}
+
+<style>
+    .hero-container {
+        height: 70vh;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        margin-bottom: 20px;
+      }
+      
+      .hero {
+        background: url({{ hero_url }}) no-repeat center center;
+        background-size: cover;
+        height: 100%;
+        width: 100%;
+        padding: 40px;
+        transition: transform 2s;
+      }
+      
+      .hero:hover {
+        transform: scale(1.15);
+      }
+      
+      .hero-stuff {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+      }
+      
+      {% comment %} h1 {
+        font-size: 55px;
+        font-weight: 700;
+        font-family: sans-serif;
+        color: #fff;
+      }
+       {% endcomment %}
+      a.btn {
+        display: inline-block;
+        {% comment %} font-family: sans-serif; {% endcomment %}
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        padding: 11px 30px;
+        background-color: #636363;
+        background-image: linear-gradient(to bottom,#636363,#000);
+        color: #fff;
+        text-transform: uppercase;
+      }
+      
+      a.btn:hover {
+        background-image: linear-gradient(to bottom,#fff,#000);
+      }
+      
+       {% comment %} p {
+        font-family: sans-serif;
+        background: #eee
+      }  {% endcomment %}
+</style>

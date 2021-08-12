@@ -2,5 +2,11 @@
   "dependencies": {
     "@shopify/theme-currency": "^4.1.1",
     "json-stringify-pretty-compact": "^3.0.0"
+  },
+  "devDependencies": {
+    "postcss": "^8.3.6",
+    "postcss-custom-media": "^8.0.0",
+    "postcss-nested": "^5.0.6",
+    "postcss-simple-vars": "^6.0.3"
   }
 }

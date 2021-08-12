@@ -3,11 +3,70 @@
 
 
 "@shopify/theme-currency@^4.1.1":
-  version "4.1.1"
-  resolved "https://registry.yarnpkg.com/@shopify/theme-currency/-/theme-currency-4.1.1.tgz#26d95500c85f0b7d89647f82d3a439ce4d276dea"
-  integrity sha512-m7eMeI4B7R8e8tMeI1dI0CQP+JkM7fMVN1+qKwkUll+MqbHtF/6iuiyDxTGiOJxvDMOpGtS5vRIoly7fsD4CTQ==
+  "integrity" "sha512-m7eMeI4B7R8e8tMeI1dI0CQP+JkM7fMVN1+qKwkUll+MqbHtF/6iuiyDxTGiOJxvDMOpGtS5vRIoly7fsD4CTQ=="
+  "resolved" "https://registry.npmjs.org/@shopify/theme-currency/-/theme-currency-4.1.1.tgz"
+  "version" "4.1.1"
 
-json-stringify-pretty-compact@^3.0.0:
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/json-stringify-pretty-compact/-/json-stringify-pretty-compact-3.0.0.tgz#f71ef9d82ef16483a407869556588e91b681d9ab"
-  integrity sha512-Rc2suX5meI0S3bfdZuA7JMFBGkJ875ApfVyq2WHELjBiiG22My/l7/8zPpH/CfFVQHuVLd8NLR0nv6vi0BYYKA==
+"colorette@^1.2.2":
+  "integrity" "sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w=="
+  "resolved" "https://registry.npmjs.org/colorette/-/colorette-1.2.2.tgz"
+  "version" "1.2.2"
+
+"cssesc@^3.0.0":
+  "integrity" "sha512-/Tb/JcjK111nNScGob5MNtsntNM1aCNUDipB/TkwZFhyDrrE47SOx/18wF2bbjgc3ZzCSKW1T5nt5EbFoAz/Vg=="
+  "resolved" "https://registry.npmjs.org/cssesc/-/cssesc-3.0.0.tgz"
+  "version" "3.0.0"
+
+"json-stringify-pretty-compact@^3.0.0":
+  "integrity" "sha512-Rc2suX5meI0S3bfdZuA7JMFBGkJ875ApfVyq2WHELjBiiG22My/l7/8zPpH/CfFVQHuVLd8NLR0nv6vi0BYYKA=="
+  "resolved" "https://registry.npmjs.org/json-stringify-pretty-compact/-/json-stringify-pretty-compact-3.0.0.tgz"
+  "version" "3.0.0"
+
+"nanoid@^3.1.23":
+  "integrity" "sha512-FiB0kzdP0FFVGDKlRLEQ1BgDzU87dy5NnzjeW9YZNt+/c3+q82EQDUwniSAUxp/F0gFNI1ZhKU1FqYsMuqZVnw=="
+  "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.1.23.tgz"
+  "version" "3.1.23"
+
+"postcss-custom-media@^8.0.0":
+  "integrity" "sha512-FvO2GzMUaTN0t1fBULDeIvxr5IvbDXcIatt6pnJghc736nqNgsGao5NT+5+WVLAQiTt6Cb3YUms0jiPaXhL//g=="
+  "resolved" "https://registry.npmjs.org/postcss-custom-media/-/postcss-custom-media-8.0.0.tgz"
+  "version" "8.0.0"
+
+"postcss-nested@^5.0.6":
+  "integrity" "sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA=="
+  "resolved" "https://registry.npmjs.org/postcss-nested/-/postcss-nested-5.0.6.tgz"
+  "version" "5.0.6"
+  dependencies:
+    "postcss-selector-parser" "^6.0.6"
+
+"postcss-selector-parser@^6.0.6":
+  "integrity" "sha512-9LXrvaaX3+mcv5xkg5kFwqSzSH1JIObIx51PrndZwlmznwXRfxMddDvo9gve3gVR8ZTKgoFDdWkbRFmEhT4PMg=="
+  "resolved" "https://registry.npmjs.org/postcss-selector-parser/-/postcss-selector-parser-6.0.6.tgz"
+  "version" "6.0.6"
+  dependencies:
+    "cssesc" "^3.0.0"
+    "util-deprecate" "^1.0.2"
+
+"postcss-simple-vars@^6.0.3":
+  "integrity" "sha512-fkNn4Zio8vN4vIig9IFdb8lVlxWnYR769RgvxCM6YWlFKie/nQaOcaMMMFz/s4gsfHW4/5bJW+i57zD67mQU7g=="
+  "resolved" "https://registry.npmjs.org/postcss-simple-vars/-/postcss-simple-vars-6.0.3.tgz"
+  "version" "6.0.3"
+
+"postcss@^8.1.0", "postcss@^8.2.1", "postcss@^8.2.14", "postcss@^8.3.6":
+  "integrity" "sha512-wG1cc/JhRgdqB6WHEuyLTedf3KIRuD0hG6ldkFEZNCjRxiC+3i6kkWUUbiJQayP28iwG35cEmAbe98585BYV0A=="
+  "resolved" "https://registry.npmjs.org/postcss/-/postcss-8.3.6.tgz"
+  "version" "8.3.6"
+  dependencies:
+    "colorette" "^1.2.2"
+    "nanoid" "^3.1.23"
+    "source-map-js" "^0.6.2"
+
+"source-map-js@^0.6.2":
+  "integrity" "sha512-/3GptzWzu0+0MBQFrDKzw/DvvMTUORvgY6k6jd/VS6iCR4RDTKWH6v6WPwQoUO8667uQEf9Oe38DxAYWY5F/Ug=="
+  "resolved" "https://registry.npmjs.org/source-map-js/-/source-map-js-0.6.2.tgz"
+  "version" "0.6.2"
+
+"util-deprecate@^1.0.2":
+  "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
+  "resolved" "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
+  "version" "1.0.2"

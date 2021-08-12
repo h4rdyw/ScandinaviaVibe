@@ -86,12 +86,12 @@
   
     
   
-                    <div class="row d-flex g-3 row-cols-lg-5 row-cols-md-3 row-cols-sm-2 row-cols-2 align-items-stretch py-2">
+                    <div class="row d-flex g-3 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-2 align-items-stretch py-2">
 
                         {% for product in paginate_data.products %}
                             {% assign image = product.featured_media.preview_image %}
                             <div class="col d-flex">
-                                <div class="card flex-fill border-0">
+                                <div class="card d-flex flex-fill border-0">
                                     {% if image != blank %}  
                                     <a href="{{ product.url }}"><img class="card-img-top" style="max-height: 150px; object-fit: cover;"  src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
                             

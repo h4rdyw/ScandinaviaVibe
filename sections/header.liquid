@@ -1,9 +1,10 @@
 {% comment %}theme-check-disable{% endcomment %}
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-  <div class="container">
-    <a class="navbar-brand" href="#">ScandinaviaVibe</a>
+<nav id="navBar" class="navbar navbar-expand-lg navbar-light bg-secondary fixed-top">
+  <div class="container">     
+
+    <a class="navbar-brand text-white" href="{{ routes.root_url }}">ScandinaviaVibe</a>
     <button
       class="navbar-toggler"
       type="button"
@@ -21,21 +22,21 @@
         = link.title | handleize %} {% if linklists[child_list_handle].links !=
         blank %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+          <a class="nav-link text-white" href="{{ link.url }}">{{ link.title }}</a>
         </li>
         [{% for childlink in linklists[child_list_handle].links %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ childlink.url }}">{{
+          <a class="nav-link text-white" href="{{ childlink.url }}">{{
             childlink.title | escape
           }}</a>
         </li>
         {% endfor %}] {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+          <a class="nav-link text-white" href="{{ link.url }}">{{ link.title }}</a>
         </li>
         {% endif %} {% endfor %}
         <li class="nav-item">
-          <a class="nav-link" href="{{ routes.cart_url }}" >{{ 'general.cart.title' | t }} <span id="numberOfCartItems" class="badge bg-light rounded-pill">0</spanid=class=> </a>
+          <a class="nav-link text-white" href="{{ routes.cart_url }}" >{{ 'general.cart.title' | t }} <span id="numberOfCartItems" class="badge bg-light rounded-pill">0</spanid=class=> </a>
         </li>
       </ul>
 
@@ -44,17 +45,17 @@
         {% if shop.customer_accounts_enabled %} 
             {% if customer %}              
               <li class="nav-item">
-              <a class="nav-link" href="{{ routes.account_url }}">{{ 'general.layout.account_text' | t }}</a>
+              <a class="nav-link text-white" href="{{ routes.account_url }}">{{ 'general.layout.account_text' | t }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ routes.account_logout_url }}">{{ 'general.layout.logout_text' | t }}</a>
+                <a class="nav-link text-white" href="{{ routes.account_logout_url }}">{{ 'general.layout.logout_text' | t }}</a>
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link" href="{{ routes.account_login_url }}">{{ 'general.layout.login_text' | t }}</a>
+                <a class="nav-link text-white" href="{{ routes.account_login_url }}">{{ 'general.layout.login_text' | t }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{ routes.account_register_url }}">{{ 'general.layout.register_text' | t }}</a>
+                <a class="nav-link text-white" href="{{ routes.account_register_url }}">{{ 'general.layout.register_text' | t }}</a>
               </li>
             {% endif %} 
         {% endif %}
@@ -66,7 +67,7 @@
   </div>
 </nav>
 
-<div class="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasSearchResult" aria-labelledby="offcanvasLabel">
+<div class="offcanvas offcanvas-end" tabIndex="-1" id="offcanvasSearchResult" aria-labelledby="offcanvasLabel" style="z-index: 1250">
   <div class="offcanvas-header">
     <h5 class="offcanvas-title" id="offcanvasLabel">Product Search Result</h5>
     <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>

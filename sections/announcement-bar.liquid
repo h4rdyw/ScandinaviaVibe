@@ -4,20 +4,28 @@
     {% if section.settings.home_page_only == false or template.name == 'index' %}
     <style>
       .announcement-bar {
-        background-color: {{ section.settings.color_bg }};
-        text-align: center;
+        {% if section.settings.show_background_color %} background-color: {{ section.settings.color_bg }}; {% else %} background-color: transparent; {% endif %}
+          text-align: center;
         {% if section.settings.header_padding > 0 %}
-          position:fixed;
-          top: -{{ section.settings.header_padding }}px !important;
+          top: {{ section.settings.header_padding }}px !important;
+        {% endif %}
+
+          opacity:80%;
+          {% if section.settings.sticky_header %} position:fixed; {% else %} position:sticky;  {% endif %}
+          
           left: 0;
           width: 100%;
-          z-index: 9;
-        {% endif %}
+          font-weight: 600;
+          z-index: 1100;
       }
       .announcement-bar p {
+        {% if section.settings.show_background_color %} background-color: {{ section.settings.color_bg }}; {% else %} background-color: transparent; {% endif %}
+        position:sticky; 
         padding:10px 0;
         font-size: {{ section.settings.font_size }}px;
+        font-weight: 600;
         margin:0 !important;
+        z-index: 1100;
       }
       .announcement-bar__message,
       .announcement-bar--link {
@@ -30,9 +38,11 @@
       
       html {
         /* height of sticky header */
-        scroll-padding-top: {{ section.settings.font_size | plus: section.settings.header_padding | plus: 10 }}px;
+        scroll-padding-top: {{ section.settings.font_size | plus: section.settings.header_padding }}px;
       }
+    </style>
 
+    <style id="barPosition">
       body {
         position:relative;
         top: {{ section.settings.header_padding }}px !important;
@@ -76,9 +86,7 @@
     {% endif %}
   {% endif %}
   
-  <style>
-    
-  </style>
+  
   
   {% schema %}
     {
@@ -104,8 +112,8 @@
           "type":   "range",
           "id":     "header_padding",
           "min":    0,
-          "max":    100,
-          "step":   1,
+          "max":    300,
+          "step":   5,
           "unit":   "px",
           "label":  "Header padding",
           "default":   0,
@@ -120,6 +128,12 @@
           "id": "message_text",
           "label": "Text",
           "default": "Announce something here"
+        },
+        {
+          "type": "checkbox",
+          "id": "sticky_header",
+          "label": "Sticky Header ",
+          "default": true
         },
       {
           "type": "checkbox",
@@ -168,6 +182,12 @@
           "default": "#333333"
         },
         {
+          "type": "checkbox",
+          "id": "show_background_color",
+          "label": "Show Background Color",
+          "default": true
+        },
+        {
           "type": "color",
           "id": "color_text",
           "label": "Text color",
@@ -192,4 +212,5 @@
       ]
     }
   {% endschema %}
+  
   {% comment %}theme-check-enable{% endcomment %}

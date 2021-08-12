@@ -1,0 +1,917 @@
+
+{% comment %}theme-check-disable{% endcomment %}
+
+{% assign page_handle = page.handle %}
+
+
+{% for block in section.blocks %}
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' %}
+        {% if block.type == 'lookbook_story' %} 
+        
+
+            {% if block.settings.image_story  %}
+            
+                {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
+            {% else %}
+                {% assign hero_img_url = block.settings.hero_story_img_url %}
+            {% endif %}
+
+            {% assign colortextmain = block.settings.color_text_main %}
+            {% assign colortexthover1 = block.settings.color_text_hover1 %}
+            {% assign fontsize_main = block.settings.font_size_main %}
+                   
+            {% if block.settings.show_background_color_main %}
+            {% assign bgcolormain = "background-color: " | append: block.settings.color_bg_main |append: ';' %}
+            {% else %} 
+            {% assign bgcolormain = "background-color: transparent;" %}
+            {% endif %}
+
+            {% assign textcolormain = "color : " | append:  block.settings.color_text_main | append: ';' %}
+            {% assign titlecolormain = "color : " | append:  block.settings.color_title_main | append: ';' %}
+            {% assign bgmainopacity = "opacity : " | append: block.settings.bg_main_opacity| append: '%;' %}
+            {% assign img1effect = block.settings.img1_effet %}
+
+            <!-- opening tag moitted here, declared in the page.lookbok.liquid -->
+            {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 {% endcomment %}
+
+               
+                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap shadow p-0 my-5">                    
+                
+
+                  <div class="col d-flex flex-column flex-fill px-1" style="{{ bgcolormain }}{{ bgmainopacity }}">
+                      <!-- /left/ -->
+
+                      {% if block.settings.video_story_url %}
+
+                          <div class="col d-flex flex-fill" style="{{ bgcolormain }}{{ bgmainopacity }}">
+                              <div class="hero-2-container">
+                                <div class="w-100 mx-auto">
+                                    <div class="ratio ratio-16x9">
+                                        <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" frameBorder="0" allowfullscreen></iframe>
+                                    </div>
+                                </div>          
+                                <div class="hero-1-stuff">
+                                    <h1 style="{{ titlecolormain }}position:sticky;top:10px;">{{ block.settings.title }}</h1>                                
+                                    {% if block.settings.button_link != blank %}
+                                        <a href="{{ block.settings.button_link }}" class="btn btn-secondary">{{ block.settings.button_label }}</a>  
+                                    {% endif %}                   
+                                </div>
+                                
+                                {% if block.settings.text_inside_box %}
+                                  <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}"><p>{{ block.settings.description }}</p></div>
+                                {% endif %}
+                              </div>    
+
+                              </div>
+
+                              {%if  block.settings.text_inside_box == false %}    
+
+                              <div class="col px-4 d-flex flex-fill align-self-center" style="{{ bgcolormain }}{{ bgmainopacity }}{{textcolormain }}">
+                              <p>{{ block.settings.description }}</p>
+                              </div> 
+                             {% endif %}
+
+                      {% else %}
+                          
+                          <div class="col d-flex flex-fill" style="{{ bgcolormain }}{{ bgmainopacity }}"> 
+                            {% if block.settings.text_inside_box %}
+                              <div  class="hero-0-container"> 
+                                {% else %} 
+                              <div class="hero-1-container">
+                              {% endif %} 
+                                  <div class="hero-1a" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
+                                    <div class="hero-1-stuff">
+                                        <h1 style="{{ titlecolormain }}position:sticky;top:10px;">{{ block.settings.title }}</h1>
+                                        
+                                        {% if block.settings.button_link != blank %}
+                                            <a href="{{ block.settings.button_link }}" class="btn btn-secondary">{{ block.settings.button_label }}</a> 
+                                        {% endif %}
+
+                                        {% if block.settings.text_inside_box %}
+                                          <div style="{{ bgcolormain }}{{ bgmainopacity }}{{textcolormain }}"><p>{{ block.settings.description }}</p></div>
+                                        {% endif %}
+                                    </div>
+                              </div>    
+                          </div>
+
+                          {% if  block.settings.text_inside_box == false %}
+                            <div class="col d-flex flex-fill align-self-center" style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}">
+                              <p>{{ block.settings.description }}</p>
+                            </div>
+                          {% endif %}
+                        
+
+                      {% endif %} 
+                          {% comment %} The Windy And Cool Rain
+                          A Poem by Anonymous
+                          Whose Rain is that? I think I know.
+                          Its owner is quite happy though.
+                          Full of joy like a vivid rainbow,
+                          I watch him laugh. I cry hello.
+
+                          He gives his Rain a shake,
+                          And laughs until her belly aches.
+                          The only other sound's the break,
+                          Of distant waves and birds awake.
+
+                          The Rain is windy, cool and deep,
+                          But he has promises to keep,
+                          After cake and lots of sleep.
+                          Sweet dreams come to him cheap.
+
+                          He rises from his gentle bed,
+                          With thoughts of kittens in his head,
+                          He eats his jam with lots of bread.
+                          Ready for the day ahead. {% endcomment %}
+                  </div> 
+                <!-- /right/ -->
+                <div class="col d-flex flex-wrap px-1">
+
+                    {% if block.settings.image1 %}            
+                        {% assign hero_img1_url = block.settings.image1 | img_url: 'medium' %} 
+                    {% else %}
+                        {% assign hero_img1_url = block.settings.hero_story_img1_url %}
+                    {% endif %}
+
+                    {% assign colortext1 = block.settings.color_text1 %}
+                    {% assign colortexthover1 = block.settings.color_text_hover1 %}
+                    {% assign fontsize1 = block.settings.font_size1 %}
+                    
+                    {% if block.settings.show_background_color1 %}
+                    {% assign bgcolor1 = "background-color: " | append: block.settings.color_bg1 |append: ';' %}
+                    {% else %} 
+                    {% assign bgcolor1 = "background-color: transparent;" %}
+                    {% endif %}
+
+                    {% assign textcolor1 = "color : " | append:  block.settings.color_text1 | append: ';' %}
+                    {% assign titlecolor1 = "color : " | append:  block.settings.color_title1 | append: ';' %}
+
+                    {% style %}
+                    .lookbook1-box1,
+                    .lookbook1-box1--link {
+                        {% comment %} color: {{ colortext1 }}; {% endcomment %}
+                     }
+                  
+                    .lookbook1-box1--link:hover, 
+                    .lookbook1-box1--link:hover .lookbook1-box__message {
+                        color: {{ section.settings.color_text_hover }}!important;
+                     }       
+
+                     .lookbook1-box2,
+                    .lookbook1-box2--link {
+                        {% comment %} color: {{ colortext2 }}; {% endcomment %}
+                     }
+                  
+                    .lookbook1-box2--link:hover, 
+                    .lookbook1-box2--link:hover .lookbook1-box__message {
+                        color: {{ section.settings.color_text_hover }}!important;
+                     }       
+
+                     .lookbook1-box3,
+                     .lookbook1-box3--link {
+                         {% comment %} color: {{ colortext2 }}; {% endcomment %}
+                      }
+                   
+                     .lookbook1-box3--link:hover, 
+                     .lookbook1-box3--link:hover .lookbook1-box__message {
+                         color: {{ section.settings.color_text_hover }}!important;
+                      }       
+
+                      .lookbook1-box4,
+                    .lookbook1-box4--link {
+                        {% comment %} color: {{ colortext2 }}; {% endcomment %}
+                     }
+                  
+                    .lookbook1-box4--link:hover, 
+                    .lookbook1-box4--link:hover .lookbook1-box__message {
+                        color: {{ section.settings.color_text_hover }}!important;
+                     }       
+
+                     {% endstyle %}   
+
+                    <!-- /right : 1 / -->
+
+                    <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor1 }}{{ textcolor1}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
+
+                        <div class="d-flex flex-wrap align-items-center">                            
+                          
+                            {% if hero_img1_url %}
+
+                            {% if block.settings.img1_effect == true %}
+                              
+                           
+                            <div class="hero-1a" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 2s;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
+                           
+                            {% else %}
+                              
+
+                            <div class="hero-1b" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
+
+                          {% endif %}  
+
+
+                            {% else if block.settings.link1 and block.settings.title1 %}
+                                <div><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1--link lookbook1-box1 h4 mx-2 px-2 py-2">{{ block.settings.title1 }}</h4></a></div>
+                            {% endif %} 
+
+                            <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor1 }}{{textcolor1 }}">
+                                
+                                <p>{{ block.settings.description1 }}</p>
+                                
+                            </div>                                                                                     
+                        </div>      
+                    </div>
+                        
+                        {% if block.settings.image2 %}
+                
+                            {% assign hero_img2_url = block.settings.image2 | img_url: 'medium' %} 
+                        {% else %}
+                            {% assign hero_img2_url = block.settings.hero_story_img2_url %}
+                        {% endif %}
+
+                        {% assign colortext2 = block.settings.color_text2 %}
+                        {% assign colortexthover1 = block.settings.color_text_hover1 %}
+                        
+                        {% if block.settings.show_background_color2 %}
+                        {% assign bgcolor2 = "background-color: " | append: block.settings.color_bg2 | append: ';' %}
+                        {% else %} 
+                        {% assign bgcolor2 = "background-color: transparent;" %}
+                        {% endif %}
+
+                        {% assign textcolor2 = "color : " | append:  block.settings.color_text2 | append: ';' %}
+                        {% assign titlecolor2= "color : " | append:  block.settings.color_title2 | append: ';' %}
+
+                        <!-- /right 2/ -->
+
+                        <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor2 }}{{ textcolor2}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
+                            
+                            <div class="d-flex flex-wrap align-items-center">
+                                {% if hero_img2_url %}
+                                {% if block.settings.img2_effect == true %}
+
+                                <div class="hero-1a" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
+
+                                {% else %}
+
+                                <div class="hero-1b" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
+
+                                {% endif %}
+
+                                {% else if block.setting.link2 and block.settings.title2 %}
+                                <div><a class="lookbook1-box2 lookbook1-box2--link" href="{{ block.settings.link2 }}" style="{{ titlecolor2 }}"><h4 class="d-inline-block h4 mx-2 px-2 py-2">{{ block.settings.title2 }}</h4></a></div>
+
+                                 {% endif %}                        
+
+                                <div class="hero-2-stuff d-flex flex-fill mx-4"  style="{{ bgcolor2 }}{{textcolor2 }}">
+                                    
+                                    <p>{{ block.settings.description2 }}</p>
+                                    
+                                </div>    
+                            </div>   
+                        </div>
+
+                        {% if block.settings.image3 %}
+                
+                            {% assign hero_img3_url = block.settings.image3 | img_url: 'medium' %} 
+                        {% else %}
+                            {% assign hero_img3_url = block.settings.hero_story_img3_url %}
+                        {% endif %}
+
+                        {% assign colortext3 = block.settings.color_text3 %}
+                        {% assign colortexthover1 = block.settings.color_text_hover1 %}
+                        
+                        {% if block.settings.show_background_color3 %}
+                        {% assign bgcolor3 = "background-color: " | append: block.settings.color_bg3 | append: ';' %}
+                        {% else %} 
+                        {% assign bgcolor3 = "background-color: transparent;" %}
+                        {% endif %}
+
+                        {% assign textcolor3 = "color : " | append:  block.settings.color_text3 | append: ';' %}
+                        {% assign titlecolor3= "color : " | append:  block.settings.color_title3 | append: ';' %}
+
+                        <!-- /right 3/ -->
+                        <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor3 }}{{ textcolor3}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
+                            <div class="d-flex flex-wrap align-items-center">
+
+                            {% if hero_img3_url %}                
+
+                            {% if block.settings.img3_effect == true %}
+
+                                <div class="hero-1a" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+                              {% else %}
+                                <div class="hero-1b" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+
+                            {% endif %}   
+
+                                <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor3 }}{{textcolor3 }}">
+                                    
+                                  <p>{{ block.settings.description3 }}</p>
+                                  
+                              </div>                            
+
+                            {% else if block.settings.link3 and block.settings.title3 %}
+                                <div><a class="lookbook1-box3 lookbook1-box3--link" href="{{ block.settings.link3 }}" style="{{ titlecolor3 }}"><h4 class="d-inline-block h4 mx-2 px-2 py-2">{{ block.settings.title3 }}</h4></a></div>
+                                    
+                            {% endif %}    
+
+                                <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor3 }}{{textcolor3 }}">
+                                    
+                                    <p>{{ block.settings.description3 }}</p>
+                                    
+                                </div>                            
+                            </div>   
+
+                            {% comment %} Pals, however hard they try,
+                        Will always be understanding.
+                        Now perceptive is just the thing,
+                        To get me wondering if pals are savvy. {% endcomment %}
+                        </div>
+
+                        {% if block.settings.image4 %}
+                
+                            {% assign hero_img4_url = block.settings.image4 | img_url: 'medium' %} 
+                        {% else %}
+                            {% assign hero_img4_url = block.settings.hero_story_img4_url %}
+                        {% endif %}
+
+                        {% assign colortext4 = block.settings.color_text4 %}
+                        {% assign colortexthover1 = block.settings.color_text_hover1 %}
+                        
+                        {% if block.settings.show_background_color4 %}
+                        {% assign bgcolor4 = "background-color: " | append: block.settings.color_bg4 | append: ';' %}
+                        {% else %} 
+                        {% assign bgcolor4 = "background-color: transparent;" %}
+                        {% endif %}
+
+                        {% assign textcolor4 = "color : " | append:  block.settings.color_text4 | append: ';' %}
+                        {% assign titlecolor4= "color : " | append:  block.settings.color_title4 | append: ';' %}
+                        
+                        <!-- /right 4/ -->
+                        <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor4 }}{{ textcolor}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
+                            <div class="d-flex flex-wrap align-items-center">
+                                {% if hero_img4_url %}    
+                                {% if block.settings.img4_effect == true %}
+
+                                  <div class="hero-1a" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 4s;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
+                                {% else %}
+                                  <div class="hero-1b" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
+                                      
+                                {% endif %}
+
+                                {% else if block.settings.link4 != blank  and block.settings.title4 != blank %}
+                                <div><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 mx-2 px-2 py-2">{{ block.settings.title4 }}</h4></a></div>
+
+                               {% endif %}
+                                <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor4 }}{{textcolor4 }}">
+                                    
+                                    <p>{{ block.settings.description4 }}</p>
+                                    
+                                </div>               
+                            </div>
+                        </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endif %} 
+
+    
+{% endfor %}
+
+{% schema %} 
+{ 
+  "name": "Lookbok 1 Story", 
+  "class": "lookbook-section", 
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Common Title"
+        },
+        {
+            "type": "color",
+            "id": "color_text_hover",
+            "label": "Link hover color",
+            "default": "#eeeeee"
+          }
+    ],
+  "blocks": [
+    {
+      "type": "lookbook_story",
+      "name": "Lookbook 1 - Story ",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },        
+        {
+          "type": "header",
+          "content": "MAIN BOX"
+        },
+        { "type": "image_picker", 
+          "id": "image_story", 
+          "label": "Hero Background Image"
+        },
+        { "type": "url", 
+          "id": "hero_story_img_url", 
+          "label": "Image URL" 
+        },
+        { "type": "text", 
+          "id": "title", 
+          "default": "Example Heading",
+          "label": "Heading Title"
+        },
+        { "type": "richtext", 
+          "id": "description", 
+          "default": "<p>Example paragraph</p>",
+          "label": "Description" 
+        },
+        {
+          "type": "checkbox",
+          "id": "text_inside_box",
+          "label": "Show Description Text Inside Main Box",
+          "default": true
+        },
+        { "type": "text", 
+          "id": "button_label", 
+          "default": "Button",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link", 
+        "label": "Button Link" 
+        },
+        { "type": "video_url",
+          "id": "video_story_url",
+          "accept": ["youtube","vimeo"],                    
+          "label": "Video URL"
+        },
+        {
+          "type": "color",
+          "id": "color_bg_main",
+          "label": "Description Background Color - Main",
+          "default": "#333333"
+        },          
+        {
+          "type":   "range",
+          "id":     "bg_main_opacity",
+          "min":    20,
+          "max":    100,
+          "step":   5,
+          "unit":   "%",
+          "label":  "Background Opacity",
+          "default":   100      
+        },
+        {
+          "type": "checkbox",
+          "id": "show_background_color_main",
+          "label": "Show Background Color - Main",
+          "default": true
+        },
+        {
+          "type": "color",
+          "id": "color_title_main",
+          "label": "Title color - Main",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "color_text_main",
+          "label": "Text color - Main",
+          "default": "#ffffff"
+        },  
+        {
+          "type":   "range",
+          "id":     "font_size_main",
+          "min":    8,
+          "max":    36,
+          "step":   1,
+          "unit":   "px",
+          "label":  "Font size - Main",
+          "default":   14
+        },
+        {
+          "type": "header",
+          "content": "RIGHT BOX - IMAGE 1"
+        },
+        {
+        "type": "image_picker",
+        "id": "image1",
+        "label": "Image 1"
+        },
+        { "type": "url", 
+          "id": "hero_story_img1_url", 
+          "label": "Image 1 URL" 
+        },
+        {
+          "type": "checkbox",
+          "id": "img1_effect",
+          "label": "Show Transition Effect - 1",
+          "default": true
+        },
+        {
+          "type": "url",
+          "id": "link1",
+          "label": "Link for Image 1"
+        },
+        
+        { "type": "text", 
+          "id": "title1", 
+          "default": "Example Heading 1",
+          "label": "Heading Image 1"
+        },
+        {
+          "type": "richtext",
+          "id": "description1",
+          "label": "Description 1"
+        },
+        {
+          "type": "color",
+          "id": "color_text_hover1",
+          "label": "Link hover color (All)",
+          "default": "#eeeeee"
+        },
+        {
+          "type": "color",
+          "id": "color_bg1",
+          "label": "Description Background Color  1",
+          "default": "#333333"
+        },
+        {
+          "type":   "range",
+          "id":     "bg_1_opacity",
+          "min":    20,
+          "max":    100,
+          "step":   5,
+          "unit":   "%",
+          "label":  "Background Opacity 1",
+          "default":   100      
+       },          
+          {
+            "type": "checkbox",
+            "id": "show_background_color1",
+            "label": "Show Background Color 1",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "color_title1",
+            "label": "Title color 1",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "color_text1",
+            "label": "Text color 1",
+            "default": "#ffffff"
+          },        
+          {
+            "type":   "range",
+            "id":     "font_size1",
+            "min":    8,
+            "max":    36,
+            "step":   1,
+            "unit":   "px",
+            "label":  "Font size 1",
+            "default":   14
+          },
+          {
+            "type": "header",
+            "content": "RIGHT BOX - IMAGE 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image 2"
+          },
+          { "type": "url", 
+            "id": "hero_story_img2_url", 
+            "label": "Image 2 URL" 
+          },
+          {
+            "type": "checkbox",
+            "id": "img2_effect",
+            "label": "Show Transition Effect - 2",
+            "default": true
+          },
+          {
+            "type": "url",
+            "id": "link2",
+            "label": "Link for Image 2"
+          },
+          { "type": "text", 
+            "id": "title2", 
+            "default": "Example Heading 2",
+            "label": "Heading Image 2"
+          },
+          {
+            "type": "richtext",
+            "id": "description2",
+            "label": "Description 2"
+          },
+          { 
+            "type": "color",
+            "id": "color_bg2",
+            "label": "Description Background Color 2",
+            "default": "#333333"
+          },       
+          {
+            "type":   "range",
+            "id":     "bg_2_opacity",
+            "min":    20,
+            "max":    100,
+            "step":   5,
+            "unit":   "%",
+            "label":  "Background Opacity 2",
+            "default":   100      
+         },             
+          {
+            "type": "checkbox",
+            "id": "show_background_color2",
+            "label": "Show Background Color 2",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "color_title2",
+            "label": "Title color 2",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "color_text2",
+            "label": "Text color 2",
+            "default": "#ffffff"
+          },
+          {
+            "type":   "range",
+            "id":     "font_size2",
+            "min":    8,
+            "max":    36,
+            "step":   1,
+            "unit":   "px",
+            "label":  "Font size 2",
+            "default":   14
+          },
+          {
+            "type": "header",
+            "content": "RIGHT BOX - IMAGE 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "image3",
+            "label": "Image 3"
+          },
+          { "type": "url", 
+            "id": "hero_story_img3_url", 
+            "label": "Image 3 URL" 
+          },
+          {
+            "type": "checkbox",
+            "id": "img3_effect",
+            "label": "Show Transition Effect - 3",
+            "default": true
+          },
+          {
+            "type": "url",
+            "id": "link3",
+            "label": "Link for Image 3"
+          },
+          { "type": "text", 
+            "id": "title3", 
+            "default": "Example Heading 3",
+            "label": "Heading Image 3"
+          },
+          {
+            "type": "richtext",
+            "id": "description3",
+            "label": "Description 3"
+          },
+          {
+            "type": "color",
+            "id": "color_bg3",
+            "label": "Description Background Color 3",
+            "default": "#333333"
+          },
+          {
+            "type":   "range",
+            "id":     "bg_3_opacity",
+            "min":    20,
+            "max":    100,
+            "step":   5,
+            "unit":   "%",
+            "label":  "Background Opacity 3",
+            "default":   100      
+         },                    
+          {
+            "type": "checkbox",
+            "id": "show_background_color3",
+            "label": "Show Background Color 3",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "color_title3",
+            "label": "Title color 3",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "color_text3",
+            "label": "Text color 3",
+            "default": "#ffffff"
+          },
+          {
+            "type":   "range",
+            "id":     "font_size3",
+            "min":    8,
+            "max":    36,
+            "step":   1,
+            "unit":   "px",
+            "label":  "Font size 3",
+            "default":   14
+          },
+          {
+            "type": "header",
+            "content": "RIGHT BOX - IMAGE 4"
+          },
+          {
+            "type": "image_picker",
+            "id": "image4",
+            "label": "Image 4"
+          },
+          { "type": "url", 
+             "id": "hero_story_img4_url", 
+             "label": "Image 4 URL" 
+          },
+          {
+            "type": "checkbox",
+            "id": "img4_effect",
+            "label": "Show Transition Effect - 4",
+            "default": true
+          },
+           {
+            "type": "url",
+            "id": "link4",
+            "label": "Link for Image 4"
+           },
+           { "type": "text", 
+             "id": "title4", 
+             "default": "Example Heading 4",
+             "label": "Heading Image 4"
+           },
+            {
+            "type": "richtext",
+            "id": "description4",
+            "label": "Description 4"
+            },
+            {
+              "type": "color",
+              "id": "color_bg4",
+              "label": "Description Background Color 4",
+              "default": "#333333"
+            },
+            {
+              "type":   "range",
+              "id":     "bg_4_opacity",
+              "min":    20,
+              "max":    100,
+              "step":   5,
+              "unit":   "%",
+              "label":  "Background Opacity 4",
+              "default":   100      
+           },                    
+            {
+              "type": "checkbox",
+              "id": "show_background_color4",
+              "label": "Show Background Color 4",
+              "default": true
+            },
+            {
+              "type": "color",
+              "id": "color_title4",
+              "label": "Title color 4",
+              "default": "#ffffff"
+            },
+            {
+              "type": "color",
+              "id": "color_text4",
+              "label": "Text color 4",
+              "default": "#ffffff"
+            },          
+            {
+              "type":   "range",
+              "id":     "font_size4",
+              "min":    8,
+              "max":    36,
+              "step":   1,
+              "unit":   "px",
+              "label":  "Font size 3",
+              "default":   14
+            }
+
+      ]
+    }
+  ],
+    
+      "presets": [
+      {
+        "category": "Hero",
+        "name": "Look Book 1 Story"
+      }
+    ]
+}
+
+{% endschema %}
+
+<style>
+  /* text inside box */
+    .hero-0-container {
+      height: auto;
+      min-height: 100vh;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      /*margin-bottom: 15px;*/
+    }
+    .hero-1-container {
+        height: auto;
+        min-height: 50vh;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        /*margin-bottom: 20px;*/
+      }
+    .hero-2-container {
+        height: auto;
+        min-height: 80vh;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        /*margin-bottom: 20px;*/
+      }
+      
+      /*
+      .hero-1 {
+        background: url({{ hero_img_url }}) no-repeat center center;
+        background-size: cover;
+        height: 100%;
+        width: 100%;
+        padding: 40px;
+        transition: transform 2s;
+      } */
+
+
+      .hero-1a:hover {
+        transform: scale(1.10);
+      }
+
+
+      .hero-1b:hover {
+        transform: scale(1);
+      }
+
+    
+      
+      .hero-1-stuff {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+      } 
+               
+      .hero-2-stuff {
+        position: relative;
+        opacity: 75%;
+        top: 0px;
+        left: 0px;
+      }           
+    
+      .customscrollbar {
+
+      }
+
+      .customscrollbar::-webkit-scrollbar {
+        width: 1px;
+        height: 1px;
+      }
+
+      .customscrollbar::-webkit-scrollbar-track {
+        background-color: #e4e4e4;
+        border-radius: 100px;
+      }
+
+      .customscrollbar::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        border: 6px solid rgba(0, 0, 0, 0.18);
+        border-left: 0;
+        border-right: 0;
+        background-color: #8070d4;
+      }
+    
+      body {
+        background: ##f8f9fa!important;
+      }
+</style>
+
+{% comment %}theme-check-enable{% endcomment %}

@@ -39,8 +39,12 @@
                     {% when 'video_url' %}
                       <h1 class="h3">{{ item.page_title }}</h1> 
                       <div class="my-4">
+                        <div class="ratio ratio-16x9">
                         {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                        <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                        {% comment %} <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
+                        <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}"></iframe>
+
+                        </div>
                       </div>   
                     {% comment %} {% when 'richtext' %}     {% endcomment %}
                       <div class="my-4"><p>{{ item.description }}</p></div>   

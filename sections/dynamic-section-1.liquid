@@ -25,12 +25,15 @@
                 {% comment %} <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:315px;width:560px;border:none;overflow:hidden;"></iframe> {% endcomment %}
 
                 {% comment %} <iframe id="iFrame" src="https://www.youtube.com/embed/{{ item.video_url.id }}" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'  style="height:315px;width:460px;border:none;overflow:hidden;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                <div data-iframe-height="iFrameResizer">
+                {% comment %} <div data-iframe-height="iFrameResizer"> {% endcomment %}
+                <div class="w-100 mx-auto">
+                <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}" allowfullscreen></iframe>
+                {% comment %} <iframe id="iFrameSection" src="https://www.youtube.com/embed/{{ item.video_url.id }}"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
+                </div>
+              </div>
 
 
-                <iframe id="iFrameSection" src="https://www.youtube.com/embed/{{ item.video_url.id }}"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-
-                </div> 
             {% comment %} {% when 'richtext' %}     {% endcomment %}
             <div class="my-4">{{ item.description }}</div>   
 

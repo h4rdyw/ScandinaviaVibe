@@ -1,7 +1,50 @@
 // Put your application javascript here
-document.addEventListener('DOMContentLoaded', function () {
-  update_cart();
-});
+window.addEventListener('resize', adjustAnnouncementBar);
+
+if( document.readyState !== 'loading' ) {
+  console.log( 'document is already ready, just execute code here' );
+  /*myInitCode();*/
+} else {
+  document.addEventListener('DOMContentLoaded', function () {
+    update_cart();  
+    adjustAnnouncementBar() ;
+  });
+}
+
+/* adjust annoucement bar position */
+var navBarCollapse = document.getElementById('navbarNav')
+navBarCollapse.addEventListener('hidden.bs.collapse', function () {  
+  // do something...
+  //console.log("Collapsed");
+  adjustAnnouncementBar() ;
+})
+
+navBarCollapse.addEventListener('shown.bs.collapse', function () {  
+  // do something...
+  //console.log("Collapsed");
+  adjustAnnouncementBar() ;
+})
+function adjustAnnouncementBar() {
+
+  var headerEl = document.getElementById('navBar');
+      var headerHeight = headerEl.offsetHeight;
+      /*var headerBoxShadow = window.getComputedStyle(headerEl).boxShadow;*/
+      /*var headerBoxShadowY = +headerBoxShadow.split("px")[2].trim();    ;*/
+      /*console.log('HeaderHeight:'+headerHeight);*/
+      
+      /*var x = document.getElementsByTagName("BODY")[0];
+      console.log(x);*/
+
+      var elName = document.getElementById('barPosition');
+      /*console.log(elName.innerHTML);*/
+      elName.innerHTML=`body {
+        position:relative;
+        top: ${headerHeight}px !important;
+      }`;
+      /*var topElAfter = window.getComputedStyle(document.body).getPropertyValue('top');
+      console.log('After:'+topElAfter);*/
+}
+
 
 if (document.getElementById('sort_by') != null) {
   document.querySelector('#sort_by').addEventListener('change', function (e) {
@@ -66,12 +109,27 @@ if (localeItems.length > 0) {
   });
 }
 
+/* toggle display of localeBtn (translation)*/
+function checkLocaleBtn() {
+  var checklocaleItem = document.querySelector('#localeBtn');
+  if (checklocaleItem.classList.contains('d-none')) {
+    checklocaleItem.classList.remove('d-none');
+  } else {
+    checklocaleItem.classList.add('d-none');
+  }
+}
+
 if (document.getElementById('productInfoAnchor') != null) {
   var productInfoAnchors = document.querySelectorAll('#productInfoAnchor');
   var productModal = new bootstrap.Modal(
     document.getElementById('productInfoModal'),
     {}
   );
+
+  var myproductModal = document.getElementById('productInfoModal');
+  myproductModal.addEventListener('hidden.bs.modal', function (event) {
+    checkLocaleBtn();
+  });
 
   if (productInfoAnchors.length > 0) {
     productInfoAnchors.forEach(item => {
@@ -85,11 +143,11 @@ if (document.getElementById('productInfoAnchor') != null) {
             //console.log(data);
             const productDescArr = data.description.split('$$$$$$');
 
-            if (productDescArr.length > 1) {
-              var productDesc = productDescArr[1];
-            } else {
-              var productDesc = productDescArr[0];
-            }
+            // if (productDescArr.length > 1) {
+            //   var productDesc = productDescArr[1];
+            // } else {
+            var productDesc = productDescArr[0];
+            // }
 
             document.getElementById('productInfoImg').src = data.images[0];
             document.getElementById('productInfoTitle').innerHTML = data.title;
@@ -135,6 +193,7 @@ if (document.getElementById('productInfoAnchor') != null) {
               text.data = 'Add to Cart';
             }
 
+            checkLocaleBtn();
             productModal.show();
           });
       });
@@ -178,7 +237,6 @@ if (document.getElementById('productInfoAnchor') != null) {
         })
         .then(() => {
           // productModal.hide();
-          
         })
         .finally(function () {
           update_cart();
@@ -206,15 +264,15 @@ const AddtoCartSuccess = function (item) {
 const { Toast } = bootstrap;
 
 const htmlMarkup = `
-  <div aria-atomic="true" aria-live="assertive" class="toast position-absolute end-0 top-0 m-3 bg-light border-0" style="z-index: 99;" role="alert" id="myAlert">
-      <div class="toast-header" style="color: white; background: green;">
-            <strong class="me-auto lead">Success</strong>            
+  <div aria-atomic="true" aria-live="assertive" class="toast position-absolute end-0 top-0 m-3 bg-light border-0" style="z-index: 9999;" role="alert" id="myAlert">
+      <div class="toast-header text-white bg-success">
+            <h6 class="me-auto">Success</h6>            
       </div>`;
 
 const htmlMarkupErr = `
-  <div aria-atomic="true" aria-live="assertive" class="toast position-absolute end-0 top-0 m-3 bg-light border-0" style="z-index: 99;" role="alert" id="myAlertErr">
-      <div class="toast-header" style="color: red;">
-            <strong class="me-auto lead">Attention</strong>            
+  <div aria-atomic="true" aria-live="assertive" class="toast position-absolute end-0 top-0 m-3 bg-light border-0" style="z-index: 9999;" role="alert" id="myAlertErr">
+      <div class="toast-header text-white bg-danger">
+            <h6 class="me-auto">Attention</h6>            
       </div>
       <div class="toast-body">
           Item was NOT added to Cart. Probably Out of Stock
@@ -241,8 +299,6 @@ function toastErr() {
   return templateErr.content.firstChild;
 }
 
-
-
 function update_cart() {
   fetch('/cart.js')
     .then(resp => resp.json())
@@ -251,13 +307,13 @@ function update_cart() {
       document.getElementById('numberOfCartItems').innerHTML = data.item_count;
 
       var numberofItems = document.getElementById('numberOfCartItems');
-       if (data.item_count > 0) {         
-         numberofItems.classList.remove("bg-light");
-         numberofItems.classList.add("bg-success");   
-       } else {
-        numberofItems.classList.add("bg-light");
-        numberofItems.classList.remove("bg-success");   
-       } 
+      if (data.item_count > 0) {
+        numberofItems.classList.remove('bg-light');
+        numberofItems.classList.add('bg-success');
+      } else {
+        numberofItems.classList.add('bg-light');
+        numberofItems.classList.remove('bg-success');
+      }
     })
     .catch(err => console.log(err));
 }
@@ -269,7 +325,7 @@ var offcanvasSearch = document.getElementById('offcanvasSearchResult');
 var bsOffcanvas = new bootstrap.Offcanvas(offcanvasSearch);
 
 offcanvasSearchResult.addEventListener('hidden.bs.offcanvas', function () {
-  predictiveSearchInput.value=``;
+  predictiveSearchInput.value = ``;
 });
 
 if (predictiveSearchInput != null) {
@@ -283,28 +339,26 @@ if (predictiveSearchInput != null) {
   });
 }
 
-
 function fetchPredictiveSearch() {
-  
   fetch(
     `/search/suggest.json?q=${predictiveSearchInput.value}&resources[type]=product`
   )
     .then(resp => resp.json())
     .then(data => {
       console.log(data);
-      
+
       var products = data.resources.results.products;
       document.getElementById('search_results_body').innerHTML = ``;
-     
-      products.forEach(function (product, index) {
-         var productPrice=formatCurrency(product.price);
-         //console.log(productPrice);
 
-         if (product.image != null) {
-           var productImage = product.image;  
-         } else {
-           var productImage = "";
-         }
+      products.forEach(function (product, index) {
+        var productPrice = formatCurrency(product.price);
+        //console.log(productPrice);
+
+        if (product.image != null) {
+          var productImage = product.image;
+        } else {
+          var productImage = '';
+        }
 
         document.getElementById('search_results_body').innerHTML += `
         <div class="col my-2">
@@ -332,13 +386,17 @@ function fetchPredictiveSearch() {
   bsOffcanvas.show();
 }
 
- function formatCurrency (amount)
- {
-      var ccyTemp = parseFloat(amount).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-      //remove trailing zeros
-      var ccyFormated = ccyTemp.slice(-3) === '.00'
-      ? ccyTemp.slice(0, -3)      
-      : (ccyTemp.slice(-1) === '0' ? ccyTemp.slice(0,-1) : ccyTemp );
-      return ccyFormated;
- }
-      
+function formatCurrency(amount) {
+  var ccyTemp = parseFloat(amount).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  });
+  //remove trailing zeros
+  var ccyFormated =
+    ccyTemp.slice(-3) === '.00'
+      ? ccyTemp.slice(0, -3)
+      : ccyTemp.slice(-1) === '0'
+      ? ccyTemp.slice(0, -1)
+      : ccyTemp;
+  return ccyFormated;
+}

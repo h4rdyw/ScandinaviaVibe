@@ -1,3 +1,4 @@
+{% comment %}theme-check-disable{% endcomment %}
 <!DOCTYPE html>
 <html>
   <head>
@@ -10,10 +11,12 @@
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
     />
-    {% comment %}theme-check-disable{% endcomment %}
-    {% section 'announcement-bar' %}
 
     {{ content_for_header }}
+
+    {% section 'header' %}
+    {% section 'announcement-bar' %}
+
     <!-- Header hook for plugins -->
     {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
     {{ 'application.css.scss' | asset_url | stylesheet_tag }}
@@ -26,9 +29,10 @@
   </head>
   <body>
     {% section 'translation' %}
-    {% section 'header' %}
+   
 
     <main role="main">
+
       {{ content_for_layout }}
     </main>
     
@@ -37,11 +41,7 @@
     {{ 'bootstrap.min.js' | asset_url | script_tag }}
     {{ 'application.js' | asset_url | script_tag }}
     
-    {% comment %} <script type="module" src="{{ 'currency.js' | asset_url }}">
-      import {formatMoney} from 'currency';
-      const ccy = formatMoney(1133, theme.moneyFormat);
-      console.log(ccy); 
-    </script> {% endcomment %}
+    
 {% comment %}theme-check-enable{% endcomment %}
   </body>
 </html>
