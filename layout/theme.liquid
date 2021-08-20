@@ -7,6 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <meta name="description" content="{{ page_description | escape }}" />
     <link rel="canonical" href="{{ canonical_url }}" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script>
+  
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
@@ -24,7 +29,7 @@
 
     {{ 'iframeResizer.min.js' | asset_url | script_tag }}
     {{ 'iframeResizer.contentWindow.js' | asset_url | script_tag }} 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   
     
   </head>
   <body>
@@ -36,6 +41,7 @@
       {{ content_for_layout }}
     </main>
     
+    <div id="btn-back-to-top">{{ 'icon_up.png' | asset_img_url: '32px' | img_tag }}</div>
     {% section 'footer-section' %}
 
     {{ 'bootstrap.min.js' | asset_url | script_tag }}

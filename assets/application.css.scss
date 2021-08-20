@@ -24,21 +24,23 @@
   margin: auto;
 }
 
+
+
 .dropup {
   position:relative;
   display: inline-block;
 }
 
 .localeBtn {
-  background-color: #3298DB;
-  padding: 6px;
-  font-size: 20px;
+  background-color: transparent;
+  padding: 0px;
+  font-size: 16px;
   position: fixed;
   bottom: 25px;
   right: 25px;
   border-radius: 50%;
-  max-width: 70px;
-  max-height: 70px;
+  max-width: 50px;
+  max-height: 50px;
   box-shadow: -1px 8px 20px 0px #00000066;  
   z-index: 999;
 }
@@ -55,7 +57,7 @@
   bottom: 75px;
   right: 25px;
   min-width: 210px;
-  z-index: 999;
+  z-index: 998;
   background-color: #f1f1f1f1;
   box-shadow: -1px 0px 20px 0px #00000066;
 }
@@ -67,7 +69,7 @@
 }
 .dropup-content a {
   display: block;
-  font-size: 17px;
+  font-size: 15px;
   padding: 15px 10px;
   display: block;
   text-align: center;
@@ -158,7 +160,8 @@
   transition: 0.3s;
 }
 
-
 .inner-img:hover {
     transform: scale(1.1);
 }
+
+

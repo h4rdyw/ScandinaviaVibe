@@ -12,13 +12,14 @@
             
           <div class="card">
             <div class="card-body">
+              <div class="table-responsive">
               <table class="table table-borderless">
                 <thead>
                   <tr>
-                  <th colspan="2">Product</th>
-                  <th>Price</th>
-                  <th>Qty</th>
-                  <th>Total</th>
+                  <th scope="col" colspan="2">Product</th>
+                  <th scope="col">Price</th>
+                  <th scope="col">Qty</th>
+                  <th scope="col">Total</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -35,9 +36,7 @@
                         <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0">remove</a>
                       </td>
                       <td>{{ item.price | money }}</td>
-                      <td>
-                        <input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="999">
-                      </td>
+                      <td><input type="number" name="updates[]" id="updates_{{ item.key }}" value="{{ item.quantity }}" min="0" max="999"></td>
                       <td>
                         {% if item.original_line_price != item.line_price %}{{ item.original_line_price | money }}{% endif %}
                         {{ item.line_price | money }}
@@ -46,7 +45,8 @@
                     </tr>
                   {% endfor %}
                 </tbody>
-              </table>          
+              </table>      
+            </div>    
           </div>
         </div>
         </div> 

@@ -1,4 +1,5 @@
 {% comment %}theme-check-disable{% endcomment %}
+
 {% assign offset_products = section.settings.offset_products %}
 {% assign number_of_products = section.settings.number_of_products %}
 {% assign randomize = section.settings.randomize %}
@@ -10,38 +11,43 @@
 
             {% assign limit_products = "limit: " | append: number_of_products %}
             {% assign offset_products = "offset: " | append: random_number %}
-
+            
 
 <section class="container py-4">
      <h2 class="text-center my-3">{{ section.settings.title }}</h2>
-     <div class="row d-flex g-3 row-cols-xl-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-5">
+     <div id="prdRow" class="row d-flex g-3 row-cols-xl-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-5">
 
-        {% if randomize == true  %}
-   
+        {% if randomize == true  %}   
 
         {% for product in collections[section.settings.featured_collection].products limit: number_of_products offset: random_number %}
 
-
             {% assign image = product.featured_media.preview_image %}
         <div class="col d-flex">
-
             <div class="img-wrapper d-flex">
-            <div class="card d-flex flex-fill border-0 shadow-sm">
-                
+            <div class="card d-flex flex-fill border-0 shadow-sm">                
                 
                 {% if image != blank %}
-        
-                    <a href="#" id="productInfoAnchor" product-handle="{{ product.handle }}" 
+                    <!--/ onclick="checkProductAnchors(`productInfoAnchor-{{ product.id }}`);return false;" //-->
+                    <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
                         product-price="{{ product.price | money_without_trailing_zeros }}"
                        ><img class="card-img-top inner-img" style="max-height: 150px; object-fit: cover;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}" 
                       ></a>        
+
+                      <script>   
+    
+                        //var prdID = "productInfoAnchor-{{ product.id }}";
+                        //console.log(prdID);
+                        //var prdInfo = document.getElementById("productInfoAnchor-{{ product.id }}");
+                        //console.log(prdInfo);                                                                      
+                        //prdInfo.dispatchEvent(new Event('click'));
+                     </script>
                 {% else %}                
                     {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
         
                 {% endif %}
          
                 <div class="card-body bg-light">
-                    <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
+                    <h5 class="text-product-link"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
                     <p>{{ product.price | money_without_trailing_zeros }}</p>
                     
                 </div>
@@ -51,21 +57,34 @@
             </div>
         </div>
         
+
          {% endfor %}   
         {% else %} 
         {% for product in collections[section.settings.featured_collection].products limit: number_of_products %}
 
 
             {% assign image = product.featured_media.preview_image %}
-            <div class="col d-flex">
+            <div id="prdCardCol" class="col d-flex">
                 <div class="img-wrapper d-flex">
                 <div class="card d-flex flex-fill border-0 shadow-sm">
                     {% if image != blank %}
             
-                        <a href="#" id="productInfoAnchor" product-handle="{{ product.handle }}" 
+                        <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
                             product-price="{{ product.price | money_without_trailing_zeros }}"
                         ><img class="card-img-top inner-img" style="max-height: 150px; object-fit: cover;" src="{{  image | img_url:'medium' }}" alt="{{ product.title }}" 
-                        ></a>        
+                        ></a>      
+                        
+                        <script>   
+    
+                        //var prdID = "productInfoAnchor-{{ product.id }}";
+                        //console.log(prdID);
+                        //var prdInfo = document.getElementById("productInfoAnchor-{{ product.id }}");
+                        //console.log(prdInfo);                                                                      
+                        //var body = document.body;
+                        //body.dispatchEvent(new Event('click'));
+                        
+                     </script>
+                     
                     {% else %}
                     
                         {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
@@ -73,7 +92,7 @@
                     {% endif %}
             
                     <div class="card-body bg-light">
-                        <h5><a href="{{ product.url }}">{{ product.title }}</a></h5>    
+                        <h5 class="text-product-link"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
                         <p>{{ product.price | money_without_trailing_zeros }}</p>                    
                     </div>    
                 </div>
@@ -88,21 +107,21 @@
      </div>
      
  </section>
- <div class="modal fade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
-    <div class="modal-dialog modal-dialog-centered modal-xl">
+ <div class="modal fade" id="productInfoModal" tabIndex="-1" data-bs-backdrop="static" aria-hidden="true" style="z-index:2000">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="btn-class" data-bs-dismiss="modal" aria-label="close"></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
-                      <div class="col-12 col-md-6">
+                      <div class="col-12 col-md-6">                       
                         <img class="img-fluid" style="max-height: 200px;" src="" id="productInfoImg" alt="">
                       </div>
                       <div class="col-12 col-md-6">
-                        <h1 id="productInfoTitle"></h1>
-                        <h3 id="productInfoPrice"></h3>
-                        <p id="productInfoDescription"></p>
+                        <h1 id="productInfoTitle" class="text-product-title"></h1>
+                        <h3 id="productInfoPrice" class="text-product-desc"></h3>
+                        <p id="productInfoDescription" class="text-product-desc"></p>
                       </div>
                 </div>             
             </div>
@@ -118,6 +137,7 @@
         </div>
     </div>
 </div>
+
 
  
 {% schema %}
@@ -171,3 +191,10 @@
 }
 {% endschema %}
 {% comment %}theme-check-enable{% endcomment %}
+
+
+{% comment %} var modalInstance = null;
+var modelElem = document.querySelector('#exampleModal');
+modelElem.addEventListener('shown.bs.modal', function (){
+  modalInstance = bootstrap.Modal.getInstance(modelElem);
+}); {% endcomment %}

@@ -8,13 +8,36 @@
     "theme_support_url": "https://github.com/Shopify/themekit/issues"
   },
   {
-    "name": "Navigation Bar Color Setting",
+    "name": "Navigation Bar",
     "settings": [
       {
         "type": "color",
         "id": "navbar_color",
         "label": "NavBar Background Color",
+        "default": "#f8f9fa"
+      },
+      {
+        "type": "color",
+        "id": "navbar_textcolor",
+        "label": "NavBar Text Color",
         "default": "#000"
+      },
+     
+      {
+        "type": "range",
+        "id": "navbar_opacity",
+        "min": 20,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "NavBar Background Opacity",
+        "default": 100
+      },
+      {
+        "type": "font_picker",
+        "id": "navbar_text_font",
+        "label": "Font",
+        "default": "mono"
       }
     ]
   },
@@ -22,8 +45,14 @@
     "name": "Typography",
     "settings": [
       {
+        "type": "color",
+        "id": "body_bgcolor",
+        "label": "Body Background Color",
+        "default": "#f8f9fa"
+      },
+      {
         "type": "header",
-        "content": "Heading Font Style"
+        "content": "Heading Font"
       },
       {
         "type": "font_picker",
@@ -33,13 +62,41 @@
       },
       {
         "type": "header",
-        "content": "Body Font Style"
+        "content": "Body Font"
       },
       {
         "type": "font_picker",
         "id": "body_text_font",
         "label": "Font",
         "default": "mono"
+      },
+      {
+        "type": "header",
+        "content": "Product Font"
+      },
+      {
+        "type": "font_picker",
+        "id": "product_title_font",
+        "label": "Product Title Font",
+        "default": "mono"
+      },
+      {
+        "type": "font_picker",
+        "id": "product_description_font",
+        "label": "Product Description Font",
+        "default": "mono"
+      },
+      {
+        "type": "color",
+        "id": "product_textcolor",
+        "label": "Product Text Color",
+        "default": "#0d6efd"
+      },
+      {
+        "type": "color",
+        "id": "product_textcolor_hover",
+        "label": "Product Text Color Hover",
+        "default": "#0d6efd"
       },
       {
         "type": "header",
@@ -67,7 +124,7 @@
         "unit": "%",
         "min": 62,
         "max": 200,
-        "step": 1
+        "step": 2
       }
     ]
   }

@@ -3,15 +3,12 @@
 
 {% assign page_handle = page.handle %}
 
-
 {% for block in section.blocks %}
 
     {% if block.settings.page_handle == page_handle  or template == 'index' %}
-        {% if block.type == 'lookbook_story' %} 
-        
+        {% if block.type == 'lookbook_story' %}         
 
-            {% if block.settings.image_story  %}
-            
+            {% if block.settings.image_story  %}            
                 {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
             {% else %}
                 {% assign hero_img_url = block.settings.hero_story_img_url %}
@@ -32,9 +29,9 @@
             {% assign bgmainopacity = "opacity : " | append: block.settings.bg_main_opacity| append: '%;' %}
             {% assign img1effect = block.settings.img1_effet %}
 
-            <!-- opening tag moitted here, declared in the page.lookbok.liquid -->
-            {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 {% endcomment %}
-
+            <!-- opening tag omitted here, declared in the page.lookbok.liquid -->
+            {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 
+            {% endcomment %}
                
                 <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap shadow p-0 my-5">                    
                 
@@ -48,7 +45,7 @@
                               <div class="hero-2-container">
                                 <div class="w-100 mx-auto">
                                     <div class="ratio ratio-16x9">
-                                        <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" frameBorder="0" allowfullscreen></iframe>
+                                        <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" loading="lazy" frameBorder="0" allowfullscreen></iframe>
                                     </div>
                                 </div>          
                                 <div class="hero-1-stuff">
@@ -80,7 +77,7 @@
                                 {% else %} 
                               <div class="hero-1-container">
                               {% endif %} 
-                                  <div class="hero-1a" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
+                                  <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
                                     <div class="hero-1-stuff">
                                         <h1 style="{{ titlecolormain }}position:sticky;top:10px;">{{ block.settings.title }}</h1>
                                         
@@ -130,8 +127,11 @@
 
                     {% if block.settings.image1 %}            
                         {% assign hero_img1_url = block.settings.image1 | img_url: 'medium' %} 
+                        {% assign bgimglazy1 = block.settings.image1 | img_url: 'medium' %}
                     {% else %}
                         {% assign hero_img1_url = block.settings.hero_story_img1_url %}
+                        {% assign bgimglazy1 = block.settings.hero_story_img1_url %}
+
                     {% endif %}
 
                     {% assign colortext1 = block.settings.color_text1 %}
@@ -150,7 +150,7 @@
                     {% style %}
                     .lookbook1-box1,
                     .lookbook1-box1--link {
-                        {% comment %} color: {{ colortext1 }}; {% endcomment %}
+                        {% comment %} color: {{ colortext1 }}; {% endcomment %}                        
                      }
                   
                     .lookbook1-box1--link:hover, 
@@ -192,7 +192,7 @@
 
                     <!-- /right : 1 / -->
 
-                    <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor1 }}{{ textcolor1}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
+                    <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor1 }}{{ textcolor1}}scroll-behavior:smooth;overflow-y:auto;overflow-x:auto;scrollbar-width:none;">
 
                         <div class="d-flex flex-wrap align-items-center">                            
                           
@@ -201,12 +201,12 @@
                             {% if block.settings.img1_effect == true %}
                               
                            
-                            <div class="hero-1a" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 2s;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
+                            <div id="hero-1a" class="lazy" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 2s;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
                            
                             {% else %}
                               
 
-                            <div class="hero-1b" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
+                            <div id="hero-1b" class="lazy" style="background: url({{ hero_img1_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor1 }}"><a class="lookbook1-box1 lookbook1-box1--link" style="{{ titlecolor1 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link1 }}"><h4 class="d-inline-block lookbook1-box1 lookbook1-box1--link h4 px-2 py-2" style="{{ bgcolor1 }}opacity:80%;">{{ block.settings.title1 }}</h4></a></div>
 
                           {% endif %}  
 
@@ -250,11 +250,11 @@
                                 {% if hero_img2_url %}
                                 {% if block.settings.img2_effect == true %}
 
-                                <div class="hero-1a" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
+                                <div id="hero-1a" class="lazy" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
 
                                 {% else %}
 
-                                <div class="hero-1b" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
+                                <div id="hero-1b" class="lazy" style="background: url({{ hero_img2_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor2 }}"><a class="lookbook1-box2 lookbook1-box2--link" style="{{ titlecolor2 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link2 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor2 }}opacity:75%;">{{ block.settings.title2 }}</h4></a></div>
 
                                 {% endif %}
 
@@ -298,9 +298,9 @@
 
                             {% if block.settings.img3_effect == true %}
 
-                                <div class="hero-1a" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+                                <div id="hero-1a" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
                               {% else %}
-                                <div class="hero-1b" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+                                <div id="hero-1b" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
 
                             {% endif %}   
 
@@ -353,9 +353,9 @@
                                 {% if hero_img4_url %}    
                                 {% if block.settings.img4_effect == true %}
 
-                                  <div class="hero-1a" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 4s;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
+                                  <div id="hero-1a" class="lazy" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 4s;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
                                 {% else %}
-                                  <div class="hero-1b" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
+                                  <div id="hero-1b" class="lazy"" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
                                       
                                 {% endif %}
 
@@ -547,7 +547,7 @@
           "unit":   "%",
           "label":  "Background Opacity 1",
           "default":   100      
-       },          
+        },          
           {
             "type": "checkbox",
             "id": "show_background_color1",
@@ -810,7 +810,6 @@
               "label":  "Font size 3",
               "default":   14
             }
-
       ]
     }
   ],
@@ -835,6 +834,8 @@
       position: relative;
       /*margin-bottom: 15px;*/
     }
+
+    /* text outside box*/
     .hero-1-container {
         height: auto;
         min-height: 50vh;
@@ -843,6 +844,8 @@
         position: relative;
         /*margin-bottom: 20px;*/
       }
+
+      /* video */
     .hero-2-container {
         height: auto;
         min-height: 80vh;
@@ -852,7 +855,7 @@
         /*margin-bottom: 20px;*/
       }
       
-      /*
+      
       .hero-1 {
         background: url({{ hero_img_url }}) no-repeat center center;
         background-size: cover;
@@ -860,19 +863,29 @@
         width: 100%;
         padding: 40px;
         transition: transform 2s;
-      } */
+      }
 
-
-      .hero-1a:hover {
+      .hero-1:hover {
         transform: scale(1.10);
       }
 
-
-      .hero-1b:hover {
-        transform: scale(1);
+      #hero-1a:hover {
+        transform: scale(1.10);
       }
 
-    
+      #hero-1a.lazy {
+        background-image: none;
+        background-color: #f8f9fa;
+     }
+
+      #hero-1b:hover {
+        transform: scale(1);
+      }       
+
+     #hero-1b.lazy {
+      background-image: none;
+      background-color: #f8f9fa;
+   }
       
       .hero-1-stuff {
         position: absolute;

@@ -1,6 +1,10 @@
 {% comment %}theme-check-disable{% endcomment %}
+{%- liquid 
+    assign footerbgcolor = section.settings.footer_bgcolor
+            
+-%}
 
-<footer class="footer-section bg-light py-5 mt-5">
+<footer class="footer-section py-5 mt-5 footer-bgcolor">
     <div class="container">
         <div class="row row-cols-1 row-cols-lg-{{ section.settings.col_num }} row-cols-md-{{ section.settings.col_num | minus : 2 }} d-flex">
             {% for block in section.blocks %}
@@ -19,7 +23,9 @@
                     </div>    
                  {% else if block.type == 'text' %}
                     <div class="col">
+                        {% if item.logo %} 
                         <img src="{{ item.logo | img_url: 'medium' }}" class="mb-5">
+                        {% endif %}
                             <h5>{{ item.title }}</h5>
                             <p>{{ item.description }}</p>
                      </div>                                           
@@ -35,6 +41,7 @@
             {% endfor %}
             </div>        
     {% endif %}
+    
     
 </footer>
 {% comment %} {{ 'bootstrap.min.js' | asset_url | script_tag }}
@@ -58,6 +65,12 @@
                 "id": "enable_payment_type_icons",
                 "label": "Show Payment Type Icons",
                 "default": true
+            },
+            {
+                "type": "color",
+                "id": "footer_bgcolor",
+                "label": "Footer Background Color",
+                "default": "#f8f9fa"
             }
         ],
         "blocks": [
@@ -103,4 +116,10 @@
         ]
     }
 {% endschema %}
+
+<style>
+    .footer-bgcolor {
+        background-color: {{ footerbgcolor }};
+    }
+</style>
 {% comment %}theme-check-enable{% endcomment %}

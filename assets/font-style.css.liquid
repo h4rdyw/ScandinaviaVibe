@@ -1,10 +1,24 @@
-{% assign font_header = settings.header_text_font %}
-{% assign font_body = settings.body_text_font %}
-{% assign root_font_size = settings.root_font_size_pct %}
-{% comment %} {% assign font_size = settings.body_font_size_pct %} {% endcomment %}
+{%- liquid 
+    assign bodybgcolor = settings.body_bgcolor
+    assign font_navbar = settings.navbar_text_font
+    assign font_header = settings.header_text_font
+    assign font_body = settings.body_text_font
+    assign font_producttitle = settings.product_title_font
+    assign font_productdescription = settings.product_description_font    
+    assign root_font_size = settings.root_font_size_pct        
+    assign navbarbgcolor = settings.navbar_color
+    assign navbartextcolor = settings.navbar_textcolor
+    assign navbarbgopacity = settings.navbar_opacity
+    assign producttextcolor = settings.product_textcolor
+    assign producttextcolorhover = settings.product_textcolor_hover
+
+-%}
 
 {{ font_header | font_face }}
+{{ font_navbar | font_face }}
 {{ font_body | font_face }}
+{{ font_producttitle | font_face }}
+{{ font_productdescription | font_face }}
 
 {% if root_font_size == 62 %}
 
@@ -17,13 +31,84 @@
 }
 
 {% endif %}
-
  
 
 h1,h2,h3,h4,h5.h6,button {
     font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+    background-color: {{ bodybgcolor }};
+
 }
+
+.text-navbar {
+    color: {{ navbartextcolor }};
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+    text-decoration: none;    
+}
+
+.text-product-link {
+    color: {{ producttextcolor }};
+    font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
+    text-decoration: none;
+}
+
+.text-product-link:hover {
+    color: {{ producttextcolorhover }};
+    text-decoration: underline;
+}
+
+.text-product-title {
+    /* color: {{ producttextcolor }};*/
+    font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+    text-decoration: none;
+}
+
+.text-product-desc {
+    /* color: {{ producttextcolor }};*/
+    font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }};
+    text-decoration: none;
+}
+
+.text-underline-hover {
+    text-decoration: none;
+}
+
+.text-underline-hover:hover {
+    text-decoration: underline;
+}
+ 
+.navbar-color {
+    background-color: {{ navbarbgcolor }};
+    opacity: {{ navbarbgopacity }}%;
+}
+
+nav .navbar-nav li a {
+    color: {{ navbartextcolor }}!important;
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+}
+
+.navbar-light .navbar-brand {
+    color: {{ navbartextcolor }}!important;   
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+}
+
+.nav-link {
+    color: {{ navbartextcolor }}!important;   
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+}
+
+#btn-back-to-top {
+    position: fixed;
+    border-radius: 50%;
+    background-color: {{ navbarbgcolor }};
+    bottom: 100px;
+    right: 25px;
+    display: none;
+  }

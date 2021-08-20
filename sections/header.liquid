@@ -1,10 +1,9 @@
 {% comment %}theme-check-disable{% endcomment %}
 
-
-<nav id="navBar" class="navbar navbar-expand-lg navbar-light bg-secondary fixed-top">
+<a class="close-navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> </a>
+<nav id="navBar" class="navbar navbar-expand-lg navbar-light fixed-top navbar-color">
   <div class="container">     
-
-    <a class="navbar-brand text-white" href="{{ routes.root_url }}">ScandinaviaVibe</a>
+  
     <button
       class="navbar-toggler"
       type="button"
@@ -14,29 +13,30 @@
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon"></span>
     </button>
+    <a class="navbar-brand" href="{{ routes.root_url }}">ScandinaviaVibe</a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         {% for link in linklists.main-menu.links %} {% assign child_list_handle
         = link.title | handleize %} {% if linklists[child_list_handle].links !=
         blank %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{{ link.url }}">{{ link.title }}</a>
+          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
         </li>
         [{% for childlink in linklists[child_list_handle].links %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{{ childlink.url }}">{{
+          <a class="nav-link" href="{{ childlink.url }}">{{
             childlink.title | escape
           }}</a>
         </li>
         {% endfor %}] {% else %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{{ link.url }}">{{ link.title }}</a>
+          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
         </li>
         {% endif %} {% endfor %}
         <li class="nav-item">
-          <a class="nav-link text-white" href="{{ routes.cart_url }}" >{{ 'general.cart.title' | t }} <span id="numberOfCartItems" class="badge bg-light rounded-pill">0</spanid=class=> </a>
+         
         </li>
       </ul>
 
@@ -45,17 +45,17 @@
         {% if shop.customer_accounts_enabled %} 
             {% if customer %}              
               <li class="nav-item">
-              <a class="nav-link text-white" href="{{ routes.account_url }}">{{ 'general.layout.account_text' | t }}</a>
+              <a class="nav-link" href="{{ routes.account_url }}">{{ 'general.layout.account_text' | t }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="{{ routes.account_logout_url }}">{{ 'general.layout.logout_text' | t }}</a>
+                <a class="nav-link" href="{{ routes.account_logout_url }}">{{ 'general.layout.logout_text' | t }}</a>
               </li>
             {% else %}
               <li class="nav-item">
-                <a class="nav-link text-white" href="{{ routes.account_login_url }}">{{ 'general.layout.login_text' | t }}</a>
+                <a class="nav-link" href="{{ routes.account_login_url }}">{{ 'general.layout.login_text' | t }}</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link text-white" href="{{ routes.account_register_url }}">{{ 'general.layout.register_text' | t }}</a>
+                <a class="nav-link" href="{{ routes.account_register_url }}">{{ 'general.layout.register_text' | t }}</a>
               </li>
             {% endif %} 
         {% endif %}
@@ -64,6 +64,7 @@
        <input class="text-muted" type="text" placeholder=" search product or tag..." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
       </form>
     </div>
+    <a class="mx-2 py-2" href="{{ routes.cart_url }}" >{{ 'cart24.png' | asset_img_url: '24px' | img_tag }}<span id="numberOfCartItems" class="d-none badge bg-light rounded-pill">0</span></a>
   </div>
 </nav>
 
@@ -76,4 +77,22 @@
     </div>
 </div>
 
+<style>
+  .navbar{
+    /*   z-index should be above .close-navbar-toggler */
+      z-index:2;
+    }
+    .close-navbar-toggler{
+      position:absolute;
+      top:0;
+      left:0;
+      height:100%;
+      width:100%;
+      z-index:1;
+      cursor:pointer;
+    }
+    .close-navbar-toggler.collapsed{
+      z-index:-1;
+    }
+</style>
 {% comment %}theme-check-enable{% endcomment %}

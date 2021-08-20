@@ -1,21 +1,40 @@
 {% comment %}theme-check-disable{% endcomment %}
+<script>   
+    window.addEventListener('load', 
+        function() { 
+          checkLocaleBtn();         
+        }, false);
+</script>
 
 {% assign current_product = product.selected_or_first_available_variant %} 
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
+{% assign product_short_description = product.description | truncatewords: 15, '...' %}
+      {% assign product_descriptions = product.description | split: '$$$$$$' %}
 
-<div class="container">
+      {% assign product_descriptions_length = product_descriptions.size %}
+
+      {% if product_descriptions_length > 1 %}
+        {% assign product_short_description = product_descriptions[0] %}
+        {% assign product_description = product_descriptions[1] %}
+     {% else %}
+        {% assign product_description = product.description %}    
+      {% endif %}    
+
+
+<div class="container" id="product_details">
     <div class="row">
         <div class="col-md-6 col-12">
-            <img class="img-fluid"
+            {% comment %} <img class="img-fluid"
                 src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
                 {% for image in product.images %} 
                 <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}"> 
-                {% endfor%}
-                <div class="col-md-6 col-12"><p>{{ product.description }}</p></div>
+                {% endfor%} {% endcomment %}
+            {% render 'product-image-slider' %}
+                <div class="text-product-desc"><p>{{ product_description }}</p></div>
         </div>
         
         <div class="col-md-6 col-12">
-            <h1>{{ product.title }}</h1>
+            <h1 class="text-product-title">{{ product.title }}</h1>
             <p>{{ current_product.price | money_without_trailing_zeros }}</p>
 
             {% form 'product', product, class:"product-form, id:"AddToCartForm %}
@@ -24,16 +43,13 @@
                         {% assign availability_count = 0 %}    
 
                         {% for variant in product.variants %}
-                        {% if variant.available %}
-                            {% assign availability = availability_count | plus: 1 %}
-                            <option value="{{ variant.id }}"> {{ variant.title }} {{ variant.price | money_without_trailing_zeros}}</option>
-                        {% else %}
-                            <option value="{{ variant.id }}" disabled="disabled"> {{ variant.title }}</option>
-                        {% endif %}
-                       
+                            {% if variant.available %}
+                                {% assign availability = availability_count | plus: 1 %}
+                                <option value="{{ variant.id }}"> {{ variant.title }} {{ variant.price | money_without_trailing_zeros}}</option>
+                            {% else %}
+                                <option value="{{ variant.id }}" disabled="disabled"> {{ variant.title }}</option>
+                            {% endif %}                       
                         {% endfor %}
-
-
                     </select>
 
                 </div>
@@ -49,37 +65,167 @@
       </div>
 </div>
 
-<div class="container">
+<!-- / 
+<div id="product_recomm" class="container">
     <section id="product_recommendation" class="row content-justify-center my-5">
         <div class="text-center"><h1>Also in store</h1></div>
         <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
     </section>
+</div> 
+/-->
+
+<div class="modal fade" id="productInfoModal" tabIndex="-1" data-bs-backdrop="static" aria-hidden="true" style="z-index:2000">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                      <div class="col-12 col-md-6">
+                        <img class="img-fluid" style="max-height: 200px;" src="" id="productInfoImg" alt="">
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <h1 id="productInfoTitle" class="text-product-title"></h1>
+                        <h3 id="productInfoPrice" class="text-product-desc"></h3>
+                        <p id="productInfoDescription" class="text-product-desc"></p>
+                      </div>
+                </div>             
+            </div>
+            <div class="modal-footer">
+            <form action="#" id="addToCartForm" class="row">
+              <select name="id" id="modalItemID" class="form-select col-auto">
+              </select>
+            <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
+            <button type="submit" id="btnAddToCart" class="btn btn-success col-auto">Add to Cart</button>
+
+            </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-
 <script>  
-    var productRecommendationBody = document.getElementById('product_recommendation_body');
+  
+    //var productRecommendationBody = document.getElementById('product_recommendation_body');
     fetch('/recommendations/products.json?product_id={{ product.id }}')
     .then(resp => resp.json())
     .then(({ products }) =>{
-        console.log(products);
+        
+        var arrProducts = Array.from(products);
+        //console.log(arrProducts);
+        //add eventlistener, later tobe dispatched when new element build completed
+        arrProducts.forEach( function (el) {
+            //console.log(el);
+            document.addEventListener( 'dispatchPrd', function ( event ) {
+                //console.log(`registering productInfoAnchor ${el.id}`);
+                getProductAnchors(`productInfoAnchor-${el.id}`);
+              });
+        })
+               
+        //console.log(products);
         if(products.length > 0) {
-            products.forEach(function(product,index) {
+        
+            /* element 
+                <div class="container">
+                    <section id="product_recommendation" class="row content-justify-center my-5">
+                        <div class="text-center"><h1>Also in store</h1></div>
+                        <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
+                    </section>
+                </div>
+            */
+
+            const htmlMarkup = `
+                 <section id="product_recommendation" class="row content-justify-center my-5">
+                    <div class="text-center"><h1>Also in store</h1></div>
+                    <div class="row d-flex flex-wrap g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
+            `;
+
+            html = htmlMarkup.trim();
+
+            var productRecomm = document.createElement('div');
+            productRecomm.className = 'container';
+
+            
+            products.forEach(function(item,index) {
+
+             //console.log(item);
+            arrProducts[item] = `productInfoAnchor-${item.id}`;
+            let prdPrice = formatCcy((+item.price / 100));                   
+            
             var card;
             card = `<div class="col d-flex">`;
-            card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
+            card += `<div class="card d-flex flex-fill border-1 shadow-sm">`;
 
-            if(product.images.length > 0) {
-                card += `<img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${product.images[0]}">`;
+            if(item.images.length > 0) {
+                card += `<a href="#"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
+                    product-price="${prdPrice}"><img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${item.images[0]}"></a>`;
             }          
             card += `<div class="card-body bg-light">`;
-            card += `<h6><a href="${product.url}">${product.title}</a></h6>`;
-            card += `<p>{{ product.price | money_without_trailing_zeros }}</p>`;
+            card += `<h6><a class="text-product-link" href="${item.url}">${item.title}</a></h6>`;
+            card += `<p>${prdPrice}</p>`;
             card +=  `</div></div></div>`;
-            productRecommendationBody.innerHTML += card;
+            
+            html += card;                           
+
         });
-    }
+        
+        html += `</div></section>`;
+
+        productRecomm.innerHTML = html;  
+                
+        const reference = document.getElementById("product_details");        
+        reference.after(productRecomm);
+
+        // Create a custom event and dispatch
+        let myEvent = new CustomEvent('dispatchPrd', {
+	        bubbles: true,
+	        cancelable: true
+            });
+
+        setTimeout(()=>{
+            const body = document.body;
+            document.dispatchEvent(myEvent);       
+
+        },2)
+        clearTimeout();
+        
+        }              
+
     });
+    
+    
+/*
+    document.addEventListener( 'click', function ( event ) {
+
+        console.log(event.target.getAttribute('id'));
+        if( event.target.getAttribute('id') == `productInfoAnchor-${item.id}` ) {
+
+            console.log("productInfoAnchor found");
+        } else {
+            console.log(`registering productInfoAnchor ${item.id}`);
+            getProductAnchors(`productInfoAnchor-${item.id}`);
+        };       
+      }); 
+*/
+
+
+
+     function formatCcy(amount) {
+        var ccyTemp = parseFloat(amount).toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        });
+      
+        //remove trailing zeros
+        var ccyFormated =
+          ccyTemp.slice(-3) === '.00'
+            ? ccyTemp.slice(0, -3)
+            : ccyTemp.slice(-1) === '0'
+            ? ccyTemp.slice(0, -1)
+            : ccyTemp;
+        return ccyFormated;
+      }
 
 </script>
 
@@ -95,4 +241,7 @@
     }]
 }
 {% endschema %}
+
+
+ 
 {% comment %}theme-check-enable{% endcomment %}

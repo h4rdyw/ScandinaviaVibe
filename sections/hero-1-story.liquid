@@ -12,11 +12,13 @@
 {% endif %}
 
 {% if block.settings.video_story_url %}
-  <div class="my-5 row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap bg-light">
+  <div class="my-5 row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex bg-light">
+
+    <!--/  Hero on The Left / -->
 
     {% if block.settings.placement < 2 %}
 
-        <div class="col d-flex flex-wrap">
+        <div class="col d-flex flex-fill">
             <div class="hero-1-container">
               <div class="w-100 mx-auto">
                  <div class="ratio ratio-16x9">
@@ -34,11 +36,15 @@
         <div class="col px-4 d-flex align-content-stretch">
           <p>{{ block.settings.description }}</p>
         </div>
-    {% else %}
-          <div class="col px-4 d-flex align-content-stretch">
+    
+        {% else %}
+
+        <!--/  Hero on The Right / -->
+
+          <div class="col px-4 d-flex flex-fill">
             <p>{{ block.settings.description }}</p>
           </div>  
-          <div class="col d-flex flex-wrap">        
+          <div class="col d-flex flex-fill">        
           <div class="hero-1-container">
             <div class="w-100 mx-auto">
               <div class="ratio ratio-16x9">
@@ -61,11 +67,14 @@
 
   {% else %}
     
+ <!--/ Non Video /-->
 
+  <div class="my-5 row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex bg-light">
 
-  <div class="my-5 row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap bg-light">
+    <!--/  Hero on The Left / -->
+
     {% if block.settings.placement < 2 %}
-      <div class="col d-flex flex-wrap">
+      <div class="col d-flex flex-fill">
         <div class="hero-1-container">
             <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
             <div class="hero-1-stuff">
@@ -74,14 +83,15 @@
             </div>
         </div>    
     </div>
-    <div class="col px-4 d-flex align-content-stretch">
+    <div class="col px-4 d-flex flex-fill align-content-stretch">
       <p>{{ block.settings.description }}</p>
     </div>
     {% else %}
-    <div class="col px-4 d-flex align-content-stretch">
+    <!--/ Hero On the right /-->
+    <div class="col px-5 d-flex flex-fill">
       <p>{{ block.settings.description }}</p>
     </div>  
-    <div class="col d-flex flex-wrap">
+    <div class="col d-flex flex-fill">
       <div class="hero-1-container">
           <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
           <div class="hero-1-stuff">
@@ -183,7 +193,7 @@
         width: 100%;
         overflow: hidden;
         position: relative;
-        margin-bottom: 20px;
+       /* margin-bottom: 20px;*/
       }
       
       {% comment %} .hero-1 {
