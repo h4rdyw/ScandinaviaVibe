@@ -22,7 +22,7 @@
 
 
 <div class="container" id="product_details">
-    <div class="row">
+    <div class="row py-5">
         <div class="col-md-6 col-12">
             {% comment %} <img class="img-fluid"
                 src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
@@ -65,7 +65,7 @@
       </div>
 </div>
 
-<!-- / 
+<!-- / element structure
 <div id="product_recomm" class="container">
     <section id="product_recommendation" class="row content-justify-center my-5">
         <div class="text-center"><h1>Also in store</h1></div>
@@ -114,7 +114,7 @@
         
         var arrProducts = Array.from(products);
         //console.log(arrProducts);
-        //add eventlistener, later tobe dispatched when new element build completed
+        //add eventlistener, later to be dispatched when new element build (product recommendation) completed
         arrProducts.forEach( function (el) {
             //console.log(el);
             document.addEventListener( 'dispatchPrd', function ( event ) {
@@ -138,7 +138,7 @@
             const htmlMarkup = `
                  <section id="product_recommendation" class="row content-justify-center my-5">
                     <div class="text-center"><h1>Also in store</h1></div>
-                    <div class="row d-flex flex-wrap g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
+                    <div class="row d-flex flex-wrap g-3 row-cols-xl-6 row-cols-lg-5 row-cols-md-4 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
             `;
 
             html = htmlMarkup.trim();
@@ -155,16 +155,20 @@
             
             var card;
             card = `<div class="col d-flex">`;
-            card += `<div class="card d-flex flex-fill border-1 shadow-sm">`;
+            card += `<div class="img-wrapper d-flex">`;
+            card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
 
             if(item.images.length > 0) {
+                card += `<div class="inner-img">`;
                 card += `<a href="#"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
-                    product-price="${prdPrice}"><img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${item.images[0]}"></a>`;
+                        product-price="${prdPrice}"><img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${item.images[0]}"></a>`;
+                card += `<div class="text-hover">BUY NOW</div></div>`;
             }          
-            card += `<div class="card-body bg-light">`;
-            card += `<h6><a class="text-product-link" href="${item.url}">${item.title}</a></h6>`;
+            card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light">`;
+            card += `<h5><a class="text-product-link" href="${item.url}">${item.title}</a></h5>`;
+            card += `<p span class="text-line"></p>`;
             card += `<p>${prdPrice}</p>`;
-            card +=  `</div></div></div>`;
+            card += `</div></div></div></div>`;
             
             html += card;                           
 
@@ -173,11 +177,12 @@
         html += `</div></section>`;
 
         productRecomm.innerHTML = html;  
-                
+         
+        //insert element after "product_details"
         const reference = document.getElementById("product_details");        
         reference.after(productRecomm);
 
-        // Create a custom event and dispatch
+        // Create a custom event and dispatch to setup PopUp Modal 
         let myEvent = new CustomEvent('dispatchPrd', {
 	        bubbles: true,
 	        cancelable: true
@@ -193,24 +198,7 @@
         }              
 
     });
-    
-    
-/*
-    document.addEventListener( 'click', function ( event ) {
-
-        console.log(event.target.getAttribute('id'));
-        if( event.target.getAttribute('id') == `productInfoAnchor-${item.id}` ) {
-
-            console.log("productInfoAnchor found");
-        } else {
-            console.log(`registering productInfoAnchor ${item.id}`);
-            getProductAnchors(`productInfoAnchor-${item.id}`);
-        };       
-      }); 
-*/
-
-
-
+       
      function formatCcy(amount) {
         var ccyTemp = parseFloat(amount).toLocaleString('en-US', {
           style: 'currency',
@@ -226,7 +214,6 @@
             : ccyTemp;
         return ccyFormated;
       }
-
 </script>
 
 {% schema %}

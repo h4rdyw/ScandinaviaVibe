@@ -27,13 +27,12 @@
     {{ 'application.css.scss' | asset_url | stylesheet_tag }}
     {{ 'font-style.css' | asset_url | stylesheet_tag }}
 
-    {{ 'iframeResizer.min.js' | asset_url | script_tag }}
-    {{ 'iframeResizer.contentWindow.js' | asset_url | script_tag }} 
+    {% comment %} {{ 'iframeResizer.min.js' | asset_url | script_tag }}
+    {{ 'iframeResizer.contentWindow.js' | asset_url | script_tag }}  {% endcomment %}
    
     
   </head>
   <body>
-    {% section 'translation' %}
    
 
     <main role="main">
@@ -43,6 +42,7 @@
     
     <div id="btn-back-to-top">{{ 'icon_up.png' | asset_img_url: '32px' | img_tag }}</div>
     {% section 'footer-section' %}
+    {% section 'translation' %}
 
     {{ 'bootstrap.min.js' | asset_url | script_tag }}
     {{ 'application.js' | asset_url | script_tag }}

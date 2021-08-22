@@ -80,12 +80,13 @@
           <div class="card d-flex flex-fill border-0">
             <div class="card-img-top" style="max-height:250px!important;object-fit: cover;">
             {% if image != blank %}  
-            
+            <div class="inner-img">
               <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
                 product-price="{{ product.price | money_without_trailing_zeros }}"
                ><img class="card-img-top" style="max-height:250px!important;object-fit: cover;" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title }}" 
               ></a>
-    
+              <div class="text-hover">BUY NOW</div>     
+            </div>
             {% else %}             
 
               {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}    
@@ -93,8 +94,9 @@
             {% endif %}
             </div>
             
-            <div class="card-body bg-light">
+            <div class="card-body d-flex flex-column justify-content-end bg-light text-center">
                 <h5 class="h5"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
+                <p span class="text-line"></p>
                 <p>{{ product.price | money_without_trailing_zeros }}</p>            
                 <p>
                 {% comment %} {% assign prddesc = product.description %} 

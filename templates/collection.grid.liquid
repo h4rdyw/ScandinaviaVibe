@@ -1,7 +1,7 @@
 {% comment %}theme-check-disable{% endcomment %}
 
- <h1 class="text-center">{{ collection.title }}</h1>
- <div class="container-fluid d-flex flex-wrap row-cols-xxl-8 row-cols-xl-6 row-cols-lg-4 row-cols-md-3 row-cols-2 m-0 py-10">
+ <h1 class="text-center py-5">{{ collection.title }}</h1>
+ <div class="container-fluid d-flex flex-wrap row-cols-xxl-8 row-cols-xl-6 row-cols-lg-4 row-cols-md-3 row-cols-3 m-0 py-10">
   {% for product in collection.products %}
        {% assign image = product.featured_media.preview_image %}
       {% for tag in product.tags %}
@@ -20,13 +20,17 @@
        {% endif %}
 
        <div class="card d-flex flex-fill bg-dark border-0">
+        <div class="img-wrapper">
         <div class="card-img-top" style="max-height:250px;object-fit: cover;">
         {% if image != blank %}  
-        
+          <div class="inner-img">
+
           <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
             product-price="{{ product.price | money_without_trailing_zeros }}"
            ><img class="card-img-top" style="max-height:250px;object-fit: cover;" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}"  
           ></a>
+          <div class="text-hover">BUY NOW</div>     
+        </div>
 
         {% else %}             
 
@@ -34,6 +38,7 @@
         
         {% endif %}
         </div>
+      </div>
         
         <div class="card-body bg-dark d-flex flex-fill justify-content-between">
             <h5 class="h5"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
@@ -58,9 +63,9 @@
                         <img class="img-fluid" style="max-height: 200px;" src="" id="productInfoImg" alt="">
                       </div>
                       <div class="col-12 col-md-6">
-                        <h1 id="productInfoTitle"></h1>
-                        <h3 id="productInfoPrice"></h3>
-                        <p id="productInfoDescription"></p>
+                        <h1 id="productInfoTitle" class="text-product-title"></h1>
+                        <h3 id="productInfoPrice" class="text-product-desc"></h3>
+                        <p id="productInfoDescription" class="text-product-desc"></p>
                       </div>
                 </div>             
             </div>
@@ -76,5 +81,22 @@
         </div>
     </div>
 </div>
+{% style %}
+.text-product-link {
+  color: #D4D4D4;
+  font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
+  text-decoration: none;
+}
 
+.text-product-link:hover {
+    color: {{ producttextcolorhover }};
+    text-decoration: underline;
+}
+
+.text-product-title {
+    color: white !important;
+    font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+    text-decoration: none;
+}
+{% endstyle %}
 {% comment %}theme-check-enable{% endcomment %}

@@ -25,7 +25,7 @@
 
 <section class="container-fluid py-4">
     
-    {% paginate paginate_data.products by 6 %}
+    {% paginate paginate_data.products by 8 %}
     
 
     {% if section.blocks.size > 0 %}
@@ -91,25 +91,29 @@
                         {% for product in paginate_data.products %}
                             {% assign image = product.featured_media.preview_image %}
                             <div class="col d-flex">
+                                <div class="img-wrapper d-flex">
                                 <div class="card d-flex flex-fill border-0">
                                     {% if image != blank %}  
+                                    <div class="inner-img">
                                     <a href="{{ product.url }}"><img class="card-img-top" style="max-height: 150px; object-fit: cover;"  src="{{  image | img_url:'medium' }}" alt="{{ product.title }}"></a>
-                            
+                                    <!-- / <div class="text-hover">BUY NOW</div>    /-->
+                                </div>
+
                                     {% else %}          
                                         {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
                             
                                     {% endif %}
                             
-                                    <div class="card-body bg-light">
-                                        <h6><a href="{{ product.url }}">{{ product.title }}</a></h6>    
+                                    <div class="card-body d-flex flex-column justify-content-end text-center bg-light">
+                                        <h6><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h6>    
+                                        <p span class="text-line"></p>
                                         <p>{{ product.price | money_without_trailing_zeros }}</p>            
                                     </div>        
                                 </div>
-                            </div>  
-                            
+                            </div>
+                            </div>                              
 
-                        {% else %}
-                            <p>no matches</p>
+                        
                         {% endfor %}
                         
                         {% comment %} {% for collection in collections %}

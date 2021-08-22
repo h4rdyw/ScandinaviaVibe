@@ -1,6 +1,6 @@
 {
   "name": "Article Layout Template",
-  "wrapper": "div#article_main.container.my-5",
+  "wrapper": "div#article_main.container.py-5",
   "sections": {
      "template": {
       "type": "template-article",    

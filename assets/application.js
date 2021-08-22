@@ -24,7 +24,7 @@ if( document.readyState !== 'loading' ) {
   });
 }
 
-
+;
 
 /* adjust annoucement bar position */
 var navBarCollapse = document.getElementById('navbarNav')
@@ -202,8 +202,7 @@ var chekproductModal = document.getElementById('productInfoModal');
         },1)
         clearTimeout();
 
-      })   
-      
+      })         
   }
 
   
@@ -325,6 +324,65 @@ if (document.getElementById(`${prdId}`) != null) {
 
 
 const modalAddToCartForm = document.querySelector('#addToCartForm');
+
+ if (modalAddToCartForm != null ) {    
+//   const myModalEl = document.querySelector('#productInfoModal')
+//   if (myModalEl != null ) {
+//     // Returns a Bootstrap modal instance
+//   var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl) 
+//   }
+  
+//console.log(modalAddToCartForm);
+modalAddToCartForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  //console.log('ITEM ID ' + document.getElementById('modalItemID').value);
+  //console.log('Value ' + document.getElementById('modalItemQuantity').value);
+  let formData = {
+    items: [
+      {
+        id: document.getElementById('modalItemID').value,
+        quantity: document.getElementById('modalItemQuantity').value,
+      },
+    ],
+  };
+  //console.log(formData);
+
+  fetch('/cart/add.js', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(formData),
+  })
+    .then(resp => resp.json())
+    .then(function (data) {
+      console.log(data);
+
+      if (data.status == 422) {
+        console.log('Cannot Add this Product : ' + data.description);
+        productModal.hide();
+        throw AddtoCartErr();
+      } else {
+        //console.log(data);
+        productModal.hide();
+        AddtoCartSuccess(data.items[0].product_title);
+      }
+    })
+    .catch(err => {
+      console.log('Error:' + err);
+      productModal.hide();
+      AddtoCartErr();
+    })
+    .then(() => {
+      // productModal.hide();
+    })
+    .finally(function () {
+      update_cart();
+    });
+});
+}
+
+const AddToCartForm = document.querySelector('#addToCartForm');
 
  if (modalAddToCartForm != null ) {    
 //   const myModalEl = document.querySelector('#productInfoModal')
