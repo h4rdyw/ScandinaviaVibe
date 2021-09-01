@@ -1,7 +1,7 @@
 <!-- /templates/customers/addresses.liquid -->
 <div class="container my-5">
     <h2 class="lead">My Address</h2>
-    <button class="btn btn-primary rounded-0" data-bs-toggle="modal" data-bs-target="#newAddressModal">Add New Address</button>
+    <button class="btn-reg" data-bs-toggle="modal" data-bs-target="#newAddressModal">Add New Address</button>
     <div class="row row-cols-md-4 row-cols-1 my-5 gx-2">
     {% for address in customer.addresses %}
         <div class="col">
@@ -14,7 +14,7 @@
                     method="post"
                     data-confirm-message="Delete adress">
                     <input type="hidden" name="_method" value="delete">    
-                    <button class="btn btn-danger">Delete</button>
+                    <button class="btn-reg">Delete</button>
                 </form>
                 
                 </div>
@@ -77,7 +77,7 @@
                 </div>                    
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-primary">Save Address</button>
+                <button type="submit" class="btn-reg">Save Address</button>
             </div>
         </div>        
     </div>

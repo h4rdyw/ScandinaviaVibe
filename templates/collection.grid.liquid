@@ -1,7 +1,7 @@
 {% comment %}theme-check-disable{% endcomment %}
-
- <h1 class="text-center py-5">{{ collection.title }}</h1>
- <div class="container-fluid d-flex flex-wrap row-cols-xxl-8 row-cols-xl-6 row-cols-lg-4 row-cols-md-3 row-cols-3 m-0 py-10">
+<section class="container py-5">
+ <h1 class="text-center py-2">{{ collection.title }}</h1>
+ <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-3 m-0 py-10">
   {% for product in collection.products %}
        {% assign image = product.featured_media.preview_image %}
       {% for tag in product.tags %}
@@ -27,7 +27,7 @@
 
           <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
             product-price="{{ product.price | money_without_trailing_zeros }}"
-           ><img class="card-img-top" style="max-height:250px;object-fit: cover;" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.featured_image.alt | escape }}"  
+           ><img class="card-img-top" width="200" height="200" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title| escape }}"  
           ></a>
           <div class="text-hover">BUY NOW</div>     
         </div>
@@ -74,12 +74,13 @@
               <select name="id" id="modalItemID" class="form-select col-auto">
               </select>
             <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
-            <button type="submit" id="btnAddToCart" class="btn btn-success col-auto">Add to Cart</button>
+            <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto">Add to Cart</button>
 
             </form>
             </div>
         </div>
     </div>
+</div>
 </div>
 {% style %}
 .text-product-link {
@@ -98,5 +99,6 @@
     font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
     text-decoration: none;
 }
+
 {% endstyle %}
 {% comment %}theme-check-enable{% endcomment %}

@@ -14,16 +14,15 @@
 
     <div class="hero-container">
       <div class="hero"></div>
-      <div class="hero-stuff">
+      <div id="hero" class="hero-stuff lazy">
           <h1>{{ block.settings.title }}</h1>
           <a href="{{ block.settings.button_link }}" class="btn btn-secondary">{{ block.settings.button_label }}</a>
       </div>
     </div>    
-    <div class="container my-2 mx-auto">
+    <div class="container mx-auto">
       <div class="row text-center"><p>{{ block.settings.description }}</p></div>
     </div>
-    
-    
+        
   {% endif %}
 {% endif %} 
 {% endfor %}
@@ -115,36 +114,14 @@
       
       .hero-stuff {
         position: absolute;
-        top: 40px;
-        left: 40px;
+        top: 80px;
+        left: 80px;
       }
       
-      {% comment %} h1 {
-        font-size: 55px;
-        font-weight: 700;
-        font-family: sans-serif;
-        color: #fff;
-      }
-       {% endcomment %}
-      a.btn {
-        display: inline-block;
-        {% comment %} font-family: sans-serif; {% endcomment %}
-        font-size: 12px;
-        font-weight: 700;
-        letter-spacing: 1.5px;
-        padding: 11px 30px;
-        background-color: #636363;
-        background-image: linear-gradient(to bottom,#636363,#000);
-        color: #fff;
-        text-transform: uppercase;
-      }
-      
-      a.btn:hover {
-        background-image: linear-gradient(to bottom,#fff,#000);
-      }
-      
-       {% comment %} p {
-        font-family: sans-serif;
-        background: #eee
-      }  {% endcomment %}
+      #hero.lazy {
+        background-image: none;
+        background-color: #transparent;
+     }
+     
+     
 </style>

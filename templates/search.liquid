@@ -1,6 +1,7 @@
 {% paginate search.results by 10 %}
 
-<div class="container">
+<div class="container py-5">
+  <p class="text-header-title">Search</p>
   <div class="row">
     <form action="/search" method="get" role="search">
       <input class="form-control py-2 mb-4 rounded-0 form-control-lg" type="search" name="q" value="{{ search.terms | escape }}">
@@ -17,22 +18,24 @@
         <input class="form-check-input" type="checkbox" id="product_type" name="type" value="page">
         <label class="form-check-label  for="product_type">Page</label>        
       </div>      
-      <button class="btn btn-primary" type="submit">Search</button>
+      <button class="btn-reg" type="submit">Search</button>
     </form>
   </div>
 
   
-  <div class="row row-cols-3 g-2">
+  <div class="row d-flex row-cols-lg-4  row-cols-md-3 row-cols-2 g-2 py-2">
     {% if search.performed %}
       {% for item in search.results %}
         {% if item.object_type == 'product' %}
           
-        <div class="col">
+        <div class="col d-flex">
           <div class="card shadow">
             {% if item.featured_image %}
               <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
-                {{ item.featured_image.src | img_url: 'medium' | img_tag: item.featured_image.alt, 'card-img-top' }}
-              </a>
+                {{ item.featured_image.src | img_url: '640x360' | img_tag: item.featured_image.alt, 'card-img-top' }}
+               </a>
+
+
             {% endif %}
             <div class="card-body">
             
@@ -44,7 +47,7 @@
     
         {% else if item.object_type == 'article' %}
 
-          <div class="col">
+          <div class="col d-flex ">
             <div class="card shadow">
               {% if item.image %}
                 <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
@@ -61,7 +64,7 @@
       {% endif %}
 
       {% else %}
-        no results
+        <p class="text-cart-empty"> No results</p>
       {% endfor %}
     
   </div>

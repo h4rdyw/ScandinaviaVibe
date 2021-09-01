@@ -16,7 +16,7 @@
   <div class="slick-slider">
       {% for image in product.images %}
         <div>
-          <img class="mySlides" src="{{ image | product_img_url: 'master' }}" style="max-height:35vh;width:aut100%o;object-fit:cover;">
+          <img class="mySlides" src="{{ image | product_img_url: 'master' }}" style="max-height:35vh;width:auto;max-width:100%;object-fit:cover;">
         </div>
       {% endfor %}
     </div>

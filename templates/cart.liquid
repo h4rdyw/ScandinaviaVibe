@@ -3,7 +3,7 @@
 {% if cart.item_count > 0 %}
 
 <div class="container-fluid">
-    <div class="my-5">
+    <div class="py-5">
       <h2 class="text-center">{{ 'general.cart.title' | t }}</h2>
     </div>
     <div class="my-5">
@@ -56,8 +56,8 @@
                   <h1 class="h4">Total :</h1>
                   <h5 class="h5">{{ cart.total_price | money }}</h5>
                   <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success" name="update">Update</button>
-                    <button type="submit" class="btn btn-success" name="checkout">Checkout</button>              
+                    <button type="submit" class="btn-reg" name="update">Update</button>
+                    <button type="submit" class="btn-reg" name="checkout">Checkout</button>              
                   </div>            
                 </div>
               </div>
@@ -66,13 +66,12 @@
     </div>
 </div>
 
-
 {% else %}
 
 <div class="container">
   <div class="row">
     <h2 class="text-center">{{ 'general.cart.title' | t }}</h2>
-    <p>Cart is empty</p>
+    <p class="text-cart-empty">Cart is empty</p>
   </div>
 </div>
 

@@ -33,8 +33,12 @@
               {% when 'video_url' %}
                 <h1 class="h3">{{ item.page_title }}</h1> 
                 <div class="my-4">
+                  <div class="ratio ratio-16x9">
                   {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                  <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+                  {% comment %} <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"></iframe> {% endcomment %}
+                  <lite-youtube videoid="{{ item.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+
+                  </div>
                 </div>   
               {% comment %} {% when 'richtext' %}     {% endcomment %}
                 <div class="my-4"><p>{{ item.description }}</p></div>   
@@ -165,7 +169,7 @@
     }
   {% endschema %}
 
-  <script>
+  {% comment %} <script>
     
     iFrameResize({log: true ,
       checkOrigin: false,
@@ -175,7 +179,7 @@
       warningTimeout:0,
       heightCalculationMethod: 'taggedElement'
     }, '#iFrameSideBar')
-  </script>
+  </script> {% endcomment %}
   
   {% comment %} <script>
     jQuery(window).on('load', function(){

@@ -2,7 +2,7 @@
 
 <section class="inner-hero-section" style="object-fit: cover;">
   {% if section.settings.image != blank %}
-    <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}">
+    <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" loading="lazy">
   {% else %}
     {% capture current %}{% cycle 1,2 %}{% endcapture %}
     {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}

@@ -44,8 +44,16 @@ html {
 body {
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
     background-color: {{ bodybgcolor }};
-
+    -webkit-font-smoothing: antialiased;
 }
+
+header {
+    padding: 0 25px;
+}
+img {
+    aspect-ratio: attr(width) / attr(height);
+    object-fit: cover;
+  }
 
 .text-navbar {
     color: {{ navbartextcolor }};
@@ -67,6 +75,7 @@ body {
 .text-product-title {
     /* color: {{ producttextcolor }};*/
     font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+    font-weight: 600;
     text-decoration: none;
 }
 
@@ -74,6 +83,12 @@ body {
     /* color: {{ producttextcolor }};*/
     font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }};
     text-decoration: none;
+}
+
+.text-header-title {
+  font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+  font-weight: 600;
+  text-decoration: none;
 }
 
 .text-line {
@@ -111,7 +126,8 @@ nav .navbar-nav li a {
 #btn-back-to-top {
     position: fixed;
     border-radius: 50%;
-    background-color: {{ navbarbgcolor }};
+    background-color: {{ navbarbgcolor }};    
+    background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
     bottom: 100px;
     right: 25px;
     display: none;
@@ -160,3 +176,116 @@ nav .navbar-nav li a {
     pointer-events: none;
   }
 
+  a.btn {
+    display: inline-block;
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    padding: 11px 30px;
+    background-color: {{ navbarbgcolor }};
+    background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
+    color: #fff;
+    text-transform: uppercase;
+  }
+  
+  a.btn:hover {
+    background-image: linear-gradient(to bottom,#fff,#11171B);
+  }
+
+  .btn-add-to-cart {
+    display: inline-block;
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 11px 30px;
+    background-color: #0AC661;
+    background-image: linear-gradient(to bottom,#0AC661,#11171B);
+    color: #fff;
+    text-transform: uppercase;
+  }
+  
+  .btn-add-to-cart:hover {
+    background-image: linear-gradient(to bottom,#fff,#11171B);
+  }
+
+  .btn-reg {
+    display: inline-block;
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 11px 30px;
+    background-color: {{ navbarbgcolor }};
+    background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
+    color: #fff;
+    text-transform: uppercase;
+  }
+  
+  .btn-reg:hover {
+    background-image: linear-gradient(to bottom,#fff,#11171B);
+  }
+
+  a {
+      text-decoration: none;
+      color: {{ producttextcolor }};
+  }
+
+  a:hover {
+    text-decoration: none;
+    {% if navbarbgcolor == '#ffffff' %}
+      color: black;
+    {% else %}
+      color: {{ navbarbgcolor }};    
+    {% endif %}
+    font-weight: 900;
+    
+    
+}
+
+.text-cart-empty {
+    color: black;
+    opacity: 0.2;
+    font-size: 2rem;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 25px;
+}
+
+.status_fulfilled {
+  color: blue;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.status_unfulfilled {
+  color: red;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.status_paid {
+  color: green;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+
+.status_unpaid {
+  color: red;
+  text-transform: uppercase;
+  font-weight: 900;
+}
+.accordion-button {
+  color: {{ navbarbgcolor }};
+  font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+  color: {{ navbarbgcolor }};
+  background-color: transparent;
+  font-weight: 700;
+}
+.accordion-flush .accordion-collapse {
+  font-weight: 600;
+}

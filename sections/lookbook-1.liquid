@@ -33,7 +33,7 @@
             {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 
             {% endcomment %}
                
-                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap shadow p-0 my-5">                    
+                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap shadow-0 p-0 py-5">                    
                 
 
                   <div class="col d-flex flex-column flex-fill px-1" style="{{ bgcolormain }}{{ bgmainopacity }}">
@@ -45,7 +45,7 @@
                               <div class="hero-2-container">
                                 <div class="w-100 mx-auto">
                                     <div class="ratio ratio-16x9">
-                                        <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" loading="lazy" frameBorder="0" allowfullscreen></iframe>
+                                        <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                                     </div>
                                 </div>          
                                 <div class="hero-1-stuff">
@@ -355,7 +355,7 @@
 
                                   <div id="hero-1a" class="lazy" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 4s;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
                                 {% else %}
-                                  <div id="hero-1b" class="lazy"" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
+                                  <div id="hero-1b" class="lazy" style="background: url({{ hero_img4_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor4 }}"><a class="lookbook1-box4 lookbook1-box4--link" style="{{ titlecolor4 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link4 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor4 }}opacity:75%;">{{ block.settings.title4 }}</h4></a></div>
                                       
                                 {% endif %}
 

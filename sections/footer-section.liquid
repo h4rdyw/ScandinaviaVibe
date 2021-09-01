@@ -11,7 +11,7 @@
                 {% assign item = block.settings %}
                 {% if block.type == 'link_list' %}
                     <div class="col">
-                        <h5>{{ item.title }}</h5>
+                        <p class="text-header-title" style="font-size:1.25rem;">{{ item.title }}</p>
                         {% assign footer_linklist = item.menu %}
                         <ul class="list-unstyled text-small">
                             {% for link in linklists[footer_linklist].links %}
@@ -26,7 +26,7 @@
                         {% if item.logo %} 
                         <img src="{{ item.logo | img_url: 'medium' }}" class="mb-5">
                         {% endif %}
-                            <h5>{{ item.title }}</h5>
+                            <p class="text-header-title" style="font-size:1.25rem;">{{ item.title }}</p>
                             <p>{{ item.description }}</p>
                      </div>                                           
                 {% endif %}                
@@ -36,13 +36,16 @@
     {% if section.settings.enable_payment_type_icons %}
         <div class="container justify-content-center d-flex">
             {% for payment_type in shop.enabled_payment_types %}
-                <img src="{{ payment_type | payment_type_img_url}}">
+                <img width="38" height="24" src="{{ payment_type | payment_type_img_url}}" alt="">
                 
             {% endfor %}
             </div>        
     {% endif %}
+    <p class="copy-right">
+        © Copyright {{ shop.name }}. All rights reserved.
+    </p>
     
-    
+
 </footer>
 {% comment %} {{ 'bootstrap.min.js' | asset_url | script_tag }}
 {{ 'application.js' | asset_url | script_tag }} {% endcomment %}
@@ -121,5 +124,11 @@
     .footer-bgcolor {
         background-color: {{ footerbgcolor }};
     }
+
+    .copy-right { 
+        color: rgba(0,0,0,.7); 
+        font-size: 0.8rem;
+        text-align: center;        
+        text-shadow: 0 1px rgba(255, 255, 255, 0.1);}
 </style>
 {% comment %}theme-check-enable{% endcomment %}

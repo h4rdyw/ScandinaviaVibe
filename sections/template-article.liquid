@@ -18,7 +18,7 @@
             {% case block.type %}
                 {% when 'featured_image' %}
                     {% if article.image != blank %}
-                        <img src="{{ article.image | img_url: 'master' }}" class="img-fluid eounded w-100">    
+                        <img src="{{ article.image | img_url: 'master' }}" class="img-fluid eounded w-100" style="width: 100%; min-height: 50vh; max-height:70vh;object-fit: cover;" >    
                       {% endif %}
 
                 {% when 'title' %}
@@ -79,22 +79,23 @@
                 <div class="my-5 p-2 bg-light">
                   <h3> Leave a comment</h3>
                   <div class="form-floating my-3">    
-                  <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
-                  <label for="CommentAuthor">name</label>  
-                </div>
+                    <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
+                    <label for="CommentAuthor">name</label>  
+                  </div>
                 
-                <div class="form-floating my-3">              
-                <input class="form-control" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
-                <label for="CommentEmail">email</label>  
-                </div>
+                  <div class="form-floating my-3">              
+                  <input class="form-control" type="email" name="comment[email]" id="CommentEmail" placeholder="email" value="{{ form.email }}" autocorrect="off" autocapitalize="off">
+                  <label for="CommentEmail">email</label>  
+                  </div>
 
-                <div class="form-floating my-3">    
-                <label for="CommentBody">message</label>
-                <textarea class="form-control" name="comment[body]" id="CommentBody" placeholder="message">{{ form.body }}</textarea>
-                </div>
+                  <div class="form-floating my-3">               
+                    <input class="form-control" type="text" name="comment[body]" id="CommentBody" placeholder="message">{{ form.body }}</input>
+                    <label for="CommentBody">message</label> 
+                  </div>
                 </div>
                 
-                <input type="submit" value="post">
+                <button type="submit" class="btn-reg" name="update">POST</button>
+
               {% endform %}
             </div>
           {% endif %}

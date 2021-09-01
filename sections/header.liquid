@@ -1,6 +1,6 @@
 {% comment %}theme-check-disable{% endcomment %}
 
-<a class="close-navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"> </a>
+<a class="close-navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"></a>
 <nav id="navBar" class="navbar navbar-expand-lg navbar-light fixed-top navbar-color">
   <div class="container">     
   
@@ -60,11 +60,16 @@
             {% endif %} 
         {% endif %}
       </ul>
-       <form action="{{ routes.search_url }}" method="GET" role="search">
-       <input class="text-muted" type="text" placeholder=" search product or tag..." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
+       <!-- <form action="{{ routes.search_url }}" method="GET" role="search"> -->
+        <form action="javascript:void(0);" method="GET" role="search">
+       <input class="text-muted" style="font-size:0.8rem;" type="text" placeholder="quick search .." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
       </form>
     </div>
-    <a class="mx-2 py-2" href="{{ routes.cart_url }}" >{{ 'cart24.png' | asset_img_url: '24px' | img_tag }}<span id="numberOfCartItems" class="d-none badge bg-light rounded-pill">0</span></a>
+    
+    <div class="px-2">
+      <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart icon"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
+    </div>
+    
   </div>
 </nav>
 

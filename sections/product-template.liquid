@@ -1,4 +1,6 @@
 {% comment %}theme-check-disable{% endcomment %}
+{{ 'product.css' | asset_url | stylesheet_tag }}
+
 <script>   
     window.addEventListener('load', 
         function() { 
@@ -20,17 +22,41 @@
         {% assign product_description = product.description %}    
       {% endif %}    
 
-
 <div class="container" id="product_details">
-    <div class="row py-5">
-        <div class="col-md-6 col-12">
+    <div class="row flex-column-reverse flex-lg-row py-5">
+        <div class="d-flex flex-column col-md-6 col-12">
             {% comment %} <img class="img-fluid"
                 src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
                 {% for image in product.images %} 
                 <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}"> 
                 {% endfor%} {% endcomment %}
-            {% render 'product-image-slider' %}
-                <div class="text-product-desc"><p>{{ product_description }}</p></div>
+            {% comment %} {% render 'product-image-slider' %} {% endcomment %}
+              <div class="d-flex flex-fill swiper-container swiper-container-{{- product.id -}}">
+                <div class="swiper-wrapper flex-fill">
+                  {% if product.images.size > 1  %}
+                    {% assign imgnum = 'true' %}
+                  {% endif %}
+                  
+
+
+                  {% for image in product.images %}            
+                    <div class="swiper-slide">
+                      <img src="{{ image.src | img_url: '640x360' }}" alt="{{ image.alt | escape }}" width="640" height="360"/>
+
+                      {% if imgnum == 'true' %}                       
+                      
+                      <div class="swiper-button-prev swiper-button-prev-{{- product.id -}}"></div>                     
+                      <div class="swiper-button-next swiper-button-next-{{- product.id -}}"></div>
+
+                    {% endif %}
+
+                    </div>          
+                  {% endfor %}    
+                </div>
+              </div>
+
+            <!--- -->
+              <div class="text-product-desc"><p>{{ product_description }}</p></div>
         </div>
         
         <div class="col-md-6 col-12">
@@ -56,7 +82,8 @@
                 <div class="mb-3">
                     <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
                 </div>
-                <button type="submit" name="add" id="AddToCart" class="btn btn-success btn-lg w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
+                <button type="submit" name="add" id="AddToCart" class="btn-add-to-cart btn-lg w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
+                <p></p>
                 {% if section.settings.dynamic_button_checkbox== true %}                
                 {{ form  | payment_button }}
                 {% endif %}
@@ -97,7 +124,7 @@
               <select name="id" id="modalItemID" class="form-select col-auto">
               </select>
             <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
-            <button type="submit" id="btnAddToCart" class="btn btn-success col-auto">Add to Cart</button>
+            <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto">Add to Cart</button>
 
             </form>
             </div>
@@ -106,6 +133,20 @@
 </div>
 
 <script>  
+new Swiper(".swiper-container-{{- product.id -}}", {
+    slidesPerView: 1,
+    centeredSlides: true,
+    effect: "fade",
+    loop: true,
+    observer: true, 
+    observeParents: true,  
+    navigation: {
+      prevEl: ".swiper-button-prev-{{- product.id -}}",
+      nextEl: ".swiper-button-next-{{- product.id -}}"
+    }
+    
+  })
+
   
     //var productRecommendationBody = document.getElementById('product_recommendation_body');
     fetch('/recommendations/products.json?product_id={{ product.id }}')
@@ -138,7 +179,7 @@
             const htmlMarkup = `
                  <section id="product_recommendation" class="row content-justify-center my-5">
                     <div class="text-center"><h1>Also in store</h1></div>
-                    <div class="row d-flex flex-wrap g-3 row-cols-xl-6 row-cols-lg-5 row-cols-md-4 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
+                    <div class="row d-flex flex-wrap g-3 row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 py-2" id="product_recommendation_body">
             `;
 
             html = htmlMarkup.trim();
@@ -149,7 +190,7 @@
             
             products.forEach(function(item,index) {
 
-             //console.log(item);
+            //console.log(item);
             arrProducts[item] = `productInfoAnchor-${item.id}`;
             let prdPrice = formatCcy((+item.price / 100));                   
             
@@ -161,11 +202,11 @@
             if(item.images.length > 0) {
                 card += `<div class="inner-img">`;
                 card += `<a href="#"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
-                        product-price="${prdPrice}"><img class="card-img-top" style="max-height: 150px; object-fit:cover;" src="${item.images[0]}"></a>`;
+                        product-price="${prdPrice}"><img class="card-img-top" width="640" height="360" src="${item.images[0]}"></a>`;
                 card += `<div class="text-hover">BUY NOW</div></div>`;
             }          
             card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light">`;
-            card += `<h5><a class="text-product-link" href="${item.url}">${item.title}</a></h5>`;
+            card += `<a class="text-product-link" style="font-size:1.25rem;" href="${item.url}">${item.title}</a>`;
             card += `<p span class="text-line"></p>`;
             card += `<p>${prdPrice}</p>`;
             card += `</div></div></div></div>`;
@@ -214,6 +255,12 @@
             : ccyTemp;
         return ccyFormated;
       }
+
+      
+        
+    
+
+
 </script>
 
 {% schema %}

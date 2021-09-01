@@ -15,21 +15,16 @@
           {% assign item = block.settings %}
           {% case block.type %}
             {% when 'text_block' %}
-            <h1 class="h3">{{ item.page_title }}</h1>  
-            <a href="{{ item.link }}"><img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy></a>      
+            <h1 class="h3 text-center">{{ item.page_title }}</h1>  
+            <a class="text-center" href="{{ item.link }}"><img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy></a>      
             <div class="my-4">{{ item.description }}</div> 
 
             {% when 'video_url' %}
-              <h1 class="h3">{{ item.page_title }}</h1> 
-              
-                {% comment %} <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));' style="height:315px;width:560px;border:none;overflow:hidden;"></iframe> {% endcomment %}
-
-                {% comment %} <iframe id="iFrame" src="https://www.youtube.com/embed/{{ item.video_url.id }}" onload='javascript:(function(o){o.style.height=o.contentWindow.document.body.scrollHeight+"px";}(this));'  style="height:315px;width:460px;border:none;overflow:hidden;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                {% comment %} <div data-iframe-height="iFrameResizer"> {% endcomment %}
+              <h1 class="h3">{{ item.page_title }}</h1>               
                 <div class="w-100 mx-auto">
                 <div class="ratio ratio-16x9">
-                <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}" allowfullscreen></iframe>
-                {% comment %} <iframe id="iFrameSection" src="https://www.youtube.com/embed/{{ item.video_url.id }}"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
+                <!-- Use the element. You may use it before the lite-yt-embed JS is executed. -->
+                <lite-youtube videoid="{{ item.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                 </div>
               </div>
 
@@ -144,93 +139,4 @@
 {% endschema %}
 
 
-{% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
-    <script type="text/javascript" src="./assets/iframeResizer.min.js"></script>
-    <script type="text/javascript" src="./assets/iframeResizer.contentWindow.js"></script> {% endcomment %}
-    <script>
-      
-      iFrameResize({log: false ,
-        autoResize: true,
-        checkOrigin: false,
-        minHeight: 315,
-        minWidth: '100%',
-        sizeHeight: true,
-        sizeWidth: true,
-        warningTimeout: 0,        
-        heightCalculationMethod: 'taggedElement'
-      }, '#iFrameSection')
-    </script>
-
-    <script>
-      
-    </script>
-    
-
-    {% comment %} <script type="text/javascript">
-      
-
-      var callbackDisplay = 'p#callback'
-
-      iFrameResize({
-        log: true, // Enable console logging
-        inPageLinks: true,
-        onResized: function (messageData) {
-          // Callback fn when resize is received
-          $(callbackDisplay).html(
-            '<b>Frame ID:</b> ' +
-              messageData.iframe.id +
-              ' <b>Height:</b> ' +
-              messageData.height +
-              ' <b>Width:</b> ' +
-              messageData.width +
-              ' <b>Event type:</b> ' +
-              messageData.type
-          )
-        },
-        onMouseEnter: function (messageData) {
-          // Callback fn when mouse enters iframe
-          $(callbackDisplay).html(
-            '<b>Frame ID:</b> ' +
-              messageData.iframe.id +
-              ' <b>ScreenX:</b> ' +
-              messageData.screenX +
-              ' <b>ScreenY:</b> ' +
-              messageData.screenY +
-              ' <b>Event type:</b> ' +
-              messageData.type
-            )
-        },
-        onMouseLeave: function (messageData) {
-          // Callback fn when mouse enters iframe
-          $(callbackDisplay).html(
-            '<b>Frame ID:</b> ' +
-              messageData.iframe.id +
-              ' <b>ScreenX:</b> ' +
-              messageData.screenX +
-              ' <b>ScreenY:</b> ' +
-              messageData.screenY +
-              ' <b>Event type:</b> ' +
-              messageData.type
-          )
-        },
-        onMessage: function (messageData) {
-          // Callback fn when message is received
-          $(callbackDisplay).html(
-            '<b>Frame ID:</b> ' +
-              messageData.iframe.id +
-              ' <b>Message:</b> ' +
-              messageData.message
-          )
-          alert(messageData.message)
-          document
-            .getElementsByTagName('iframe')[0]
-            .iFrameResizer.sendMessage('Hello back from parent page')
-        },
-        onClosed: function (id) {
-          // Callback fn when iFrame is closed
-          $(callbackDisplay).html('<b>IFrame (</b>' + id + '<b>) removed from page.</b>')
-        },
-
-      })
-    </script> {% endcomment %}
     {% comment %}theme-check-enable{% endcomment %}

@@ -13,7 +13,7 @@
           opacity:80%;
           {% if section.settings.sticky_header %} position:fixed; {% else %} position:sticky;  {% endif %}
           
-          left: 0;
+          margin: 0;
           width: 100%;
           font-weight: 600;
           z-index: 1100;
@@ -27,6 +27,13 @@
         margin:0 !important;
         z-index: 1100;
       }
+
+        @media only screen and (max-width: 600px) {
+          .announcement-bar p {
+          font-size: 14px !important;
+        }
+      }
+      
       .announcement-bar__message,
       .announcement-bar--link {
         color: {{ section.settings.color_text }};

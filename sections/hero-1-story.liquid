@@ -11,7 +11,7 @@
      {% assign hero_img_url = block.settings.hero_story_img_url %}
 {% endif %}
 
-  <div class="my-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex bg-light">
+  <div class="py-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex bg-light">
 
     <!--/  Hero on The Left / -->
     
@@ -23,7 +23,8 @@
             <div class="hero-1-container">
               <div class="w-100 mx-auto">
                  <div class="ratio ratio-16x9">
-                    <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe>
+                    {% comment %} <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe> {% endcomment %}
+                    <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                   </div>
               </div>          
               <div class="hero-1-stuff">
@@ -49,7 +50,9 @@
             <div class="hero-1-container">
                 <div class="w-100 mx-auto">
                   <div class="ratio ratio-16x9">
-                    <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe>              
+                    {% comment %} <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe>               {% endcomment %}
+                    <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+
                   </div>
                 </div>   
                 <div class="hero-1-stuff">

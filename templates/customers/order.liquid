@@ -4,11 +4,11 @@
 <div class="container my-5">
   <h1 class="h2">Order {{ order.name }}  </h1>
   <div class="row my-5">
-    <div class="col-12 md-4">
+    <div class="col-12 md-6">
       <div class="card">
         <div class="card-header"><h3>Billing Address</h3></div>
           <div class="card-body">  
-            <p><span>Payment Status:</span> <span class="status_{{ order.financial_status }}">{{ order.financial_status }}</span></p>
+            <p><span>Payment Status : </span><span class="status_{{ order.financial_status }}">{{ order.financial_status }}</span></p>
             <p>{{ order.billing_address.name }}</p>
             <p>{{ order.billing_address.company }}</p>
             <p>{{ order.billing_address.street }}</p>
@@ -21,7 +21,7 @@
         <div class="card">
           <div class="card-header"><h3>Shipping Address</h3></div>
             <div class="card-body">  
-            <p><span>Fulfillment Status:</span><span class="status_{{ order.fulfillment_status }}">{{ order.fulfillment_status }}</span></p>
+            <p><span>Fulfillment Status : </span><span class="status_{{ order.fulfillment_status }}">{{ order.fulfillment_status }}</span></p>
             <p>{{ order.shipping_address.name }}</p>
             <p>{{ order.shipping_address.company }}</p>
             <p>{{ order.shipping_address.street }}</p>
@@ -34,41 +34,44 @@
     </div>
 
   <div class="col-12 col-md-8">
-    <table class="table table-bordered">
-      <thead><h3>Order Items</h3>
-        <tr class="bg-light">
-          <td>Product</td>
-          <td>SKU</td>
-          <td>Price</td>
-          <td>Qty</td>
-          <td>SubTotal</td>
-          <td>Tax</td>
-          <td>Total</td>
-        </tr>
-      </thead>
-      <tbody></tbody>
-      {% for line_item in order.line_items %}
-        <tr>
-          <td>{{ line_item.title | link_to: line_item.product.url }}</td>
-          <td>{{ line_item.sku }}</td>
-          <td>{{ line_item.original_price | money }}</td>
-          <td>{{ line_item.quantity }}</td>
-          <td>{{ line_item.line_price | money }}</td>
-          <td>{% if line_item.taxable %}Yes{% endif%}</td>
-          <td></td>
-        </tr>
-        
-        {% endfor %}
-        <tr class="bg-light">
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>&nbsp;</td>
-          <td>TOTAL</td>
-          <td>{{ (order.total_price | minus: order.tax_price) | money  }}</td>
-          <td>{{ order.tax_price | money }}</td>
-          <td>{{ order.total_price | money }}</td>
-        </tr>
-    </table>
+    <div class="table-responsive">
+      <table class="table table-bordered">
+        <thead><h3>Order Items</h3>
+          <tr class="bg-light">
+            <td>Product</td>
+            <td>SKU</td>
+            <td>Price</td>
+            <td>Qty</td>
+            <td>SubTotal</td>
+            <td>Tax</td>
+            <td>Total</td>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        {% for line_item in order.line_items %}
+          <tr>
+            <td>{{ line_item.title | link_to: line_item.product.url }}</td>
+            <td>{{ line_item.sku }}</td>
+            <td>{{ line_item.original_price | money }}</td>
+            <td>{{ line_item.quantity }}</td>
+            <td>{{ line_item.line_price | money }}</td>
+            <td>{% if line_item.taxable %}Yes{% endif%}</td>
+            <td></td>
+          </tr>
+          
+          {% endfor %}
+          <tr class="bg-light">
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>&nbsp;</td>
+            <td>TOTAL</td>
+            <td>{{ (order.total_price | minus: order.tax_price) | money  }}</td>
+            <td>{{ order.tax_price | money }}</td>
+            <td>{{ order.total_price | money }}</td>
+          </tr>
+      </table>
+    </div>
+
   </div>
 </div>
 
