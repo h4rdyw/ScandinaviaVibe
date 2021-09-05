@@ -22,7 +22,7 @@
         "label": "NavBar Text Color",
         "default": "#000"
       },
-     
+
       {
         "type": "range",
         "id": "navbar_opacity",
@@ -90,13 +90,35 @@
         "type": "color",
         "id": "product_textcolor",
         "label": "Product Text Color",
-        "default": "#0d6efd"
+        "default": "#11171B"
       },
       {
         "type": "color",
         "id": "product_textcolor_hover",
         "label": "Product Text Color Hover",
-        "default": "#0d6efd"
+        "default": "#4F8C7E"
+      },
+      {
+        "type": "header",
+        "content": "Button, Text"
+      },
+      {
+        "type": "color",
+        "id": "button_color",
+        "label": "Button Color",
+        "default": "#7CD2EC"
+      },
+      {
+        "type": "color",
+        "id": "body_textcolor_hover",
+        "label": "Body Text Color Hover",
+        "default": "#4F8C7E"
+      },
+      {
+        "type": "color",
+        "id": "accordeon_header_textcolor",
+        "label": "Accordeon Header Text Color",
+        "default": "#4F8C7E"
       },
       {
         "type": "header",

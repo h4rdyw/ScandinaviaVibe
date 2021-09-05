@@ -1,7 +1,11 @@
 <!-- /templates/customers/order.liquid -->
 {% comment %}theme-check-disable{% endcomment %}
 
-<div class="container my-5">
+<div class="container py-5">
+  <a href="javascript:history.back()" class="menu-button">
+    <svg class="menu-arrow-icon" style="transform:none;">{% render 'header-arrow' %}</svg>
+
+    <span>Back</span></a>
   <h1 class="h2">Order {{ order.name }}  </h1>
   <div class="row my-5">
     <div class="col-12 md-6">

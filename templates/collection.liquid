@@ -122,38 +122,55 @@
 
 </section>
 
-<div class="modal fade" id="productInfoModal" tabIndex="-1" data-bs-backdrop="static" aria-hidden="true" style="z-index:2000">
+<div class="modal fade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="border-bottom: none;">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                       <div class="col-12 col-md-6">
-                        <img class="img-fluid" style="max-height: 250px;" src="" id="productInfoImg" alt="">
+                        <img class="img-fluid" style="max-height: 50vh;" src="" id="productInfoImg" alt="">
                       </div>
                       <div class="col-12 col-md-6">
                         <h1 id="productInfoTitle" class="text-product-title"></h1>
-                        <h3 id="productInfoPrice" class="text-product-desc"></h3>
+                        <p id="productInfoPrice" class="text-header-title"></p>
                         <p id="productInfoDescription" class="text-product-desc"></p>
                       </div>
                 </div>             
-            </div>
-            <div class="modal-footer">
-            <form action="#" id="addToCartForm" class="row">
-              <select name="id" id="modalItemID" class="form-select col-auto">
-              </select>
-            <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
-            <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto">Add to Cart</button>
-
-            </form>
+            </div> 
+            <div class="modal-footer" style="border-top: none;">
+              <div class="col-12 col-md-6"></div>
+              <div class="col-12 col-md-6 px-2">
+                <form action="#" id="addToCartForm" class="row">
+                  <select name="id" id="modalItemID" class="form-select col-auto">
+                  </select>
+                  <p></p> 
+                  <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
+                  <P></P>
+                  <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
+                  <p></p>
+                </form>
+              </div>              
             </div>
         </div>
     </div>
 </div>
 
-
+<style>
+  .form-select {
+      border-left: none;
+      border-right: none;
+      border-top: none;
+  }
+  input {
+    border-left: none;
+    border-right: none;
+    border-top: none;
+    border-bottom: 1px solid #ced4da;
+}
+  </style>
 {% comment %} <script>  
 
   var collFilters = jQuery('.coll-filter');

@@ -1,5 +1,9 @@
 <!-- /templates/customers/addresses.liquid -->
-<div class="container my-5">
+<div class="container py-5">
+    <a href="javascript:history.back()" class="menu-button">
+        <svg class="menu-arrow-icon" style="transform:none;">{% render 'header-arrow' %}</svg>
+    
+        <span>Back</span></a>
     <h2 class="lead">My Address</h2>
     <button class="btn-reg" data-bs-toggle="modal" data-bs-target="#newAddressModal">Add New Address</button>
     <div class="row row-cols-md-4 row-cols-1 my-5 gx-2">

@@ -1,7 +1,7 @@
 <!-- /templates/customers/login.liquid -->
 <div class="container py-5">
     <div class="login-form">
-        <h1 class="h2">{{ 'general.layout.login_text' | t }}</h1>
+        <h1 class="h2 py-2">{{ 'general.layout.login_text' | t }}</h1>
         {% form 'customer_login' %}
 
         {{ form.errors | default_errors }}

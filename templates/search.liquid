@@ -1,7 +1,7 @@
 {% paginate search.results by 10 %}
 
 <div class="container py-5">
-  <p class="text-header-title">Search</p>
+  <p class="text-header-title py-2">Search</p>
   <div class="row">
     <form action="/search" method="get" role="search">
       <input class="form-control py-2 mb-4 rounded-0 form-control-lg" type="search" name="q" value="{{ search.terms | escape }}">

@@ -24,7 +24,7 @@
 
 <div class="container" id="product_details">
     <div class="row flex-column-reverse flex-lg-row py-5">
-        <div class="d-flex flex-column col-md-6 col-12">
+        <div class="d-flex flex-fill flex-column col-lg-8 col-md-12 col-12">
             {% comment %} <img class="img-fluid"
                 src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
                 {% for image in product.images %} 
@@ -41,7 +41,7 @@
 
                   {% for image in product.images %}            
                     <div class="swiper-slide">
-                      <img src="{{ image.src | img_url: '640x360' }}" alt="{{ image.alt | escape }}" width="640" height="360"/>
+                      <img src="{{ image.src | img_url: 'master' }}" alt="{{ image.alt | escape }}" width="640" height="360" loading="lazy"/>
 
                       {% if imgnum == 'true' %}                       
                       
@@ -54,14 +54,13 @@
                   {% endfor %}    
                 </div>
               </div>
-
-            <!--- -->
+              <p span class="text-line"></p>
               <div class="text-product-desc"><p>{{ product_description }}</p></div>
         </div>
         
-        <div class="col-md-6 col-12">
+        <div class="d-flex flex-column flex-fill col-lg-4 col-md-12 col-12">
             <h1 class="text-product-title">{{ product.title }}</h1>
-            <p>{{ current_product.price | money_without_trailing_zeros }}</p>
+            <p class="text-header-title">{{ current_product.price | money_without_trailing_zeros }}</p>
 
             {% form 'product', product, class:"product-form, id:"AddToCartForm %}
                 <div class="mb-3">
@@ -77,12 +76,11 @@
                             {% endif %}                       
                         {% endfor %}
                     </select>
-
                 </div>
                 <div class="mb-3">
                     <input type="number" class="form-control" name="quantity" id="Quantity" value="1" min="1">
                 </div>
-                <button type="submit" name="add" id="AddToCart" class="btn-add-to-cart btn-lg w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
+                <button type="submit" name="add" id="AddToCart" class="btn-add-to-cart w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
                 <p></p>
                 {% if section.settings.dynamic_button_checkbox== true %}                
                 {{ form  | payment_button }}
@@ -101,36 +99,58 @@
 </div> 
 /-->
 
-<div class="modal fade" id="productInfoModal" tabIndex="-1" data-bs-backdrop="static" aria-hidden="true" style="z-index:2000">
+<div class="modal fade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header" style="border-bottom: none;">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                       <div class="col-12 col-md-6">
-                        <img class="img-fluid" style="max-height: 200px;" src="" id="productInfoImg" alt="">
+                        <img class="img-fluid" style="max-height: 50vh;" src="" id="productInfoImg" alt="">
                       </div>
                       <div class="col-12 col-md-6">
                         <h1 id="productInfoTitle" class="text-product-title"></h1>
-                        <h3 id="productInfoPrice" class="text-product-desc"></h3>
+                        <p class="text-header-title" id="productInfoPrice" class="text-product-desc"></p>
                         <p id="productInfoDescription" class="text-product-desc"></p>
                       </div>
                 </div>             
             </div>
-            <div class="modal-footer">
-            <form action="#" id="addToCartForm" class="row">
-              <select name="id" id="modalItemID" class="form-select col-auto">
-              </select>
-            <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" class="col-auto">
-            <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto">Add to Cart</button>
-
-            </form>
+            <div class="modal-footer" style="border-top: none;">
+              <div class="col-12 col-md-6"></div>
+              <div class="col-12 col-md-6 px-2">
+                <form action="#" id="addToCartForm" class="row">
+                  <select name="id" id="modalItemID" class="form-select col-auto">
+                  </select>
+                  <p></p>
+                  <div>
+                    <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">    
+                    <p></p>           
+                    <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>                
+                  </div>                
+                  <p></p>
+                </form>
+              </div>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+  input {
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #ced4da !important;
+  }
+  
+  .form-select {
+      border-left: none;
+      border-right: none;
+      border-top: none;
+  }  
+</style>
 
 <script>  
 new Swiper(".swiper-container-{{- product.id -}}", {
@@ -143,10 +163,8 @@ new Swiper(".swiper-container-{{- product.id -}}", {
     navigation: {
       prevEl: ".swiper-button-prev-{{- product.id -}}",
       nextEl: ".swiper-button-next-{{- product.id -}}"
-    }
-    
+    }    
   })
-
   
     //var productRecommendationBody = document.getElementById('product_recommendation_body');
     fetch('/recommendations/products.json?product_id={{ product.id }}')
@@ -186,7 +204,6 @@ new Swiper(".swiper-container-{{- product.id -}}", {
 
             var productRecomm = document.createElement('div');
             productRecomm.className = 'container';
-
             
             products.forEach(function(item,index) {
 
@@ -228,16 +245,12 @@ new Swiper(".swiper-container-{{- product.id -}}", {
 	        bubbles: true,
 	        cancelable: true
             });
-
         setTimeout(()=>{
             const body = document.body;
-            document.dispatchEvent(myEvent);       
-
+            document.dispatchEvent(myEvent);
         },2)
-        clearTimeout();
-        
-        }              
-
+        clearTimeout();        
+        }            
     });
        
      function formatCcy(amount) {
@@ -255,12 +268,6 @@ new Swiper(".swiper-container-{{- product.id -}}", {
             : ccyTemp;
         return ccyFormated;
       }
-
-      
-        
-    
-
-
 </script>
 
 {% schema %}

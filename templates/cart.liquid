@@ -2,13 +2,11 @@
 
 {% if cart.item_count > 0 %}
 
-<div class="container-fluid">
-    <div class="py-5">
-      <h2 class="text-center">{{ 'general.cart.title' | t }}</h2>
-    </div>
+<div class="container py-5">
+      <h2 class="text-center py-2">{{ 'general.cart.title' | t }}</h2>
     <div class="my-5">
       <form action="/cart" method="POST" class="row" novalidate>
-        <div class="col-12 col-md-8">
+        <div class="col-12 col-lg-8 col-md-8">
             
           <div class="card">
             <div class="card-body">
@@ -50,12 +48,13 @@
           </div>
         </div>
         </div> 
-        <div class="col-12 col-md-4">
+        <div class="col-12 col-lg-4 col-md-4">
               <div class="card">
                 <div class="card-body">
                   <h1 class="h4">Total :</h1>
                   <h5 class="h5">{{ cart.total_price | money }}</h5>
                   <div class="d-grid gap-2">
+                    <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
                     <button type="submit" class="btn-reg" name="update">Update</button>
                     <button type="submit" class="btn-reg" name="checkout">Checkout</button>              
                   </div>            
@@ -68,11 +67,15 @@
 
 {% else %}
 
-<div class="container">
+<div class="container py-5">
   <div class="row">
-    <h2 class="text-center">{{ 'general.cart.title' | t }}</h2>
-    <p class="text-cart-empty">Cart is empty</p>
+    <h2 class="text-center py-2">{{ 'general.cart.title' | t }}</h2>
+    <p class="text-cart-empty">Cart is empty</p>        
   </div>
+  <div class="text-center">
+    <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
+  </div>
+  
 </div>
 
 

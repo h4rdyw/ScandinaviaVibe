@@ -10,7 +10,7 @@
 
 .swiper-slide {
 	display: flex;
-	justify-content: start;
+	justify-content: center;
 	align-items: center;
 	user-select: none;
 	
@@ -32,13 +32,14 @@
 .swiper-button-prev::before {
 	background: url('{{ "cursor-arrow-left.svg" | asset_url }}') 24px center no-repeat;
 	content: "";
-	opacity: 0.5;
+	opacity: 0.25;
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 0;
 	left: 0;
 	transition: opacity 0.15s;
+	background-position: 0 50%;
 }
 	
 .swiper-button-prev {	
@@ -56,14 +57,14 @@
 .swiper-button-next::before {
 	background: url('{{ "cursor-arrow-right.svg" | asset_url }}') 24px center no-repeat;
 	content: "";
-	opacity: 0.5;
+	opacity: 0.25;
 	width: 100%;
 	height: 100%;
 	position: absolute;
 	top: 0;
 	right: 0;
 	transition: opacity 0.15s;
-	background-position: calc(100% - 30px);
+	background-position: 100% 50%;
 }
 
 .swiper-button-next {	
@@ -81,20 +82,23 @@
 	cursor: url("{{ 'cursor-arrow-right.svg' | asset_url }}") 15 8, auto;
 }
 
-@media only screen (max-width: 600px) {
+@media only screen and (max-width: 600px) {
 	.swiper-button-prev, .swiper-button-next {
 		display: none;
    }
 }
 
+.swiper-container:hover .swiper-button-prev::before,
+.swiper-container:hover .swiper-button-next::before {
+	opacity: 0;
+}
+
+
 .swiper-button-prev::after, .swiper-button-next::after {
 	content: none;
 }
 
-.swiper-slide:hover .swiper-button-prev::before,
-.swiper-slide:hover .swiper-button-next::before {
-	opacity: 0;
-}
+
 
 /* place it here once more */
 .swiper-slide:hover .swiper-button-prev {

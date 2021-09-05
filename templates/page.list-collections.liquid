@@ -1,0 +1,38 @@
+{% comment %}
+ Featuring collections on a page using a menu
+ https://shopify-dev.com/tutorials/feature-a-subset-of-collections-on-a-page
+{% endcomment %}
+{% comment %}theme-check-disable{% endcomment %}
+
+<div class="page-width">
+  <div class="grid">
+    <div class="grid__item medium-up--five-sixths medium-up--push-one-twelfth">
+      <div class="section-header text-center">
+        <h1>{{ page.title }}</h1>
+      </div>
+ 
+      <div class="rte">
+        {{ page.content }}
+      </div>
+    </div>
+  </div>
+ 
+  <ul class="grid grid--uniform">
+ 
+    {%- assign grid_item_width = 'small--one-half medium-up--one-third' -%}
+    {%- assign image_size = '350x' -%}
+ 
+    {%- for link in linklists[page.handle].links -%}
+      {{ link }}
+      {%- if link.type == 'collection_link' -%}
+        {%- assign collection = collections[link.object.handle] -%}
+        <li class="grid__item {{ grid_item_width }}">
+          {% include 'collection-grid-item', collection_image_size: image_size %}
+          {{ collection }}
+        </li>
+      {%- endif -%}
+    {%- endfor -%}
+ 
+  </ul>
+ </div>
+ {% comment %}theme-check-enable{% endcomment %}

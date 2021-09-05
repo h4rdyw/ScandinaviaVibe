@@ -15,12 +15,12 @@
     <div class="hero-container">
       <div class="hero"></div>
       <div id="hero" class="hero-stuff lazy">
-          <h1>{{ block.settings.title }}</h1>
-          <a href="{{ block.settings.button_link }}" class="btn btn-secondary">{{ block.settings.button_label }}</a>
+          <h1 style="color: {{ block.settings.heading_textcolor }};">{{ block.settings.title }}</h1>
+          <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
       </div>
     </div>    
     <div class="container mx-auto">
-      <div class="row text-center"><p>{{ block.settings.description }}</p></div>
+      <div class="row text-center" style="color: {{ block.settings.descr_textcolor }};"><p>{{ block.settings.description }}</p></div>
     </div>
         
   {% endif %}
@@ -61,10 +61,22 @@
           "default": "Example Heading",
           "label": "Heading Title"
         },
+        {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
         { "type": "richtext", 
           "id": "description", 
           "default": "<p>Example paragraph</p>",
           "label": "Description" 
+        },
+        {
+          "type": "color",
+          "id": "descr_textcolor",
+          "label": "Description Text Color",
+          "default": "#11171B"
         },
         { "type": "text", 
           "id": "button_label", 
@@ -117,11 +129,17 @@
         top: 80px;
         left: 80px;
       }
+
+      @media only screen and (max-width: 499px) {
+        .hero-stuff {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        }
+      }
       
       #hero.lazy {
         background-image: none;
         background-color: #transparent;
-     }
-     
-     
+     }     
 </style>
