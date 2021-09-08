@@ -1,22 +1,22 @@
 <!-- /templates/customers/addresses.liquid -->
 <div class="container py-5">
+    <div class="py-2"></div>
     <a href="javascript:history.back()" class="menu-button">
-        <svg class="menu-arrow-icon" style="transform:none;">{% render 'header-arrow' %}</svg>
-    
+        <svg class="menu-arrow-icon" style="transform:none;">{% render 'header-arrow' %}</svg>    
         <span>Back</span></a>
     <h2 class="lead">My Address</h2>
     <button class="btn-reg" data-bs-toggle="modal" data-bs-target="#newAddressModal">Add New Address</button>
-    <div class="row row-cols-md-4 row-cols-1 my-5 gx-2">
+    <div class="row row-cols-md-4 row-cols-1 my-5 g-2">
     {% for address in customer.addresses %}
-        <div class="col">
-            <div class="card">
+        <div class="row-cols cols-lg-4 cols-md-4 cols-sm-2 d-flex">
+            <div class="card flex-fill">
                 <div class="card-body">
                     {{ address | format_address }}
                 </div>
-                <div class="card-footer">
+                <div class="bg-none">
                     <form action="/account/addresses/{{ address.id }}" 
                     method="post"
-                    data-confirm-message="Delete adress">
+                    data-confirm-message="Delete address">
                     <input type="hidden" name="_method" value="delete">    
                     <button class="btn-reg">Delete</button>
                 </form>
@@ -32,8 +32,8 @@
     {% form 'customer_address', customer.new_address %}
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="newAddressModalLabel">Add New Adress</h3>
+            <div class="modal-header" style="border-bottom:none;">
+                <h3 class="modal-title" id="newAddressModalLabel">Add New Address</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -80,7 +80,7 @@
                     <input id="AddressPhoneNew" type="tel" value="" name="address[phone]" class="form-control"/>
                 </div>                    
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="border-top:none;">
                 <button type="submit" class="btn-reg">Save Address</button>
             </div>
         </div>        

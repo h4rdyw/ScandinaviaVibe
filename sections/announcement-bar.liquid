@@ -21,7 +21,7 @@
       .announcement-bar p {
         {% if section.settings.show_background_color %} background-color: {{ section.settings.color_bg }}; {% else %} background-color: transparent; {% endif %}
         position:sticky; 
-        padding:10px 0;
+        padding: 5px 0;
         font-size: {{ section.settings.font_size }}px;
         font-weight: 600;
         margin:0 !important;
@@ -41,6 +41,7 @@
       .announcement-bar--link:hover, 
       .announcement-bar--link:hover .announcement-bar__message {
         color: {{ section.settings.color_text_hover }} !important;
+        filter: brightness(120%);  
       }
       
       html {
@@ -56,7 +57,6 @@
       }
     </style>
   
-
     {% if section.settings.message_link == blank %}
     <div class="announcement-bar">
       {% else %}

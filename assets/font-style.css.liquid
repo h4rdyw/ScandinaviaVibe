@@ -108,6 +108,10 @@ img {
     text-decoration-line: underline;
 }
  
+.navbar {
+  padding-bottom: 2 !important;
+}
+
 .navbar-color {
     background-color: {{ navbarbgcolor }};
     opacity: {{ navbarbgopacity }}%;
@@ -115,17 +119,17 @@ img {
 
 nav .navbar-nav li a {
     color: {{ navbartextcolor }}!important;
-    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 
 .navbar-light .navbar-brand {
     color: {{ navbartextcolor }}!important;   
-    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 
 .nav-link {
     color: {{ navbartextcolor }}!important;   
-    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
+    font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 
 /* back arrow */
@@ -155,6 +159,46 @@ nav .navbar-nav li a {
 	left: 0;
 }
 
+/* BADGES */
+.heart-badge {  
+	opacity: 1;
+	width: 32x;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	top: 5px;
+	left: 45px;
+	transition: 0.15s;
+	pointer-events: none;
+  align-items: start;
+}
+
+.star-badge {
+	opacity: 1;
+	width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	top: 5px;
+	left: 5px !important;
+	transition: 0.15s;
+	pointer-events: none;
+}
+
+
+.tag-badge {
+	opacity: 1;
+	width: 24.5px;
+	height: 24.5px;
+	position: relative;
+	/* top: 5px; */
+	/* left: 25px; */
+	transition: 0.15s;
+	pointer-events: none;
+}
+
 /* BACK TO TOP */
 #btn-back-to-top {
     position: fixed;
@@ -181,8 +225,7 @@ nav .navbar-nav li a {
   .inner-img:hover {
       transform: scale(1.1);
   }
-  
-  
+    
   /* Original text overlay */
   .text-hover {
     opacity: 0;
@@ -211,8 +254,6 @@ nav .navbar-nav li a {
     z-index: 1;
     pointer-events: none;
   }
-
-
   
   /*original 
   button {
@@ -291,8 +332,7 @@ a.btn {
   a.btn:active {
     outline: 3px solid {{ producttextcolorhover }};
     outline-offset: 0;
-  }
-  
+  }  
 
   .btn-add-to-cart {
     display: inline-block;
@@ -451,3 +491,6 @@ a.btn {
   transition: all 0.4s ease 0s;
   color: {{ navbarbgcolor }};
 }
+
+
+

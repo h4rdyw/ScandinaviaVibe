@@ -19,76 +19,145 @@
 
         {% if randomize == true  %}   
 
-        {% for product in collections[section.settings.featured_collection].products limit: number_of_products offset: random_number %}
+            {% for product in collections[section.settings.featured_collection].products limit: number_of_products offset: random_number %}
 
-            {% assign image = product.featured_media.preview_image %}
-        <div class="col d-flex">
-            <div class="img-wrapper d-flex">
-            <div class="card d-flex flex-fill border-0 shadow-sm">                
-                
-                {% if image != blank %}
-                    <div class="inner-img">
-                    <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
-                        product-price="{{ product.price | money_without_trailing_zeros }}"
-                       ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy"  alt="{{ product.title }}" 
-                      ></a>
-                        <div class="text-hover">BUY NOW</div>        
-                    </div> 
-                      
-                {% else %}          
-                <div class="inner-img">      
-                    {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-                </div>
-                {% endif %}
-         
-                <div class="card-body d-flex flex-column justify-content-end bg-light text-center">
-                    <p class="text-product-link" style="font-size:1.25rem;"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
-                    <p span class="text-line"></p>
-                    <p>{{ product.price | money_without_trailing_zeros }}</p>
-                    
-                </div>
-                
-        
-            </div>
-            </div>
-        </div>
-        
+                {% assign image = product.featured_media.preview_image %}
 
-         {% endfor %}   
-        {% else %} 
-        {% for product in collections[section.settings.featured_collection].products limit: number_of_products %}
+                {% for tag in product.tags %}
+                    {% if tag contains 'Special' %}
+                     {% assign specialbox = 'true' %}
+                    {% endif %}    
+                    {% if tag contains 'Favourite' %}
+                        {% assign heartbox = 'true' %}
+                       {% endif %}   
+                {% endfor %}
 
-
-            {% assign image = product.featured_media.preview_image %}
             <div class="col d-flex">
                 <div class="img-wrapper d-flex">
-                <div class="card card-border d-flex flex-fill border-0 shadow-sm">
+                <div class="card d-flex flex-fill border-0 shadow-sm">                
+                    
                     {% if image != blank %}
                         <div class="inner-img">
                         <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
                             product-price="{{ product.price | money_without_trailing_zeros }}"
-                        ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title }}" 
-                        ></a>    
-                        <div class="text-hover">BUY NOW</div>    
-                    </div>
+                        ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy"  alt="{{ product.title }}" 
+                        ></a>
+                            <div class="text-hover">BUY NOW</div>        
+                        </div> 
                         
-                     
-                    {% else %}
-                    
+                    {% else %}          
+                    <div class="inner-img">      
                         {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
-            
+                    </div>
                     {% endif %}
             
                     <div class="card-body d-flex flex-column justify-content-end bg-light text-center">
-                        <p class="text-product-link" style="font-size:1.25rem;"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
+                        <h5 class="h5" style="font-size:1.25rem;"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
                         <p span class="text-line"></p>
-                        <p>{{ product.price | money_without_trailing_zeros }}</p>                    
-                    </div>    
+                        <p>{% if product.compare_at_price > 0 %}
+                            <svg class="tag-badge" style="transform:none;">{% render 'tag-badge' %} </svg>
+                            <del><span style="color: red;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
+                        
+                        {% endif %}
+        
+                        {{ product.price | money_without_trailing_zeros }}</p>            
+                      
+                        {% comment %} {% assign prddesc = product.description %} 
+                        {% render 'product_description' , product_original_description : prddesc, description_type: 'short'  %}  %}  {% endcomment %}
+                        {% comment %} {{ product_short_description}} {% endcomment %}
+
+                        <div>
+                        {% if specialbox == 'true' %}      
+                            {% assign specialbox = 'false' %}              
+                            {% assign iconstyle = '' %} 
+                            <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                            {% else %}
+                            {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+                          {% endif %} 
+
+                        {% if heartbox == 'true' %}    
+                            {% assign heartbox = 'false' %}             
+                            <svg class="heart-badge" {{ iconstyle }}>{% render 'heart-badge' %}</svg>  
+                            
+                        {% endif %} 
+                        
+                    </div>
+                </div>
+                    
+            
                 </div>
                 </div>
             </div>
-        
-         {% endfor %}  
+            
+
+            {% endfor %}   
+        {% else %} 
+            {% for product in collections[section.settings.featured_collection].products limit: number_of_products %}
+
+                
+
+                {% assign image = product.featured_media.preview_image %}
+
+                {% for tag in product.tags %}
+                    {% if tag contains 'Special' %}
+                     {% assign specialbox = 'true' %}
+                    {% endif %}    
+                    {% if tag contains 'Favourite' %}
+                        {% assign heartbox = 'true' %}
+                       {% endif %}   
+                {% endfor %}
+
+                <div class="col d-flex">
+                    <div class="img-wrapper d-flex">
+                    <div class="card card-border d-flex flex-fill border-0 shadow-sm">
+                        {% if image != blank %}
+                            <div class="inner-img">
+                            <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
+                                product-price="{{ product.price | money_without_trailing_zeros }}"
+                            ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title }}" 
+                            ></a>    
+                            <div class="text-hover">BUY NOW</div>    
+                        </div>
+                            
+                        
+                        {% else %}
+                        
+                            {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}
+                
+                        {% endif %}
+                
+                        <div class="card-body d-flex flex-column justify-content-end bg-light text-center">
+                            <h5 class="h5" style="font-size:1.25rem;"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
+                            <p span class="text-line"></p>
+                            <p>{% if product.compare_at_price > 0 %}
+                                    <svg class="tag-badge">{% render 'tag-badge' %}</svg>
+                                    <del><span style="color: red;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>                            
+                                {% endif %} {{ product.price | money_without_trailing_zeros }}</p>            
+                           
+                            {% comment %} {% assign prddesc = product.description %} 
+                            {% render 'product_description' , product_original_description : prddesc, description_type: 'short'  %}  %}  {% endcomment %}
+                            {% comment %} {{ product_short_description}} {% endcomment %}
+                            <div>     
+                            {% if specialbox == 'true' %}      
+                                {% assign specialbox = 'false' %}              
+                                {% assign iconstyle = '' %} 
+                                <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                                {% else %}
+                                {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+                            {% endif %} 
+
+                            {% if heartbox == 'true' %}    
+                                {% assign heartbox = 'false' %}                                              
+                                <svg class="heart-badge" {{ iconstyle }}>{% render 'heart-badge' %}</svg>  
+                            {% endif %} 
+                        </div>
+
+                        </div>    
+                    </div>
+                    </div>
+                </div>
+            
+            {% endfor %}  
 
         {% endif %}
 
@@ -111,7 +180,9 @@
                         <h1 id="productInfoTitle" class="text-product-title"></h1>
                         <p id="productInfoPrice" class="text-header-title"></p>
                         <p id="productInfoDescription" class="text-product-desc"></p>
+                        
                       </div>
+                     
                 </div>             
             </div>
             <div class="modal-footer" style="border-top: none;">

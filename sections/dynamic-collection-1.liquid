@@ -90,6 +90,15 @@
 
                         {% for product in paginate_data.products %}
                             {% assign image = product.featured_media.preview_image %}
+                            {% for tag in product.tags %}
+                                {% if tag contains 'Special' %}
+                                 {% assign specialbox = 'true' %}
+                                {% endif %}    
+                                {% if tag contains 'Favourite' %}
+                                    {% assign heartbox = 'true' %}
+                                   {% endif %}   
+                            {% endfor %}
+
                             <div class="col d-flex">
                                 <div class="img-wrapper d-flex">
                                 <div class="card d-flex flex-fill border-0">
@@ -108,7 +117,29 @@
                                     <div class="card-body d-flex flex-column justify-content-end text-center bg-light">
                                         <h6><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h6>    
                                         <p span class="text-line"></p>
-                                        <p>{{ product.price | money_without_trailing_zeros }}</p>            
+                                        <p>{% if product.compare_at_price > 0 %}
+                                            <svg class="tag-badge" style="transform:none;">{% render 'tag-badge' %} </svg>
+                                            <del><span style="color: red;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
+                                        
+                                        {% endif %}
+                        
+                                        {{ product.price | money_without_trailing_zeros }}</p>      
+                                        <div>
+                                            {% if specialbox == 'true' %}      
+                                                {% assign specialbox = 'false' %}              
+                                                {% assign iconstyle = '' %} 
+                                                <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                                                {% else %}
+                                                {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+                                              {% endif %} 
+                    
+                                            {% if heartbox == 'true' %}    
+                                                {% assign heartbox = 'false' %}             
+                                                <svg class="heart-badge" {{ iconstyle }}>{% render 'heart-badge' %}</svg>  
+                                                
+                                            {% endif %} 
+                                            
+                                        </div>     
                                     </div>        
                                 </div>
                             </div>

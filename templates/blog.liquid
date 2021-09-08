@@ -1,6 +1,6 @@
 {% comment %}theme-check-disable{% endcomment %}
-<div class="position-relative text-center bg-light p-3">
-  <div class="col-md-5 p-lg-5 mx-auto">
+<div class="position-relative text-center bg-light py-5">
+  <div class="col-md-5 p-lg-5 pt-3 mx-auto">
     <h1 class="display-4">
       {{ blog.title }}    
     </h1>
@@ -8,7 +8,7 @@
   </div>
 </div>
 
-<div class="container py-5">
+<div class="container py-2">
   {% paginate blog.articles by 8 %}
     <div class="d-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3">
       {% for article in blog.articles %}
