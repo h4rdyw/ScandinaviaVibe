@@ -40,6 +40,8 @@ navBarCollapse.addEventListener('shown.bs.collapse', function () {
 var myproductModal = document.getElementById('productInfoModal');
 if (myproductModal != null) {
   myproductModal.addEventListener('hidden.bs.modal', function (event) {
+    const body = document.body;
+    body.style.removeProperty('overflow');
     checkLocaleBtn();
   });
 
@@ -200,10 +202,10 @@ if (chekproductModal != null) {
 var myModalEl = document.querySelector('#productInfoModal');
 if (myModalEl != null) {
   // Returns a Bootstrap modal instance
-  var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl);
+  var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl);  
 }
 
-// Product popup modal
+// Product POP UP MODAL
 function getProductAnchors(prdId) {
   //console.log(prdId);
 
@@ -237,14 +239,63 @@ function getProductAnchors(prdId) {
               // } else {
               var productDesc = productDescArr[0];
               // }
+              let prdBadge = ``;
+
+              if (data.tags.includes('Special')) {
+                prdBadge = `<div><svg class="star-badge" style="top:18px; left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="star-badge" fill="#D1B000" class="bi bi-star-fill" viewBox="0 0 16 16">
+                <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
+              </svg></svg></div>`;
+                /*iconstyle = ``;*/
+              } else {
+                /*iconstyle = `style="transform: translateX(-40px);"`;*/
+              }
+
+              if (data.tags.includes('Award')) {
+                if (data.tags.includes('Special')) {
+                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:50px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="32" width="32" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
+                  <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
+                  <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+                </svg></svg></div>`;
+                } else {
+                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="32" width="32" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
+                <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
+                <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
+              </svg></svg></div>`;
+                }
+              } else {
+                /* do nothing*/
+              }
 
               document.getElementById('productInfoImg').src = data.images[0];
               document.getElementById('productInfoTitle').innerHTML =
                 data.title;
-              document.getElementById('productInfoPrice').innerHTML =
-                item.getAttribute('product-price');
+
+              let from = '';
+              if (data.price_varies) from = 'from ';
+
+              let prdPrice = formatCurrency(+data.price / 100);
+              let prdComparePrice = formatCurrency(
+                +data.compare_at_price_max / 100
+              );
+
+              if (data.compare_at_price_max > 0) {
+                let pctDiscount =
+                  ((+data.compare_at_price_max / 100 - +data.price / 100) /
+                    (+data.compare_at_price_max / 100)) *
+                  100;
+                //console.log(pctDiscount);
+                document.getElementById(
+                  'productInfoPrice'
+                ).innerHTML = `<p>${pctDiscount.toFixed(
+                  0
+                )}%<svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg><del><span style="color: #DF362D;">${prdComparePrice}</span></del> ${from}${prdPrice}</p>`;
+              } else {
+                document.getElementById('productInfoPrice').innerHTML =
+                  item.getAttribute('product-price');
+              }
               document.getElementById('productInfoDescription').innerHTML =
                 productDesc;
+              document.getElementById('badge').innerHTML = prdBadge;
 
               // var variantOldOptions = document.querySelectorAll(
               //   '#modalItemID option'
@@ -264,11 +315,25 @@ function getProductAnchors(prdId) {
               var available = 0;
               variants.forEach(function (variant, index) {
                 //console.log(variant);
-               var varPrice = formatCurrency1(variant.price / 100);
+                var varPrice = formatCurrency1(variant.price / 100);
+                var varOldPrice = formatCurrency1(
+                  variant.compare_at_price / 100
+                );
                 if (variant.available == true) {
                   available++;
+                  if (+variant.compare_at_price / 100 > 0) {
+                    var itemDesc =
+                      variant.title +
+                      ' (was ' +
+                      varOldPrice +
+                      ') - now ' +
+                      varPrice;
+                  } else {
+                    var itemDesc = variant.title + ' : ' + varPrice;
+                  }
+
                   variantSelect.options[variantSelect.options.length] =
-                    new Option(variant.title +' : '+ varPrice, variant.id);
+                    new Option(itemDesc, variant.id);
                 } else {
                   variantSelect.options[variantSelect.options.length] =
                     new Option(variant.option1, variant.id).setAttribute(
@@ -287,7 +352,20 @@ function getProductAnchors(prdId) {
                 btnAdd.disabled = false;
                 text.data = 'Add to Cart';
               }
+                            
+                if (myModalEl.classList.contains('modalfade')) {
+                  myModalEl.classList.remove('modalfade');
+                  myModalEl.classList.add('modalfade1');                               
+                } else {
+                  myModalEl.classList.remove('modalfade1');
+                  myModalEl.classList.add('modalfade');
+                }              
+            
+                const body = document.body;                
+                body.style.overflow = 'hidden';
+                
               productModal.show();
+
             });
         });
       });
@@ -332,7 +410,7 @@ if (modalAddToCartForm != null) {
     })
       .then(resp => resp.json())
       .then(function (data) {
-        console.log(data);
+        //console.log(data);
 
         if (data.status == 422) {
           console.log('Cannot Add this Product : ' + data.description);
@@ -340,8 +418,9 @@ if (modalAddToCartForm != null) {
           throw AddtoCartErr();
         } else {
           //console.log(data);
-          productModal.hide();
-          AddtoCartSuccess(data.items[0].product_title);
+          productModal.hide();          
+          //AddtoCartSuccess(data.items[0].product_title);
+          bumpCart();
         }
       })
       .catch(err => {
@@ -353,11 +432,12 @@ if (modalAddToCartForm != null) {
         // productModal.hide();
       })
       .finally(function () {
-        update_cart();
+        update_cart();        
       });
   });
 }
 
+/*
 const AddToCartForm = document.querySelector('#addToCartForm');
 
 if (modalAddToCartForm != null) {
@@ -400,7 +480,8 @@ if (modalAddToCartForm != null) {
         } else {
           //console.log(data);
           productModal.hide();
-          AddtoCartSuccess(data.items[0].product_title);
+          //AddtoCartSuccess(data.items[0].product_title);
+          bumpCart();
         }
       })
       .catch(err => {
@@ -416,10 +497,14 @@ if (modalAddToCartForm != null) {
       });
   });
 }
+*/
 
 const AddtoCartErr = function () {
   //productModal.hide();
-  backToTop();
+  setTimeout(()=>{
+    backToTop();
+  },5);
+  
   const toastEl = toastErr();
   document.body.appendChild(toastEl);
   const myToast = new Toast(toastEl);
@@ -428,7 +513,9 @@ const AddtoCartErr = function () {
 
 const AddtoCartSuccess = function (item) {
   //productModal.hide();
-  backToTop();
+  setTimeout(()=>{
+    backToTop();
+  },5);
   const toastEl = toastSuccess(item);
   document.body.appendChild(toastEl);
   const myToast = new Toast(toastEl);
@@ -491,6 +578,17 @@ function formatCurrency1(amount) {
 }
 
 /* end of checkProductAnchors */
+function bumpCart() {
+  let carticon = document.getElementById('cart-icon') || false;
+  if (carticon) {  
+    carticon.classList.add('bump');
+  }
+
+  setTimeout( () => {
+     carticon.classList.remove('bump');
+  }
+    ,4000)  
+}
 
 function update_cart() {
   fetch('/cart.js')

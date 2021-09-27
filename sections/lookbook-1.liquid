@@ -56,7 +56,7 @@
                                 </div>
                                 
                                 {% if block.settings.text_inside_box %}
-                                  <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}"><p>{{ block.settings.description }}</p></div>
+                                  <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}" class="mx-4"><p>{{ block.settings.description }}</p></div>
                                 {% endif %}
                               </div>    
 
@@ -292,23 +292,23 @@
 
                         <!-- /right 3/ -->
                         <div class="col d-flex flex-fill w-50 h-50 customscrollbar" style="{{ bgcolor3 }}{{ textcolor3}}scroll-behavior: smooth;overflow-y:auto;overflow-x:auto;scrollbar-width: none;">
-                            <div class="d-flex flex-wrap align-items-center">
+                            <div class="d-flex flex-row flex-wrap align-items-center">
 
                             {% if hero_img3_url %}                
 
-                            {% if block.settings.img3_effect == true %}
+                                {% if block.settings.img3_effect == true %}
 
-                                <div id="hero-1a" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
-                              {% else %}
-                                <div id="hero-1b" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+                                    <div id="hero-1a" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;transition: transform 3s;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
+                                  {% else %}
+                                    <div id="hero-1b" class="lazy" style="background: url({{ hero_img3_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 100px;{{ bgcolor3 }}"><a class="lookbook1-box3 lookbook1-box3--link" style="{{ titlecolor3 }}margin-left:-25%;position:sticky;top:10px;" href="{{ block.settings.link3 }}"><h4 class="d-inline-block h4 px-2 py-2" style="{{ bgcolor3 }}opacity:75%;">{{ block.settings.title3 }}</h4></a></div>
 
-                            {% endif %}   
+                                {% endif %}   
 
-                                <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor3 }}{{textcolor3 }}">
+                                {% comment %} <div class="hero-2-stuff d-flex flex-fill mx-4" style="{{ bgcolor3 }}{{textcolor3 }}">
                                     
                                   <p>{{ block.settings.description3 }}</p>
                                   
-                              </div>                            
+                               </div>                             {% endcomment %}
 
                             {% else if block.settings.link3 and block.settings.title3 %}
                                 <div><a class="lookbook1-box3 lookbook1-box3--link" href="{{ block.settings.link3 }}" style="{{ titlecolor3 }}"><h4 class="d-inline-block h4 mx-2 px-2 py-2">{{ block.settings.title3 }}</h4></a></div>

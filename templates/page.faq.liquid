@@ -1,1 +1,27 @@
-{% section 'page-faq-template.liquid' %}
+{% comment %}theme-check-disable{% endcomment %}
+<div class="container py-5">
+    <div class="row">
+        <div class="rcol-12 col-md-8 my-2">
+          
+    
+          <div class="article-section">
+            {{ page.content }}
+          </div>
+
+          <div class="article-section">
+            {% section 'page-faq-template.liquid' %}
+          </div>            
+          
+          
+        </div>
+        <div class="col-12 col-md-4 my-2">      
+            {% section 'dynamic-sidebar' %}            
+          
+            {% section 'random-product' %}             
+        </div>
+    </div>
+    
+</div>
+</div>
+
+{% comment %}theme-check-enable{% endcomment %}

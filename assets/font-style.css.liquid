@@ -13,8 +13,7 @@
     assign producttextcolorhover = settings.product_textcolor_hover
     assign buttoncolor = settings.button_color
     assign bodytextcolorhover = settings.body_textcolor_hover
-    assign accordeonheadercolor = settings.accordeon_header_textcolor
-    
+    assign accordeonheadercolor = settings.accordeon_header_textcolor    
 -%}
 
 {{ font_header | font_face }}
@@ -24,7 +23,6 @@
 {{ font_productdescription | font_face }}
 
 {% if root_font_size == 62 %}
-
   <!-- default font size is 62.50% of 1rem (16px) root , settings does not allow faction, set it here -->
     :root {
         font-size: 62.5%;    }
@@ -32,9 +30,7 @@
 :root {
     font-size: {{ root_font_size }}%;    
 }
-
 {% endif %}
- 
 
 h1,h2,h3,h4,h5.h6,button {
     font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
@@ -79,8 +75,16 @@ img {
 .text-product-title {
     /* color: {{ producttextcolor }};*/
     font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+    font-size: 1.25rem;
     font-weight: 700;
     text-decoration: none;
+}
+
+.text-product-header {
+  /* color: {{ producttextcolor }};*/
+  font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .text-product-desc {
@@ -128,8 +132,13 @@ nav .navbar-nav li a {
 }
 
 .nav-link {
-    color: {{ navbartextcolor }}!important;   
+    /* color: {{ navbartextcolor }}!important; */
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
+}
+
+body .navbar-light .navbar-toggler {
+  color:{{ navbartextcolor }}!important; 
+  border-color:{{ navbartextcolor }}!important; 
 }
 
 /* back arrow */
@@ -162,16 +171,33 @@ nav .navbar-nav li a {
 /* BADGES */
 .heart-badge {  
 	opacity: 1;
-	width: 32x;
+	position: relative;
+  width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;  
+	transition: 0.15s;
+  fill: transparent;
+  stroke: transparent;
+  transition: fill 0.3s ease;
+  fill: white;
+  transform: translateY(7px);
+}
+.wishlist-badge {  
+	opacity: 1;  
+	width: 32px;
 	height: 32px;
   padding-left: 1px;
   padding-right: 1px;
 	position: absolute;
-	top: 5px;
-	left: 45px;
+	bottom: 1px;
+	left: 5px;
+  border:none;
+  background-color: transparent;
 	transition: 0.15s;
-	pointer-events: none;
-  align-items: start;
+  fill: transparent;
+  stroke: #000;
+  transition: fill 0.3s ease;
 }
 
 .star-badge {
@@ -187,14 +213,27 @@ nav .navbar-nav li a {
 	pointer-events: none;
 }
 
+.award-badge {  
+	opacity: 1;
+	width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	top: 5px;
+	left: 35px;
+	transition: 0.15s;
+	pointer-events: none;
+}
 
 .tag-badge {
 	opacity: 1;
-	width: 24.5px;
-	height: 24.5px;
+	width: 32px;
+	height: 32px;
 	position: relative;
 	/* top: 5px; */
 	/* left: 25px; */
+  transform:rotate(90Deg) translateX(5px);;
 	transition: 0.15s;
 	pointer-events: none;
 }
@@ -206,10 +245,14 @@ nav .navbar-nav li a {
     background-color: {{ navbarbgcolor }};    
     background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
     bottom: 100px;
-    right: 25px;
+    right: 25px;    
     display: none;
+    z-index: 990;
   }
 
+  #btn-back-to-top:hover {
+    cursor: pointer;
+  }
 
   /* TRANSITION WRAPPER for collection page */
   .img-wrapper {  
@@ -241,13 +284,7 @@ nav .navbar-nav li a {
     transform: translate(-50%, -50%);
     width: 100%;  
   }
-
-  /*
-  .inner-img .hover {
-    background-color: rgba(0,0,0,0.5);
-  }
-  */
-  
+    
   /* New overlay appearance on hover */
   .inner-img:hover .text-hover {
     opacity: 1;
@@ -281,21 +318,6 @@ nav .navbar-nav li a {
     border-image: initial;
 }
 */
-
-/* BUTTON BRIGHTNESS */
-{% comment %} button:hover {
-  filter: brightness(120%); 
-}
-
-button:active {
-  outline: 3px solid {{ producttextcolorhover }};
-  outline-offset: 0;
-}
-
-button:focus {
-  outline: 3px solid {{ producttextcolorhover }};
-  outline-offset: 0;
-} {% endcomment %}
 
 input:focus {
   outline: 3px solid {{ navbarbgcolor }} !important;
@@ -354,18 +376,7 @@ a.btn {
   .btn-add-to-cart:hover {
     filter: brightness(120%) saturate(120%);
   }
-
-  {% comment %} .btn-add-to-cart:focus {
-    outline: 3px solid {{ navbarbgcolor }};
-    outline-offset: 0;
-  }
-
-  .btn-add-to-cart:active {
-    outline: 3px solid {{ navbarbgcolor }};
-    outline-offset: 0;
-  } {% endcomment %}
-
-  
+    
   .btn-add-to-cart:disabled {
     display: inline-block;
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
@@ -408,12 +419,6 @@ a.btn {
     color: white;
   }
 
-  {% comment %} .btn-reg:focus {
-    outline: 3px solid {{ producttextcolorhover }};
-    outline-offset: 0;
-  } {% endcomment %}
-
-
   a {
       text-decoration: none;
       color: {{ producttextcolor }};
@@ -426,8 +431,7 @@ a.btn {
     {% else %}
       color: {{ bodytextcolorhover }};    
     {% endif %}
-    font-weight: 900;    
-    
+    font-weight: 900;        
 }
 
 .text-cart-empty {
@@ -482,15 +486,11 @@ a.btn {
   font-weight: 600;
 }
 
-
 .pagination li a.page-link{  
   border: none;
   border-radius: 0;
   overflow: hidden;
   position: relative;
   transition: all 0.4s ease 0s;
-  color: {{ navbarbgcolor }};
+  color: {{ producttextcolor }};
 }
-
-
-

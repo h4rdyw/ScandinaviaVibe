@@ -1,5 +1,4 @@
 {% comment %}theme-check-disable{% endcomment %}
-
 <a href="#" class="close-navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation"></a>
 <nav id="navBar" class="navbar navbar-expand-lg navbar-light fixed-top navbar-color">
   
@@ -40,8 +39,7 @@
         </li>
       </ul>
 
-      <ul class="navbar-nav">
-        
+      <ul class="navbar-nav">        
         {% if shop.customer_accounts_enabled %} 
             {% if customer %}              
               <li class="nav-item">
@@ -60,16 +58,24 @@
             {% endif %} 
         {% endif %}
       </ul>
-       <!-- <form action="{{ routes.search_url }}" method="GET" role="search"> -->
+      
+      <div class="pe-2 py-2">
+      
+      <!-- <form action="{{ routes.search_url }}" method="GET" role="search"> -->
         <form action="javascript:void(0);" method="GET" role="search">
-       <input class="text-muted" style="font-size:0.8rem;" type="text" placeholder="quick search .." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
-      </form>
+       <input style="font-size:0.9rem;" type="text" placeholder="quick search .." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
+       </form>
+      </div>
+
     </div>
-    
-    <div class="px-2">
-      <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart icon"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
+    <div class="px-0">
+    <div style="display:inline-block;">
+      <a href="/pages/wishlist" id="button-wishlist-cart"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
+    </div>  
+      <div id="cart-icon" style="display:inline-block;">
+      <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
     </div>
-    
+  </div>
   </div>
 </nav>
 
@@ -101,11 +107,27 @@
       z-index:-1;
     }
 
+    body .navbar-light .navbar-toggler {
+      color: #760822;
+      border-color: #760822;
+    }
+
     input {
       border-left: none !important;
       border-right: none !important;
       border-top: none !important;
       border-bottom: 1px solid #ced4da !important;
   }
+
+  .heart-badge {
+    fill: transparent;
+    stroke: #11171B;
+    transition: fill 0.3s ease;
+  }
+
+  .active .heart-badge {
+    fill: #F652A0;
+    stroke: transparent;
+  }  
 </style>
 {% comment %}theme-check-enable{% endcomment %}

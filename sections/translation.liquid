@@ -8,3 +8,14 @@
 <input type="hidden" name="locale_code" id="localeCode" value="{{ form.current_locale.iso_code }}">
 
 {% endform%}
+<style>
+.translation-section {
+    height:0;
+}
+</style>
+{% schema %}
+  {
+    "name": "Translation",
+    "class": "translation-section"
+  }
+{% endschema %}

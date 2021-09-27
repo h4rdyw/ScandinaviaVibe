@@ -2,20 +2,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>{{ page_title }}</title>
+    <title>{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
     <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-    <meta name="description" content="{{ page_description | escape }}" />
-    <link rel="canonical" href="{{ canonical_url }}" />
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/> -->
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/> -->
-    <!-- <link rel="stylesheet" href="node_modules/lite-youtube-embed/src/lite-yt-embed.css" /> -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
+    {% if page_description %}
+      <meta name="description" content="{{ page_description | escape }} {% if template contains 'collection' %}{% if current_page > 1 %}Page no. {{ current_page }}{% endif %}{% endif %}" />
+    {% endif %}
+    <link rel="canonical" href="{{ canonical_url }}" />  
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js"></script> -->
-    <!-- <script src="node_modules/lite-youtube-embed/src/lite-yt-embed.js"></script> -->
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- <script src="https://unpkg.com/vue@3.0.5"></script> -->
+    <script src="{{ 'Wishlist.js' | asset_url }}" defer="defer"></script>
 
     <meta
       name="viewport"
@@ -39,6 +37,7 @@
     </main>
     
     <div id="btn-back-to-top">{{ 'icon_up.png' | asset_img_url: '32px' | img_tag }}</div>
+    {% section 'newsletter' %}
     {% section 'footer-section' %}
     {% section 'translation' %}
 

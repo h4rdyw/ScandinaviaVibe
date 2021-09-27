@@ -1,70 +1,113 @@
 {% comment %}theme-check-disable{% endcomment %}
-<section class="container-fluid px-0 py-5 bg-dark">
+<section class="container px-0 py-5 bg-dark">
+  {% paginate collection.products by 12 %}
  <h1 class="text-center text-white py-2">{{ collection.title }}</h1>
- <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-2 m-0 px-0 py-10 bg-dark">
+ {% render 'pagination' , paginate: paginate %}
+
+ <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
   {% for product in collection.products %}
        {% assign image = product.featured_media.preview_image %}
-      {% for tag in product.tags %}
 
-       {% if tag contains 'Special' %}
-        {% assign specialbox = 'true' %}
-       {% endif %}   
-
-      {% endfor %}
+       {% for tag in product.tags %}
+          {% if tag contains 'Special' %}
+            {% assign specialbox = 'true' %}
+          {% endif %}    
+          {% if tag contains 'Award' %}
+            {% assign awardbox = 'true' %}
+          {% endif %}   
+          {% if tag contains 'Highlight' %}
+            {% assign highlightbox = 'true' %}
+           {% endif %}  
+      {% endfor %}      
       
-      {% if specialbox == 'true' %}
-        
-       <div class="col d-flex flex-grow-1 bg-dark border-0 mx-1">
-        {% else %}
+      {% if highlightbox == 'true' %}        
+       <!-- <div class="col d-flex flex-grow-1 bg-dark border-0 mx-1"> -->
         <div class="col d-flex bg-dark border-0">
-       {% endif %}
+        {% else %}
+      <div class="col d-flex bg-dark border-0">
+      {% endif %}
+      
+      <div class="card d-flex flex-fill bg-dark border-0">
 
-       <div class="card d-flex flex-fill bg-dark border-0">
-        <div class="img-wrapper">
-        <div class="card-img-top"  {% if specialbox == 'true' %} style="object-fit:cover;filter: brightness(120%);" {% else %} style="object-fit: cover;" {% endif %}>
-        {% if image != blank %}  
-          <div class="inner-img">
+        <div class="img-wrapper d-flex">
 
-          <a href="#" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
-            product-price="{{ product.price | money_without_trailing_zeros }}"
-           ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title| escape }}"  
-          ></a>
-          <div class="text-hover">BUY NOW</div>     
+          <div class="card-img-top"  {% if highlightbox == 'true' %} style="object-fit:cover;filter: brightness(110%);" {% else %} style="object-fit: cover;" {% endif %}>
+            {% if image != blank %}  
+
+              <div class="inner-img">
+                <a href="javascript:;" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
+                  product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
+                ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title| escape }}"  
+                ></a>
+                <div class="text-hover">QUICK SHOP</div>     
+              </div>
+              {% assign highlightbox = 'false' %}
+            </div>
+
+            {% else %}             
+            <div class="inner-img">
+              {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}    
+            </div>
+            {% endif %}
+          
         </div>
-        {% assign specialbox = 'false' %}
-
-        {% else %}             
-
-          {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}    
         
-        {% endif %}
-        </div>
-      </div>
-        
-        <div class="card-body bg-dark d-flex flex-fill justify-content-start">
+        <div class="card-body bg-dark d-flex flex-column flex-fill align-items-end justify-content-end">
             <h5 class="h5"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
-            <p class="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;{{ product.price | money_without_trailing_zeros }}</p>            
+            {% comment %} <p class="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;{{ product.price | money_without_trailing_zeros }}</p>             {% endcomment %}
+            <div style="height:40px;">
+            <p class="text-white">{% if product.compare_at_price_max > 0 %}
+              {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+              <del><span style="color: white;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
             
-        </div>        
+            {% endif %}
+
+            {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>       
+            {%- render 'button-wishlist', product: product -%}     
+          </div>
+        </div>  
+        <div>
+          
+
+          {% if specialbox == 'true' %}      
+              {% assign specialbox = 'false' %}              
+              {% assign iconstyle = '' %} 
+              <svg class="star-badge">{% render 'star-badge' %}</svg>  
+              {% else %}
+              {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+            {% endif %} 
+
+            
+            {% if awardbox == 'true' %}    
+            {% assign awardbox = 'false' %}                                              
+            <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
+        {% endif %}
+          
       </div>
-        </div>
+
+      </div>
+      </div>
 
     {% endfor %}
   </div>
 
-  <div class="modal fade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
+  {% render 'pagination' , paginate: paginate %}
+    {% endpaginate %}
+  
+  <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content">
             <div class="modal-header" style="border-bottom: none;">
+              <h1 id="productInfoTitle" class="text-product-title"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                       <div class="col-12 col-md-6">
-                        <img class="img-fluid" style="max-height: 50vh;" src="" id="productInfoImg" alt="">
+                        <img class="img-fluid" style="min-height:50vh;height:480px;width:480px;" src="" id="productInfoImg" alt="">
+                        <div id="badge"></div>
                       </div>
                       <div class="col-12 col-md-6">
-                        <h1 id="productInfoTitle" class="text-product-title"></h1>
                         <p id="productInfoPrice" class="text-header-title"></p>
                         <p id="productInfoDescription" class="text-product-desc"></p>
                       </div>
@@ -116,6 +159,46 @@ input {
       border-right: none;
       border-top: none;
   }
+ 
+  .icon {
+      display: inline-flex;
+      align-self: center;
+      height: 32px;
+      width: 32px;
+      fill: transparent;
+      stroke: white !important;
+      transition: fill 0.3s ease;
+  }
 
+  .active .icon {
+     fill: #F652A0;
+     stroke: transparent;
+   }
+
+  .wishlist-badge {  
+      opacity: 1;  
+      width: 32px;
+      height: 32px;
+      padding-left: 1px;
+      padding-right: 1px;
+      position: absolute;
+      bottom: 30px !important;
+      left: 5px;
+      border:none;
+      background-color: transparent;
+      transition: 0.15s;
+      align-items: start;
+      fill: transparent;
+      stroke: #000;
+      transition: fill 0.3s ease;
+      overflow:visible !important;
+   }  
 {% endstyle %}
+<style>
+@media only screen and (max-width: 992px) {
+  .container {
+    max-width: 100% !important;
+  }
+}
+</style>
 {% comment %}theme-check-enable{% endcomment %}

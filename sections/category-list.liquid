@@ -1,0 +1,90 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+<section class="container-fluid px-0 py-0 bg-none">
+    <div class="container-fluid d-flex flex-wrap row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
+        {% for block in section.blocks %}
+            {% render 'category-card', block: block  %}         
+   
+       {% endfor %}
+     </div>   
+   </div>
+   
+   <style>
+   @media only screen and (max-width: 768px) {
+     .container {
+       max-width: 100% !important;
+     }
+   }
+   </style>
+   
+
+{% schema %}
+    {
+        "name": "Category List",
+        "max_blocks": 4,
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Heading",
+                "default": "Category List"
+            }
+        ],
+        "blocks": [
+            {
+                "type": "category_list",
+                "name": "Category",
+                "settings": [
+                    {
+                        "type": "image_picker",
+                        "id": "image",
+                        "label": "Brand Image"
+                    },
+                    {
+                        "type": "text",
+                        "id": "category_name",
+                        "label": "Category Name"
+                    },
+                    {
+                        "type": "richtext",
+                        "id": "category_story",
+                        "label": "Category Story"
+                    },
+                    {
+                        "type": "text",
+                        "id": "hover_text",
+                        "label": "Hover Text"
+                    },
+                    {
+                        "type": "url",
+                        "id": "link",
+                        "label": "Category Link",
+                        "info": "Optional"
+                    }
+                ]
+            }
+        ],
+        "presets": [
+            {
+                "name": "Category List",
+                "category": "Image",
+                "blocks": [
+                    {
+                        "type": "category_list"
+                    },
+                    {
+                        "type": "category_list"
+                    },
+                    {
+                        "type": "category_list"
+                    },
+                    {
+                        "type": "category_list"
+                    }
+                ]
+            }
+        ]
+
+    }
+{% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

@@ -21,7 +21,7 @@
                         <h2 class="h2">{{ item.title }}</h2>
                         {% if item.image %}
                           <a href="{{ item.url }}">
-                            <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy>
+                            <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy alt="{{ item.title }}">
                         </a>       
                         {% endif %}
                         

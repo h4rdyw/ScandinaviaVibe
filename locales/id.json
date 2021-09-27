@@ -1,22 +1,47 @@
 {
-    "general": {
-      "404": {
-        "title": "Tidak Ditemukan",
-        "subtext_html": "Halaman yang dicari tidak ditemukan"
-      },
-      "cart": {
-        "title": "Keranjang",
-        "subtext_html": "Keranjang Belanja Anda"
-      },
-      "Blog": {
-        "title": "Blog"
-      },
-      "layout" : {
-        "login_text" : "Masuk",
-        "logout_text" : "Keluar",
-        "register_text" : "Registrasi",
-        "account_text" : "Akun",
-        "forgot_password_text": "Lupa Password"
-      }      
+  "general": {
+    "404": {
+      "title": "Tidak Ditemukan",
+      "subtext_html": "Halaman yang dicari tidak ditemukan"
+    },
+    "cart": {
+      "title": "Keranjang",
+      "subtext_html": "Keranjang Belanja Anda"
+    },
+    "Blog": {
+      "title": "Blog"
+    },
+    "layout": {
+      "login_text": "Masuk",
+      "logout_text": "Keluar",
+      "register_text": "Registrasi",
+      "account_text": "Akun",
+      "forgot_password_text": "Lupa Password"
+    },
+    "newsletter_form": {
+      "title": "Berita dan Info Terbaru",
+      "description": "Daftar untuk mendapatkan info terbaru seputar produkdan promo",
+      "name": "Nama",
+      "email": "Email",
+      "subscriber_first_name": "Nama Depan",
+      "subscriber_last_name": "Nama Belakang",
+      "success_text": "Terimakasih telah bergabung !",
+      "placeholder": "alamat email ...",
+      "submit": "Daftar"
+    },
+    "forms": {
+      "post_error": "Not all the fields have been filled out correctly",
+      "post_field_error_html": "The <strong>{{ field }}</strong> {{ error }}"
     }
-  }
+  },
+  "contact": {
+    "form": {
+     "name": "Name",
+     "email": "Email",
+     "phone": "Phone Number",
+     "message": "Message",
+     "send": "Send",
+     "post_success": "Thanks for contacting us. We'll get back to you as soon as possible."
+   }
+ }
+}

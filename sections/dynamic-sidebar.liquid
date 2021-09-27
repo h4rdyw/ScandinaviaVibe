@@ -17,7 +17,7 @@
                   <h1 class="h3">{{ item.page_title }}</h1>  
                   <h2 class="h2">{{ item.title }}</h2>
                   <a href="{{ item.url }}">
-                      <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy>
+                      <img src="{{ item.image | img_url: 'medium' }}" class="W-100" loading=lazy alt="{{ item.title }}">
                   </a>     
                   <p>{{ item.img_description }}</p>        
                 </div>      

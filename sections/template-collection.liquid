@@ -1,0 +1,183 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+<section class="container py-5">
+    {% paginate collection.products by 10 %}
+    
+      <h1 class="text-center py-2">{{ collection.title }}</h1>
+  
+      {% render 'pagination' , paginate: paginate %}
+      <div class="d-flex flex-row row row-cols-md-6 row-cols-sm-2">
+        <div class="col">
+          <div class="clearfix filter">
+            <p>Sort by :</p>
+            <select name="sorting" id="sort_by" class="form-select form-select-sm w-auto">
+              {% for option in collection.sort_options %}
+                <option value="{{ option.value }}"
+                {% if option.value == collection.sort_by %}
+                  selected="selected"
+                {% endif %}
+              >{{ option.name }}</option>
+              {% endfor %}
+            </select>
+          </div>  
+        </div>
+        
+        <div class="col">
+          <div class="clearfix filter">
+
+            {% case collection.handle %}
+              {% when "collection" , "all" , "sale" %}
+                <p>Browse type:</p>
+                <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
+                <option value="">All</option>
+                {% for product_type in collection.all_types %}
+                {% if current_tags contains product_type %}
+                <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+                {% else %}
+                <option value="{{ product_type | handle }}">{{ product_type }}</option>
+                {% endif %}
+                {% endfor %}
+                </select>
+              {% when "featured" %}
+                 
+              {% else %}
+
+            {% endcase %}
+            
+          </div>   
+      
+        </div>
+  
+      </div>
+    {% comment %} <div class="col justify-content-center">
+      <div class="clearfix filter">
+      {% if collection.handle == 'collection' %}
+        <p>Browse by tag:</p>
+        <select class="coll-filter">
+        <option value="">All</option>
+        {% for tag in collection.all_tags %}
+        {% if current_tags contains tag %}
+        <option value="{{ tag | handle }}" selected>{{ tag }}</option>
+        {% else %}
+        <option value="{{ tag | handle }}">{{ tag }}</option>
+        {% endif %}
+        {% endfor %}
+        </select>
+      {% endif %}
+      </div>         
+    </div> {% endcomment %}
+  
+    <div class="row d-flex g-3 row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 py-2">                                      
+        {% render 'prd-card' for collection.products as product %}       
+    </div>
+  
+    {% render 'pagination' , paginate: paginate %}
+    {% endpaginate %}
+  
+  </section>
+  
+  <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+          <div class="modal-content">
+              <div class="modal-header" style="border-bottom: none;">
+                <h1 id="productInfoTitle" class="text-product-title"></h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+              </div>
+              <div class="modal-body">
+                  <div class="row">
+                        <div class="col-12 col-md-6">
+                          <img class="img-fluid" style="min-height:50vh;height:480px;width:480px;" src="" id="productInfoImg" alt=""> 
+                          <div id="badge"></div>
+                        </div>         
+  
+                        <div class="col-12 col-md-6"> 
+                          <p id="productInfoPrice" class="text-header-title"></p>
+                          <p id="productInfoDescription" class="text-product-desc"></p>
+                        </div>
+                  </div>             
+              </div> 
+              <div class="modal-footer" style="border-top: none;">
+                <div class="col-12 col-md-6"></div>
+                <div class="col-12 col-md-6 px-2">
+                  <style scoped>
+                    .form-select {
+                        border-left: none;
+                        border-right: none;
+                        border-top: none;
+                    }
+                    input {
+                      border-left: none;
+                      border-right: none;
+                      border-top: none;
+                      border-bottom: 1px solid #ced4da;
+                  }
+                  
+                    </style>
+                  <form action="#" id="addToCartForm" class="row">
+                    <select name="id" id="modalItemID" class="form-select col-auto w-100">
+                    </select>
+                    <p></p> 
+                    <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
+                    <P></P>
+                    <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
+                    <p></p>
+                  </form>
+                </div>              
+              </div>
+          </div>
+      </div>
+  </div>
+  
+  
+  {% comment %} <script>  
+  
+    var collFilters = jQuery('.coll-filter');
+    collFilters.change(function() {
+    var newTags = [];
+    collFilters.each(function() { 
+    if (jQuery(this).val()) {
+    newTags.push(jQuery(this).val());
+    }
+    });
+    if (newTags.length) {
+    var query = newTags.join('+');
+    window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('tag', query);
+    } 
+    else {
+    {% if collection.handle %}
+    window.location.href = '/collections/{{ collection.handle }}';
+    {% elsif collection.products.first.type == collection.title %}
+    window.location.href = '{{ collection.title | url_for_type }}';
+    {% elsif collection.products.first.vendor == collection.title %}
+    window.location.href = '{{ collection.title | url_for_vendor }}';
+    {% endif %}
+    }
+    });
+  </script> {% endcomment %}
+  <script>  
+  
+    var collFilters2 = jQuery('#filter_by_type');
+    collFilters2.change(function() {
+    var newTags2 = [];
+    collFilters2.each(function() { 
+    if (jQuery(this).val()) {
+    newTags2.push(jQuery(this).val());
+    }
+    });
+    if (newTags2.length) {
+    var query = newTags2.join('+');
+    window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
+    } 
+    else {
+    {% if collection.handle %}
+    window.location.href = '/collections/{{ collection.handle }}';
+    {% elsif collection.products.first.type == collection.title %}
+    window.location.href = '{{ collection.title | url_for_type }}';
+    {% elsif collection.products.first.vendor == collection.title %}
+    window.location.href = '{{ collection.title | url_for_vendor }}';
+    {% endif %}
+    }
+    });
+  </script>
+  {% comment %}theme-check-enable{% endcomment %}
+  

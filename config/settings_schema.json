@@ -3,7 +3,7 @@
     "name": "theme_info",
     "theme_name": "ScandinaviaVibe",
     "theme_version": "1.0.0",
-    "theme_author": "HardyW",
+    "theme_author": "Ideasq",
     "theme_documentation_url": "https://github.com/h4rdyw/ScandinaviaVibe",
     "theme_support_url": "https://github.com/Shopify/themekit/issues"
   },
@@ -68,7 +68,7 @@
         "type": "font_picker",
         "id": "body_text_font",
         "label": "Font",
-        "default": "mono"
+        "default": "Mono"
       },
       {
         "type": "header",

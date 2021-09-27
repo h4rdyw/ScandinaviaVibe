@@ -10,7 +10,7 @@
           top: {{ section.settings.header_padding }}px !important;
         {% endif %}
 
-          opacity:80%;
+          opacity: {{ section.settings.announcement_bar_opacity }}%;
           {% if section.settings.sticky_header %} position:fixed; {% else %} position:sticky;  {% endif %}
           
           margin: 0;
@@ -114,6 +114,16 @@
           "id": "home_page_only",
           "label": "Home page only",
           "default": false
+        },
+        {
+          "type": "range",
+          "id": "announcement_bar_opacity",
+          "min": 20,
+          "max": 100,
+          "step": 5,
+          "unit": "%",
+          "label": "Announcement Bar Opacity",
+          "default": 100
         },
       {
           "type":   "range",

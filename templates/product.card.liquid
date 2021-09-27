@@ -1,0 +1,74 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+{% layout none %}
+
+   {% for tag in product.tags %}
+      {% if tag contains 'Special' %}
+       {% assign specialbox = 'true' %}
+      {% endif %}
+
+      {% if tag contains 'Award' %}
+        {% assign awardbox = 'true' %}
+      {% endif %}
+
+    {% endfor %}              
+    
+    {% assign image = product.featured_media.preview_image %}  
+    
+    <div class="col d-flex">
+    <div class="img-wrapper d-flex">
+
+        <div class="card d-flex flex-fill border-0">          
+            <div class="card-img-top">
+                {% if image != blank %} 
+                    <div class="inner-img">
+                    <a href="javascript:;" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
+                        product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
+                    ><img class="card-img-top" width="640" height="360" src="{{  image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
+                    ></a>
+                    <div class="text-hover">QUICK SHOP</div>     
+                    </div>
+                  
+                {% else %}             
+                        {{ 'product-1' | placeholder_svg_tag : 'inner-img' }}    
+                {% endif %}
+            </div>
+            
+            <div class="card-body d-flex flex-column justify-content-end bg-light text-center pb-1">
+                <h5 class="h5"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
+                <p span class="text-line"></p>
+                <div style="height:40px;">
+                <p>{% if product.compare_at_price_max > 0 %}
+                    {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                  <del><span style="color: #DF362D;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
+                
+                {% endif %}
+
+                {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>            
+              
+                {% comment %} 
+                {% render 'product_description' , product_original_description : prddesc, description_type: 'short'  %}  %}  
+                {% endcomment %}
+                
+                    {%- render 'button-wishlist', product: product -%}
+                </div>    
+                    {% if specialbox == 'true' %}      
+                        {% assign specialbox = 'false' %}              
+                        {% assign iconstyle = '' %} 
+                        <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                    {% else %}
+                        {% assign iconstyle = 'style="transform:translateX(-35px);"' %} 
+                    {% endif %} 
+
+                    {% if awardbox == 'true' %}     
+                        {% assign awardbox = 'false' %}                                                     
+                        <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                  
+                    {% endif %} 
+
+                    
+                </div>  
+            </div>        
+          </div>
+    </div> 
+</div>
+    {% comment %}theme-check-enable{% endcomment %}

@@ -1,0 +1,333 @@
+
+{%- liquid
+ assign show_newsletter = true 
+ if section.settings.other_pages == true 
+   if template == 'index'
+     assign show_newsletter = false 
+    else 
+     assign show_newsletter = true 
+   endif 
+ endif 
+-%}
+
+{% if show_newsletter == true %}
+  
+
+<div class="newsletter_section
+    {% if section.settings.display_first_name and section.settings.display_last_name %}newsletter-both-names--true {% else %}newsletter-both-names--false {% endif %}
+    {% if section.settings.image != nil %}newsletter-bgr-true{% endif %}"
+  
+    {% if section.settings.image != nil %}style="background-image: url({{ section.settings.image | img_url: '1600x'}})"{% endif %}>
+  
+    <div class="container">
+    <div class="section_form">
+      {% if section.settings.newsletter_title != blank %}
+        <h5 class="text-header-title" style="font-size:1.25rem;">{{ section.settings.newsletter_title }}</h5>
+      {% endif %}
+      {% if section.settings.newsletter_text != blank %}
+        <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
+      {% endif %}
+      <div class="newsletter">
+        <span class="message"></span>
+        {% if settings.mailchimp_link != blank %}
+            <form action="{{ settings.mailchimp_link }}" method="post" name="mc-embedded-subscribe-form" class="contact-form" id="contact_form" target="_blank">
+              {% if section.settings.display_first_name %}
+                <input type="text" value="" class="firstName" name="FNAME" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}">
+              {% endif %}
+              {% if section.settings.display_last_name %}
+                <input type="text" value="" name="LNAME" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}">
+              {% endif %}
+              <input type="email" value="" name="EMAIL" class="contact_email" placeholder="{{ 'general.newsletter_form.placeholder' | t }}">
+              
+              <input type="submit" value="{{ 'general.newsletter_form.submit' | t }}" class="btn-reg" name="subscribe" />
+            </form>
+        {% else %}
+            {% form 'customer' %}
+              {% if form.posted_successfully? %}
+                <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
+              {% elsif form.errors %}
+                {% for field in form.errors %}
+                  <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+                {% endfor %}
+              {% endif %}
+
+              <input type="hidden" name="contact[tags]" value="prospect,newsletter"/>
+              {% if section.settings.display_first_name %}
+                <input type="text" class="firstName" name="contact[first_name]" placeholder="{{ 'general.newsletter_form.subscriber_first_name' | t }}" />
+              {% endif %}
+              {% if section.settings.display_last_name %}
+                <input type="text" name="contact[last_name]" placeholder="{{ 'general.newsletter_form.subscriber_last_name' | t }}" />
+              {% endif %}
+              <p></p>
+
+              <input type="hidden" name="challenge" value="false" />
+              <input type="email" class="contact_email" name="contact[email]" required placeholder="{{ 'general.newsletter_form.placeholder' | t }}" />
+              <input type='submit' class="btn-reg" value="{{ 'general.newsletter_form.submit' | t }}" />
+            {% endform %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+
+<style>
+/* #Newsletter
+================================================== */
+
+/*--- Newsletter popup ---*/
+
+.newsletter-popup.remodal {
+  background-color: {{ settings.newsletter_popup_background_color }};
+  max-width: 740px;
+  overflow:hidden;
+  padding:0;
+  {% if settings.use_newsletter_border == true %}
+    border: 5px solid {{ settings.border_color }};
+  {% endif %}
+  @include respond-to('medium'){
+    line-height: 0;
+  }
+  .popup-signup-show--false {
+    display: none;
+  }
+}
+
+.newsletter-image--true.align-right .remodal-close {
+  left: 0;
+}
+
+.newsletter-both-names--false {
+  .newsletter input[type="text"] {
+    width: 100%;
+  }
+}
+
+.newsletter-both-names--true {
+  .newsletter input[type="text"] {
+    width: 49%;
+    float: left;
+    @include respond-to('small') {
+      width: 100%;
+    }
+  }
+  .firstName {
+    margin-right: 2%;
+  }
+}
+
+.newsletter-img {
+  width: 40%;
+  display: inline-block;
+  float: {{ settings.newsletter_popup_image_align }};
+  @include respond-to('medium'){
+    width: 100%;
+  }
+  img {
+    width: 100%;
+    display: block;
+  }
+}
+
+.newsletter-info {
+  text-align: {{ settings.newsletter_popup_text_align }};
+  color: {{ settings.newsletter_popup_color }};
+  overflow: hidden;
+  background-color: {{ settings.newsletter_popup_background_color }};
+  height: auto;
+  float: left;
+  @include respond-to('medium'){
+    padding: 20px;
+    width: 100% !important;
+    position: relative;
+  }
+  input.contact_email[type="email"] {
+    width: 65%;
+    float: left;
+    @include respond-to('medium'){
+      width: 100%;
+    }
+  }
+  #contact_form input.sign_up[type="submit"] {
+    width: calc(35% - 8px);
+    margin-left: 8px;
+    float: left;
+    @include respond-to('medium'){
+      margin-left: 0;
+      width: 100%;
+    }
+  }
+}
+
+.newsletter-image--false {
+  .newsletter-info {
+    width: 100%;
+    position: relative;
+    height: auto;
+    float: none;
+  }
+}
+
+.align-left .newsletter-info {
+  right:0;
+}
+
+.newsletter-description h2 {
+  color: {{ settings.newsletter_popup_color }};
+  margin-top: 0;
+}
+
+.newsletter-description {
+  width: 60%;
+  padding: 30px;
+  margin: 0 auto;
+
+  {% if settings.newsletter_bg != nil %}
+    @include respond-to('large'){
+      position: absolute;
+      top: 50%;
+      -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+    }
+  {% endif %}
+
+  @include respond-to('medium'){
+    font-size: inherit;
+    width: auto;
+  }
+  @include respond-to('xlarge'){
+    font-size: inherit;
+  }
+}
+
+/*--- Newsletter section above footer ---*/
+
+.newsletter_section {
+  -webkit-transform:translate3d(0,0,0);
+  padding: 15px 0 5px;
+  background-color: {{ settings.newsletter_section_background_color }};
+  color: {{ settings.newsletter_section_color }} !important;
+}
+
+.newsletter_section.newsletter-bgr-true {
+  background-color: {{ settings.newsletter_section_background_color }};
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  input.contact_email[type="email"] {
+    border: 0;
+  }
+  @include respond-to('small'){
+    text-align: center !important;
+  }
+}
+
+.section_form {
+ padding: 10px 20px;
+ @include respond-to('small') {
+  padding: 0;
+ }
+ .newsletter-text + .newsletter, h5 + .newsletter  {
+  margin-top: 15px;
+ }
+}
+
+.newsletter_section h5 {
+  color: {{ settings.newsletter_section_color }} !important;
+  padding-bottom: 5px;
+  padding-top: 0px;
+  margin: 0;
+  font-size: 24px;
+}
+
+.newsletter_section .newsletter-text p {
+  margin-bottom: 0;
+}
+
+.newsletter_section .newsletter,
+.password-page-row form {
+  display: inline-block;
+  padding-top: 0 !important;
+  max-width: 450px;
+
+  @media only screen and (max-width: 768px) and (min-width: 480px) {
+    width: 100%;
+  }
+
+  @include respond-to('small') {
+    width: 100%;
+  }
+}
+</style>
+
+{% schema %}
+
+{
+"name": "Newsletter",
+"class": "newsletter-section",
+"settings": [
+{
+  "type": "checkbox",
+  "id": "other_pages",
+  "label": "Show on non-home page only. UnChecked = ALL Pages",
+  "default": false
+ },
+{
+"type": "text",
+"id": "newsletter_title",
+"label": "Heading",
+"default": "Subscribe"
+},
+{
+"type": "richtext",
+"id": "newsletter_text",
+"label": "Subheading",
+"default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
+},
+{
+"type": "checkbox",
+"id": "display_first_name",
+"label": "Display first name"
+},
+{
+"type": "checkbox",
+"id": "display_last_name",
+"label": "Display last name"
+},
+{
+"type": "select",
+"id": "newsletter_section_text_align",
+"label": "Text alignment",
+"options": [
+ {
+  "value": "left",
+  "label": "Left"
+},
+{
+  "value": "center",
+  "label": "Center"
+},
+{
+  "value": "right",
+  "label": "Right"
+}
+],
+"default": "center"
+},
+{
+"type": "image_picker",
+"id": "image",
+"label": "Upload banner background image",
+"info":"1600 x 300px recommended"
+}
+],
+"presets": [{
+"name": "Newsletter",
+"category": "Social",
+"settings": {
+}
+}]
+}
+
+{% endschema %}

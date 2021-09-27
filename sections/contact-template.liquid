@@ -1,0 +1,103 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% if section.settings.image != nil %}
+    <header class="banner center page_banner">
+      <img  src="{{ section.settings.image | img_url: 'master' }}"
+            width="640"
+            height="360"
+            alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt | escape }}{% else %}{{ page.title | escape }}{% endif %}"
+            
+            loading="lazy"
+             />
+      <div class="caption">
+        <h1 class="headline">{{ section.settings.title }}</h1>
+        <p class="subtitle">{{ section.settings.subtitle }}</p>
+      </div>
+    </header>
+  {% endif %}
+  
+  <a name="pagecontent" id="pagecontent"></a>
+  
+  <div class="container py-5">
+  
+    <div>
+      {% if section.settings.image == nil %}
+        <h1>{{ page.title }}</h1>
+        <div class="feature_divider"></div>
+      {% endif %}
+  
+      {{ page.content }}
+  
+      {% form 'contact' %}
+        {% if form.posted_successfully? %}
+          <p class="quote">{{ 'contact.form.post_success' | t }}</p>
+        {% endif %}
+  
+        {% if form.errors %}
+          <p class="quote">{{ 'general.forms.post_error' | t }}</p>
+  
+         {% assign message = 'contact.form.message' | t %}
+          <ul class="center">
+            {% for field in form.errors %}
+              {% if field == 'form' %}
+                <li>
+                  {{ form.errors.messages[field] }}
+                </li>
+              {% else %}
+                <li>
+                  {% assign field_name = field | replace: 'body', message %}
+                  {{ 'general.forms.post_field_error_html' | t: field: field_name, error: form.errors.messages[field] }}
+                </li>
+              {% endif %}
+            {% endfor %}
+           </ul>
+        {% endif %}
+  
+         <div class="col-md-6 col-12 form-floating my-3">  
+          {% assign name_attr = 'contact.form.name' | handle %}
+          <input class="form-control" type="text" id="contactFormName" name="contact[{{ name_attr }}]" placeholder="{{ 'contact.form.name' | t }}" autocapitalize="words" value="{% if form[name_attr] %}{{ form[name_attr] }}{% elsif customer %}{{ customer.name }}{% endif %}" required="required">
+          <label for="contactFormName">{{ 'contact.form.name' | t }}</label> 
+        </div>
+         
+
+        <div class="col-md-6 col-12 form-floating my-3">  
+          <input class="form-control" type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" required="required">
+          <label for="contactFormEmail">{{ 'contact.form.email' | t }}</label>
+         </div>        
+  
+        <div class="col-md-6 col-12 form-floating my-3">  
+        <textarea class="form-control" rows="5" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}" required="required">{% if form.body %}{{ form.body }}{% endif %}</textarea>  
+        <label for="contactFormMessage">{{ 'contact.form.message' | t }}</label>
+
+        </div>  
+        <input type="submit" class="btn-reg" value="{{ 'contact.form.send' | t }}" />
+      {% endform %}
+    </div>
+
+  </div>
+  
+  
+  
+  {% schema %}
+  
+  {
+    "name": "Contact",
+    "class": "contact-section",
+    "settings": [
+      
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Contact Us"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "label": "Subheading",
+        "default": "We'll be in touch"
+      }
+    ]
+  }
+  
+  {% endschema %}
+  {% comment %}theme-check-enable{% endcomment %}

@@ -5,18 +5,32 @@
   {% if block.type == 'hero_block' %}
   {% assign hero_url = block.settings.hero_img_url %}
 
-
+  <!--/ use image or Image Url /-->
   {% if block.settings.image != blank %}
     {% assign hero_url = block.settings.image | img_url: 'master' %} 
   {% else %}
      {% assign hero_url = block.settings.hero_img_url %}
   {% endif%}
 
+  {% if block.settings.image_mobile != blank %}
+    {% assign hero_url_mobile = block.settings.image_mobile | img_url: 'master' %} 
+  {% else %} 
+    {% assign hero_url_mobile = block.settings.image | img_url: 'master' %} 
+  {% endif %}
+
+  {% assign left_pos = block.settings.left_position %}
+  {% assign top_pos = block.settings.top_position %}
+  {% assign left_pos_mobile = block.settings.left_position_mobile %}
+  {% assign top_pos_mobile = block.settings.top_position_mobile %} 
+
+
     <div class="hero-container">
       <div class="hero"></div>
       <div id="hero" class="hero-stuff lazy">
           <h1 style="color: {{ block.settings.heading_textcolor }};">{{ block.settings.title }}</h1>
+          {% if block.settings.button_link != blank %}
           <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
+          {% endif %}
       </div>
     </div>    
     <div class="container mx-auto">
@@ -48,15 +62,23 @@
           "id": "page_handle",
           "label": "Select a page"
         },
-        { "type": "image_picker", 
+        { 
+          "type": "image_picker", 
+          "id": "image_mobile", 
+          "label": "Hero Image - Mobile"
+        },
+        { 
+          "type": "image_picker", 
           "id": "image", 
-          "label": "Heading Background Title"
+          "label": "Hero Image"
         },
-        { "type": "url", 
-            "id": "hero_img_url", 
-            "label": "Image URL" 
+        { 
+          "type": "url", 
+          "id": "hero_img_url", 
+          "label": "Image URL" 
         },
-        { "type": "text", 
+        { 
+          "type": "text", 
           "id": "title", 
           "default": "Example Heading",
           "label": "Heading Title"
@@ -67,7 +89,8 @@
           "label": "Heading Text Color",
           "default": "#000"
         },
-        { "type": "richtext", 
+        { 
+          "type": "richtext", 
           "id": "description", 
           "default": "<p>Example paragraph</p>",
           "label": "Description" 
@@ -78,15 +101,41 @@
           "label": "Description Text Color",
           "default": "#11171B"
         },
-        { "type": "text", 
+        { 
+          "type": "text", 
           "id": "button_label", 
           "default": "Button",
           "label": "Button Label" 
         },
-        { "type": "url", 
-        "id": "button_link", 
-        "label": "Button Link" 
-        }
+        { 
+          "type": "url", 
+          "id": "button_link", 
+          "label": "Button Link" 
+        },
+        {
+          "type": "number",
+          "id": "top_position",
+          "label": "Text Top Position",
+          "default": 80      
+        },
+        {
+          "type": "number",
+          "id": "left_position",
+          "label": "Text Left Position",
+          "default": 80      
+        },
+        {
+          "type": "number",
+          "id": "top_position_mobile",
+          "label": "Text Top Position - Mobile",
+          "default": 40      
+        },
+        {
+          "type": "number",
+          "id": "left_position_mobile",
+          "label": "Text Left Position - Mobile",
+          "default": 60      
+        }        
       ]
     }
   ],
@@ -104,11 +153,11 @@
 
 <style>
     .hero-container {
-        height: 70vh;
+        height: 66vh;
         width: 100%;
         overflow: hidden;
         position: relative;
-        margin-bottom: 20px;
+        margin-bottom: 1px;
       }
       
       .hero {
@@ -120,21 +169,32 @@
         transition: transform 2s;
       }
       
+      @media only screen and (max-width: 499px) {
+        .hero {
+          background: url({{ hero_url_mobile }}) no-repeat center center;
+          background-size: cover;
+          height: 100%;
+          width: 100%;
+          padding: 40px;
+          transition: transform 2s;
+        }
+      }
+
       .hero:hover {
         transform: scale(1.15);
       }
       
       .hero-stuff {
         position: absolute;
-        top: 80px;
-        left: 80px;
+        top: {{ top_pos }}px;
+        left: {{ left_pos }}px;
       }
 
-      @media only screen and (max-width: 499px) {
+      @media only screen and (max-width: 576px) {
         .hero-stuff {
         position: absolute;
-        top: 40px;
-        left: 40px;
+        top: {{ top_pos_mobile }}px;
+        left: {{ left_pos_mobile }}px;
         }
       }
       
