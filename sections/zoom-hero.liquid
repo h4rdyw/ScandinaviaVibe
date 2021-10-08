@@ -5,6 +5,9 @@
   {% if block.type == 'hero_block' %}
   {% assign hero_url = block.settings.hero_img_url %}
 
+  {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
+  {% assign hidefilterbackdropmobile = block.settings.also_filter_backdrop_mobile %}
+
   <!--/ use image or Image Url /-->
   {% if block.settings.image != blank %}
     {% assign hero_url = block.settings.image | img_url: 'master' %} 
@@ -15,7 +18,7 @@
   {% if block.settings.image_mobile != blank %}
     {% assign hero_url_mobile = block.settings.image_mobile | img_url: 'master' %} 
   {% else %} 
-    {% assign hero_url_mobile = block.settings.image | img_url: 'master' %} 
+    {% assign hero_url_mobile = hero_url %} 
   {% endif %}
 
   {% assign left_pos = block.settings.left_position %}
@@ -25,12 +28,13 @@
 
 
     <div class="hero-container">
-      <div class="hero"></div>
+      <div class="hero"></div> 
       <div id="hero" class="hero-stuff lazy">
           <h1 style="color: {{ block.settings.heading_textcolor }};">{{ block.settings.title }}</h1>
           {% if block.settings.button_link != blank %}
           <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
           {% endif %}
+      </div>
       </div>
     </div>    
     <div class="container mx-auto">
@@ -135,7 +139,19 @@
           "id": "left_position_mobile",
           "label": "Text Left Position - Mobile",
           "default": 60      
-        }        
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_filter_backdrop",
+          "label": "Hide Back Drop (All)",
+          "default": true
+        },
+        {
+          "type": "checkbox",
+          "id": "also_filter_backdrop_mobile",
+          "label": "Also Show Backdrop on Mobile",
+          "default": true
+        }     
       ]
     }
   ],
@@ -182,13 +198,18 @@
 
       .hero:hover {
         transform: scale(1.15);
-      }
-      
+      }     
+            
       .hero-stuff {
+        padding: 15px;
+        border-radius: 2px;
+        background: rgba(0,0,0,0.01);
         position: absolute;
         top: {{ top_pos }}px;
         left: {{ left_pos }}px;
       }
+
+     
 
       @media only screen and (max-width: 576px) {
         .hero-stuff {
@@ -203,3 +224,42 @@
         background-color: #transparent;
      }     
 </style>
+
+<!-- -->
+{% unless hidefilterbackdrop %}
+  <style scoped>
+  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .hero-stuff {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
+
+  /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+    .hero-stuff {
+      background-color: rgba(255, 255, 255, .2);
+    }
+  }
+</style>
+{% endunless %}
+
+{% unless hidefilterbackdropmobile %}
+<style scoped>
+  @media only screen and (max-width: 576px) {
+  @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+    .hero-stuff {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+  }
+
+  /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+  @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+    .hero-stuff {
+      background-color: rgba(255, 255, 255, .7);
+    }
+  }
+}
+</style>
+{% endunless %}

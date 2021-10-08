@@ -72,7 +72,6 @@
   text-align: center;
 }
 
-
 /* Animation property */
 .bump {
   animation: wiggle 2s linear infinite;
@@ -80,7 +79,8 @@
 
 /* Keyframes */
 @keyframes wiggle {
-  0%, 7% {
+  0%,
+  7% {
     transform: rotateZ(0);
   }
   15% {
@@ -98,11 +98,11 @@
   35% {
     transform: rotateZ(-4deg);
   }
-  40%, 100% {
+  40%,
+  100% {
     transform: rotateZ(0);
   }
 }
-
 
 .modalfade {
   animation: fadeIn 1.15s;
@@ -112,34 +112,37 @@
 }
 @keyframes fadeIn {
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-moz-keyframes fadeIn { /* Firefox */
+@-moz-keyframes fadeIn {
+  /* Firefox */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-webkit-keyframes fadeIn { /* Safari and Chrome */
+@-webkit-keyframes fadeIn {
+  /* Safari and Chrome */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-o-keyframes fadeIn { /* Opera */
+@-o-keyframes fadeIn {
+  /* Opera */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
   }
 }
 
@@ -151,33 +154,166 @@
 }
 @keyframes fadeIn1 {
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-moz-keyframes fadeIn1 { /* Firefox */
+@-moz-keyframes fadeIn1 {
+  /* Firefox */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-webkit-keyframes fadeIn1 { /* Safari and Chrome */
+@-webkit-keyframes fadeIn1 {
+  /* Safari and Chrome */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity:1;
+    opacity: 1;
   }
 }
-@-o-keyframes fadeIn1 { /* Opera */
+@-o-keyframes fadeIn1 {
+  /* Opera */
   from {
-      opacity:0;
+    opacity: 0;
   }
   to {
-      opacity: 1;
+    opacity: 1;
+  }
+}
+
+.modal-img {
+  height: 200px;
+  width: 200px;
+}
+
+@media only screen and (min-width: 992px) {
+  .modal-img {
+    height: 400px;
+    width: 400px;
+  }
+}
+
+.modal {
+  touch-action: none !important;
+}
+
+.modaL-dialog {
+  touch-action: none !important;
+}
+
+.modal-content {
+  touch-action: none !important;
+}
+
+.modal-header {
+  touch-action: none !important;
+}
+
+.modal-body {
+  touch-action: none !important;
+}
+
+.modal-footer {
+  touch-action: none !important;
+}
+
+@-webkit-keyframes slideUp{
+  0%{
+      -webkit-transform:translateY(66px);
+      transform:translateY(66px)
+  }
+  100%{
+      -webkit-transform:translateY(0);
+      transform:translateY(0)
+  }
+}
+@keyframes slideUp{
+  0%{
+      -webkit-transform:translateY(66px);
+      -ms-transform:translateY(66px);
+      transform:translateY(66px)
+  }
+  100%{
+      -webkit-transform:translateY(0);
+      -ms-transform:translateY(0);
+      transform:translateY(0)
+  }
+}
+#se-cookies-message {
+  color: #000; /* Change text color here */
+  background-color: #fff; /* Change background color here */
+  padding: 10px;
+  text-align: center;
+  position: fixed;
+  bottom:0px;
+  left:0;
+  right:0;
+  z-index: 100000;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+  opacity: 0;
+  visibility: hidden;
+  font-size: 12px;
+}
+#se-cookies-message.se-cookies-message-open {
+  opacity: 1;
+  visibility: visible;
+  animation-duration:0.8s;
+  -webkit-animation-duration:0.8s;
+  -moz-animation-duration:0.8s;
+  -o-animation-duration:0.8s;
+  -webkit-animation-name:slideUp;
+  animation-name:slideUp;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-align-items: center;
+  -moz-align-items: center;
+  -ms-align-items: center;
+  -o-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: space-between;
+  -moz-justify-content: space-between;
+  -ms-justify-content: space-between;
+  -o-justify-content: space-between;
+  justify-content: space-between;
+}
+#se-accept-cookies-checkbox {
+  color: #000; /* Change button text color here */
+  background-color: #f1d600; /* Change button background color here */
+  transition: background 200ms ease-in-out,color 200ms ease-in-out,box-shadow 200ms ease-in-out;
+  -webkit-transition: background 200ms ease-in-out,color 200ms ease-in-out,box-shadow 200ms ease-in-out;
+  border-radius: 5px;
+  -webkit-border-radius: 5px;
+  text-decoration: none;
+  font-size: 12px;
+  padding: 8px 15px;
+}
+#se-accept-cookies-checkbox:hover {
+  opacity: 0.8;
+}
+.se-cookies-text {
+  padding-right: 15px;
+}
+@media screen and (min-width: 768px) {
+  #se-cookies-message {
+      padding: 15px 30px;
+      font-size: 17px;
+  }
+  #se-accept-cookies-checkbox {
+      font-size: 16px;
+      padding: 8px 30px;
+  }
+  .se-cookies-text {
+      padding-right: 0;
   }
 }

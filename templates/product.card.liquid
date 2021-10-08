@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable{% endcomment %}
-
+<!--for wishlisht tiles-->
 {% layout none %}
 
    {% for tag in product.tags %}
@@ -11,6 +11,9 @@
         {% assign awardbox = 'true' %}
       {% endif %}
 
+      {% if tag contains 'Final Sale' %}
+        {% assign finalsale = 'true' %}
+      {% endif %}
     {% endfor %}              
     
     {% assign image = product.featured_media.preview_image %}  
@@ -39,7 +42,7 @@
                 <p span class="text-line"></p>
                 <div style="height:40px;">
                 <p>{% if product.compare_at_price_max > 0 %}
-                    {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                    {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
                   <del><span style="color: #DF362D;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
                 
                 {% endif %}

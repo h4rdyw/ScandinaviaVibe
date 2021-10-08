@@ -1,0 +1,69 @@
+<div class="container my-5">
+    <fieldset class="color-swatches  js-color-swatches">
+        <legend class="color-swatches__legend text-sm color-contrast-medium margin-bottom-xs" aria-live="polite" aria-atomic="true">Color: <span class="color-swatches__color color-contrast-high js-color-swatches__color">Jet</span></legend>
+      
+        <select class="js-color-swatches__select" aria-label="Select a color">
+          <option value="Jet" data-style="background-color: #34252F;">Jet</option>
+          <option value="Arsenic" data-style="background-color: #3B5249;">Arsenic</option>
+          <option value="Wintergreen" data-style="background-color: #519872;">Wintergreen</option>
+          <option value="Laurel Green" data-style="background-color: #A4B494;">Laurel Green</option>
+          
+        </select>
+    </fieldset>
+    
+</div>
+
+<style>
+/* -------------------------------- 
+
+File#: _1_color-swatches
+Title: Color Swatches
+Descr: A list of selectable swatches used to show a product color variants
+Usage: codyhouse.co/license
+
+-------------------------------- */
+{% comment %} :root {
+    --color-swatches-gap: var(--space-xxs);
+    --color-swatch-size: 32px;
+    --color-swatch-radius: 50%;
+  } {% endcomment %}
+  
+  .color-swatches__list {
+    display: grid;
+    grid-gap: var(--color-swatches-gap);
+    grid-template-columns: repeat(auto-fit, var(--color-swatch-size));
+  }
+  
+  .color-swatches__swatch {
+    position: relative;
+    display: block;
+    height: var(--color-swatch-size);
+    width: var(--color-swatch-size);
+    border-radius: var(--color-swatch-radius);
+    cursor: pointer;
+  }
+  .color-swatches__swatch::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+    width: 100%;
+    height: 100%;
+    border: 1px solid hsla(var(--color-contrast-higher-h), var(--color-contrast-higher-s), var(--color-contrast-higher-l), 0.1);
+    border-radius: inherit;
+    pointer-events: none;
+    transition: 0.2s;
+  }
+  .color-swatches__swatch:hover::before {
+    border-color: hsla(var(--color-contrast-higher-h), var(--color-contrast-higher-s), var(--color-contrast-higher-l), 0.3);
+  }
+  
+  .color-swatches__item--selected .color-swatches__swatch::before {
+    border-color: hsla(var(--color-contrast-higher-h), var(--color-contrast-higher-s), var(--color-contrast-higher-l), 0.8);
+    width: calc(100% + 6px);
+    height: calc(100% + 6px);
+  }
+</style>
+

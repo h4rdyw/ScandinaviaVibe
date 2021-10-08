@@ -1,12 +1,18 @@
 {% comment %}theme-check-disable{% endcomment %}
+
 {% assign page_handle = page.handle %}
+{% assign story_handle = 0 %}
 {% for block in section.blocks %}
 {% if block.settings.page_handle == page_handle  or template == 'index' %}
+
+
 {% if block.type == 'hero_story' %} 
+{% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
+{% assign story_handle = story_handle | plus : 1 %}
+
 
 {% if block.settings.image_story  %}
-  
-{% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
+    {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
   {% else %}
      {% assign hero_img_url = block.settings.hero_story_img_url %}
 {% endif %}
@@ -27,8 +33,10 @@
                     <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                   </div>
               </div>          
-              <div class="hero-1-stuff">
-                  <h1>{{ block.settings.title }}</h1>
+              <div class="hero-1-stuff-{{ story_handle }}">
+                  {% if block.settings.title %}
+                    <h1>{{ block.settings.title }}</h1>
+                  {% endif %}  
                   {% if block.settings.button_link %}
                     <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
                   {% endif %}                   
@@ -55,8 +63,11 @@
 
                   </div>
                 </div>   
-                <div class="hero-1-stuff">
-                  <h1>{{ block.settings.title }}</h1>
+                <div class="hero-1-stuff-{{ story_handle }}">
+                  {% if block.settings.title %}
+                    <h1>{{ block.settings.title }}</h1>  
+                  {% endif %}
+                  
                   {% if block.settings.button_link %}
                   <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
                   {% endif %}            
@@ -80,9 +91,13 @@
       <div class="col d-flex flex-fill">
           <div class="hero-1-container">
               <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
-              <div class="hero-1-stuff">
-                  <h1>{{ block.settings.title }}</h1>
+              <div class="hero-1-stuff-{{ story_handle }}">
+                {% if block.settings.title %}                
+                   <h1>{{ block.settings.title }}</h1>
+                {% endif %}  
+                {% if block.settings_button_link %}
                   <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
+                {% endif %}
               </div>
           </div>    
       </div>
@@ -99,9 +114,13 @@
     <div class="col d-flex flex-fill">
       <div class="hero-1-container">
           <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
-          <div class="hero-1-stuff">
+          <div class="hero-1-stuff-{{ story_handle }}">
+            {% if block.settings.title %}
               <h1>{{ block.settings.title }}</h1>
-              <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
+            {% endif %}
+              {% if block.settings.button_link %}
+                <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
+              {% endif %}              
           </div>
       </div>    
     </div>
@@ -110,6 +129,38 @@
     
   {% endif %}
 
+  <!--story style-->
+{% assign storyhandle = ".hero-1-stuff-" | append : story_handle  %}
+ <style scoped>
+ {{ storyhandle }} {
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  padding: 15px;
+  border-radius: 2px;
+}
+</style>
+
+<!--story backdrop -->
+{% unless hidefilterbackdrop %}
+  <style scoped>      
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      {{ storyhandle }} {
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+      }
+    }
+  
+    
+    /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      {{ storyhandle }} {
+        background-color: rgba(255, 255, 255, .5);
+      }
+    }
+  </style>
+ {% endunless %}
+  
   </div>
 
 {% endif %}  
@@ -144,6 +195,12 @@
           "default": 0,
           "label": "Block Placement 0,1 Odd,2 Even"
         },
+        {
+          "type": "checkbox",
+          "id": "hide_filter_backdrop",
+          "label": "Hide Back Drop",
+          "default": true
+        },       
         { "type": "image_picker", 
           "id": "image_story", 
           "label": "Hero Background Image"
@@ -175,7 +232,7 @@
           "id": "video_story_url",
           "accept": ["youtube","vimeo"],                    
           "label": "Video URL"
-      }
+        }
       ]
     }
   ],
@@ -214,11 +271,15 @@
         transform: scale(1.15);
       }
       
-      .hero-1-stuff {
+      {% comment %} .hero-1-stuff {
         position: absolute;
         top: 40px;
         left: 40px;
+        padding: 15px;
       }
-      
+       {% endcomment %}
       
 </style>
+
+<!-- -->
+

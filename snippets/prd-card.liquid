@@ -9,6 +9,11 @@
       {% if tag contains 'Award' %}
         {% assign awardbox = 'true' %}
       {% endif %}
+
+      {% if tag contains 'Final Sale' %}
+        {% assign finalsale = 'true' %}
+       {% endif %}
+ 
     {% endfor %}              
     
     {% assign image = product.featured_media.preview_image %}
@@ -35,12 +40,12 @@
                 {% endif %}
             </div>
             
-            <div class="card-body d-flex flex-column justify-content-end bg-light text-center pb-1">
+            <div class="card-body d-flex flex-column justify-content-start bg-light text-center pb-1">
                 <p class="text-product-title"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
                 <p span class="text-line"></p>
-                <div style="height:40px;">
-                <p>{% if product.compare_at_price_max > 0 %}
-                    {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                <div style="height:auto;">
+                <p>{% if product.compare_at_price_max > 0 %}                                    
+                    {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg></br>
                   <del><span style="color: #AB0000;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
                 
                 {% endif %}

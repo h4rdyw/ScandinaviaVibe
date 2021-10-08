@@ -40,8 +40,6 @@ navBarCollapse.addEventListener('shown.bs.collapse', function () {
 var myproductModal = document.getElementById('productInfoModal');
 if (myproductModal != null) {
   myproductModal.addEventListener('hidden.bs.modal', function (event) {
-    const body = document.body;
-    body.style.removeProperty('overflow');
     checkLocaleBtn();
   });
 
@@ -202,7 +200,7 @@ if (chekproductModal != null) {
 var myModalEl = document.querySelector('#productInfoModal');
 if (myModalEl != null) {
   // Returns a Bootstrap modal instance
-  var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl);  
+  var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl);
 }
 
 // Product POP UP MODAL
@@ -232,6 +230,13 @@ function getProductAnchors(prdId) {
             .then(resp => resp.json())
             .then(function (data) {
               //console.log(data);
+
+              const modalSelectElement = document.getElementById('modalItemID');              
+
+              modalSelectElement.addEventListener('click', e => varModalSelectChange(e,data));
+              modalSelectElement.addEventListener('change', e => varModalSelectChange(e, data));
+
+              
               const productDescArr = data.description.split('$$$$$$');
 
               // if (productDescArr.length > 1) {
@@ -240,9 +245,14 @@ function getProductAnchors(prdId) {
               var productDesc = productDescArr[0];
               // }
               let prdBadge = ``;
+              let finalsaletag = '';
+
+              if (data.tags.includes('Final Sale')) {
+                finalsaletag = ` - FINAL SALE*`;
+              }
 
               if (data.tags.includes('Special')) {
-                prdBadge = `<div><svg class="star-badge" style="top:18px; left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="star-badge" fill="#D1B000" class="bi bi-star-fill" viewBox="0 0 16 16">
+                prdBadge = `<div><svg class="star-badge" style="top:18px; left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="star-badge"  height="30" width="24" fill="#D1B000" class="bi bi-star-fill" viewBox="0 0 16 16">
                 <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"/>
               </svg></svg></div>`;
                 /*iconstyle = ``;*/
@@ -252,12 +262,12 @@ function getProductAnchors(prdId) {
 
               if (data.tags.includes('Award')) {
                 if (data.tags.includes('Special')) {
-                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:50px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="32" width="32" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
+                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:50px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="30" width="24" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
                   <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
                   <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
                 </svg></svg></div>`;
                 } else {
-                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="32" width="32" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
+                  prdBadge += `<div><svg class="award-badge" style="top:18px;left:18px!important;z-index:2001;"><svg xmlns="http://www.w3.org/2000/svg" id="award-badge" height="30" width="24" fill="#005BEA" class="bi bi-award-fill" viewBox="0 0 16 16">
                 <path d="m8 0 1.669.864 1.858.282.842 1.68 1.337 1.32L13.4 6l.306 1.854-1.337 1.32-.842 1.68-1.858.282L8 12l-1.669-.864-1.858-.282-.842-1.68-1.337-1.32L2.6 6l-.306-1.854 1.337-1.32.842-1.68L6.331.864 8 0z"/>
                 <path d="M4 11.794V16l4-1 4 1v-4.206l-2.018.306L8 13.126 6.018 12.1 4 11.794z"/>
               </svg></svg></div>`;
@@ -268,7 +278,7 @@ function getProductAnchors(prdId) {
 
               document.getElementById('productInfoImg').src = data.images[0];
               document.getElementById('productInfoTitle').innerHTML =
-                data.title;
+                data.title+finalsaletag;
 
               let from = '';
               if (data.price_varies) from = 'from ';
@@ -321,7 +331,7 @@ function getProductAnchors(prdId) {
                 );
                 if (variant.available == true) {
                   available++;
-                  if (+variant.compare_at_price / 100 > 0) {
+                  if (+variant.compare_at_price / 100 > 0 && (+variant.compare_at_price > +variant.price)  ) {
                     var itemDesc =
                       variant.title +
                       ' (was ' +
@@ -352,20 +362,16 @@ function getProductAnchors(prdId) {
                 btnAdd.disabled = false;
                 text.data = 'Add to Cart';
               }
-                            
-                if (myModalEl.classList.contains('modalfade')) {
-                  myModalEl.classList.remove('modalfade');
-                  myModalEl.classList.add('modalfade1');                               
-                } else {
-                  myModalEl.classList.remove('modalfade1');
-                  myModalEl.classList.add('modalfade');
-                }              
-            
-                const body = document.body;                
-                body.style.overflow = 'hidden';
-                
-              productModal.show();
 
+              if (myModalEl.classList.contains('modalfade')) {
+                myModalEl.classList.remove('modalfade');
+                myModalEl.classList.add('modalfade1');
+              } else {
+                myModalEl.classList.remove('modalfade1');
+                myModalEl.classList.add('modalfade');
+              }
+
+              productModal.show();
             });
         });
       });
@@ -418,67 +424,6 @@ if (modalAddToCartForm != null) {
           throw AddtoCartErr();
         } else {
           //console.log(data);
-          productModal.hide();          
-          //AddtoCartSuccess(data.items[0].product_title);
-          bumpCart();
-        }
-      })
-      .catch(err => {
-        console.log('Error:' + err);
-        productModal.hide();
-        AddtoCartErr();
-      })
-      .then(() => {
-        // productModal.hide();
-      })
-      .finally(function () {
-        update_cart();        
-      });
-  });
-}
-
-/*
-const AddToCartForm = document.querySelector('#addToCartForm');
-
-if (modalAddToCartForm != null) {
-  //   const myModalEl = document.querySelector('#productInfoModal')
-  //   if (myModalEl != null ) {
-  //     // Returns a Bootstrap modal instance
-  //   var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl)
-  //   }
-
-  //console.log(modalAddToCartForm);
-  modalAddToCartForm.addEventListener('submit', function (e) {
-    e.preventDefault();
-    //console.log('ITEM ID ' + document.getElementById('modalItemID').value);
-    //console.log('Value ' + document.getElementById('modalItemQuantity').value);
-    let formData = {
-      items: [
-        {
-          id: document.getElementById('modalItemID').value,
-          quantity: document.getElementById('modalItemQuantity').value,
-        },
-      ],
-    };
-    //console.log(formData);
-
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(formData),
-    })
-      .then(resp => resp.json())
-      .then(function (data) {
-        console.log(data);
-
-        if (data.status == 422) {
-          console.log('Cannot Add this Product : ' + data.description);
-          productModal.hide();
-          throw AddtoCartErr();
-        } else {
-          //console.log(data);
           productModal.hide();
           //AddtoCartSuccess(data.items[0].product_title);
           bumpCart();
@@ -497,14 +442,15 @@ if (modalAddToCartForm != null) {
       });
   });
 }
-*/
+
+
 
 const AddtoCartErr = function () {
   //productModal.hide();
-  setTimeout(()=>{
+  setTimeout(() => {
     backToTop();
-  },5);
-  
+  }, 5);
+
   const toastEl = toastErr();
   document.body.appendChild(toastEl);
   const myToast = new Toast(toastEl);
@@ -513,9 +459,9 @@ const AddtoCartErr = function () {
 
 const AddtoCartSuccess = function (item) {
   //productModal.hide();
-  setTimeout(()=>{
+  setTimeout(() => {
     backToTop();
-  },5);
+  }, 5);
   const toastEl = toastSuccess(item);
   document.body.appendChild(toastEl);
   const myToast = new Toast(toastEl);
@@ -580,14 +526,13 @@ function formatCurrency1(amount) {
 /* end of checkProductAnchors */
 function bumpCart() {
   let carticon = document.getElementById('cart-icon') || false;
-  if (carticon) {  
+  if (carticon) {
     carticon.classList.add('bump');
   }
 
-  setTimeout( () => {
-     carticon.classList.remove('bump');
-  }
-    ,4000)  
+  setTimeout(() => {
+    carticon.classList.remove('bump');
+  }, 4000);
 }
 
 function update_cart() {
@@ -600,11 +545,11 @@ function update_cart() {
       var numberofItems = document.getElementById('numberOfCartItems');
       if (data.item_count > 0) {
         numberofItems.classList.remove('bg-light');
-        numberofItems.classList.add('bg-success');
+        numberofItems.classList.add('bg-danger');
         numberofItems.classList.remove('d-none');
       } else {
         numberofItems.classList.add('bg-light');
-        numberofItems.classList.remove('bg-success');
+        numberofItems.classList.remove('bg-danger');
         numberofItems.classList.add('d-none');
       }
     })
@@ -695,3 +640,49 @@ function formatCurrency(amount) {
       : ccyTemp;
   return ccyFormated;
 }
+
+function varModalSelectChange(e, data) {
+  //const json_product = {{ product | json }};
+  //console.log(json_product);
+
+  const value = e.target.value;
+  //const text = SelectElement.options[SelectElement.selectedIndex].text;
+  let variantresult = data.variants.find(({ id }) => id === +value);
+
+  let variant_img_id =
+    variantresult.featured_image === null
+      ? false
+      : variantresult.featured_image.id;
+      if (variant_img_id) {
+        //console.log(variant_img_id);
+        document.getElementById('productInfoImg').src = variantresult.featured_image.src;
+      }
+  
+
+  if (value) {
+    //console.log(variantresult);
+
+    const curr_price = +variantresult.price / 100;
+    const variantPrice = formatCurrency(+variantresult.price / 100);
+    const compare_price = +variantresult.compare_at_price / 100;
+    const variantComparePrice = formatCurrency(
+      +variantresult.compare_at_price / 100
+    );
+    const savings = (
+      ((compare_price - curr_price) / compare_price) *
+      100
+    ).toFixed(0);
+
+    if (+variantresult.compare_at_price > 0 && +variantresult.compare_at_price > +variantresult.price ) {
+      var pricetag = `${savings}% <svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg>
+      <del><span style="color: #AB0000;">${variantComparePrice}</span></del> ${variantPrice}`;
+    } else {
+      var pricetag = `${variantPrice}`;
+    }
+
+    document.getElementById('productInfoPrice').innerHTML = pricetag;   
+    
+  
+  }
+}
+  

@@ -1,0 +1,33 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign product = product %}
+{% assign media-video = 0 %}
+{% for media in product.media %}
+    {% case media.media_type %}
+      {% when 'video' %}
+        {% assign media-video = media-video | plus: 1 %}
+        <div class="col d-flex">
+            <div class="card d-flex flex-fill">
+                <div class="ratio ratio-16x9" style="min-width:360px;">
+                {{ media | video_tag: controls: true }}
+                </div>
+            </div>
+        </div>
+      {% when 'external_video' %}
+
+        {% assign media-video = media-video | plus: 1 %}
+        {% assign video  = media | external_video_url  | split: '?' %}
+        {% assign video1  = video[0] | split: '/embed/' %}
+         <div class="col d-flex">
+            <div class="card d-flex flex-fill">
+                <div class="ratio ratio-16x9" style="min-width:360px;">               
+                  <lite-youtube videoid="{{ video1[1] }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+                </div>
+            </div>
+        </div>      
+    {% endcase %} 
+  {% endfor %}
+  
+  {% if media-video == 0 %}
+    <p>&nbsp;</p>
+  {% endif %}
+{% comment %}theme-check-enable{% endcomment %}

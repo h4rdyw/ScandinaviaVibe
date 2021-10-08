@@ -10,7 +10,10 @@
       {% endif %}    
       {% if tag contains 'Award' %}
           {% assign awardbox = 'true' %}
-      {% endif %}   
+      {% endif %}
+      {% if tag contains 'Final Sale' %}
+        {% assign finalsale = 'true' %}
+       {% endif %}
     {% endfor %}
      
 <section class="container py-5" id="product_details">
@@ -32,7 +35,7 @@
 
 
                   {% for image in product.images %}            
-                    <div class="swiper-slide">
+                    <div variant-img-id="{{ image.id }}" class="swiper-slide">
                       <img src="{{ image.src | img_url : 'master' }}" alt="{{ image.alt | escape }}" width="480" height="480" loading="lazy"/>
 
                       {% if imgnum == 'true' %}                       
@@ -47,11 +50,52 @@
                 </div>
               </div>
               <p span class="text-line"></p>
-              <div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'long' %}</p></div>
+              <!--<div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'long' %}</p></div>-->
+
+             <div class="w-100 mx-auto my-1">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link nav-link-prd active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Description</button>
+                  </li>                                
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link nav-link-prd" id="media-tab" data-bs-toggle="tab" data-bs-target="#media" type="button" role="tab" aria-controls="media" aria-selected="false">Media</button>
+                  </li>                 
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link nav-link-prd" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Info</button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                  <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                    <div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'long' %}</p></div> 
+                  </div>
+                  <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
+                    <div class="container px-0 mx-auto">
+                      <div class="d-flex g-3 row row-cols row-cols-xxl-2 row-cols-lg-2 row-cols-md-2 row-cols-1 align-items-center
+                        ">      
+                      {% render 'product-video', product:product %}      
+                      </div>
+                    </div>        
+                    </div>
+                  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><div class="text-product-desc">{% if section.settings.subtitle != blank %}       
+                  <div class="text-header-title"><p>{{ section.settings.subtitle }}</p></div>
+                  <div><p>{{ section.settings.subinfo }}</p></div>                
+                  
+                  {% endif %}</div></div>
+                </div>
+              </div>
+              
+            <!--<div class="w-100 mx-auto">       
+                <div class="container-fluid px-0 mx-auto">
+                  <div class="d-flex g-3 row row-cols row-cols-xxl-2 row-cols-lg-2 row-cols-md-2 row-cols-1 align-items-center py-2">
+                  {% render 'product-video', product:product %}
+                  </div>
+                </div>   
+              </div>-->
+
         </div>
         
         <div class="d-flex flex-column flex-fill col-lg-4 col-md-12 col-12">
-          <h1 class="text-product-title">{{ product.title }} </h1>
+          <h1 class="text-product-detail-title">{{ product.title }} </h1>
 
           <div class="px-0 pb-2 mx-0 d-flex flex-row">
             {% if specialbox == 'true' %}      
@@ -67,8 +111,12 @@
                 <svg class="award-badge px-0 mx-0" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
             {% endif %} 
             </div>          
-            
-            <p id="prd-title" class="text-header-title">
+
+            {% if finalsale == 'true' %}
+              <p id="final-sale" class="text-header-title">FINAL SALE*</p>            
+            {% endif %}
+
+            <p id="prd-price" class="text-header-title">
               {% if product.compare_at_price_max > 0 %}
                 {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
                 <del><span style="color: #AB0000;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
@@ -78,16 +126,24 @@
               
               {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}
             </p>
+            {% if section.settings.show_short_description == true %}       
+            <div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'short' %}</p></div>
+            
+            {% endif %}
 
+            {% if section.settings.subtitle != blank %}       
+            <div class="text-header-title"><p>{{ section.settings.subtitle }}</p></div>
+            
+            {% endif %}
             {% form 'product', product, class:"product-form, id:"AddToCartForm %}
-                <div class="mb-3">
+                <div id="selectOptions" class="mb-3">
                     <select name="id" id="productSelect" class="form-select">
                         {% assign availability_count = 0 %}    
 
                         {% for variant in product.variants %}
                             {% if variant.available %}
                                 {% assign availability = availability_count | plus: 1 %}
-                                {% if variant.compare_at_price > 0 %}
+                                {% if variant.compare_at_price > 0 and variant.compare_at_price > variant.price %}
                                   {% assign priceold = variant.compare_at_price | money_without_trailing_zeros  %}
                                   {% assign pricenew = variant.price | money_without_trailing_zeros  %}
                                   {% assign desc = variant.title | append : ' - ( was ' | append : priceold  | append : ' ) now ' | append : pricenew %}
@@ -103,15 +159,24 @@
                     </select>
                 </div>
                 
-                <div class="mb-3 form-group form-inline">
-                  <label for="Quantity">Quantity</label>
+                <div id="qty-part" class="row row-cols-2 mb-3">
+                  <div class="col text-end">
+                  Quantity
+                  </div>
+                  <div class="col">
                     <input type="number" class="form-control form-inline" name="quantity" id="Quantity" value="1" min="1">
+                  </div>                  
                 </div>
                 <button type="submit" name="add" id="AddToCart" class="btn-add-to-cart w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
                 <p></p>
-                {% if section.settings.dynamic_button_checkbox== true %}                
-                {{ form  | payment_button }}
+              
+
+                {% if section.settings.dynamic_button_checkbox == true %}       
+                  {% if availability > 0 %}          
+                    {{ form  | payment_button }}
+                  {% endif %}
                 {% endif %}
+                <!--<p id="pick"></p>-->
               {% endform %}  
         </div>
       </div>
@@ -128,15 +193,15 @@
 
 <div id="productInfoModal" class="modal modalfade" tabIndex="-1" aria-hidden="true" style="z-index:2001;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <div class="modal-header" style="border-bottom: none;user-select: none;">
-              <h1 id="productInfoTitle" class="text-product-title"></h1>
+              <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                       <div class="col-12 col-md-6">
-                        <img class="img-fluid" style="min-height:50vh;height:480px;width:480px;" src="" id="productInfoImg" alt="">
+                        <img class="img-fluid modal-img" src="" id="productInfoImg" alt="">
                         <div id="badge"></div>
                       </div>
                       <div class="col-12 col-md-6">
@@ -200,9 +265,13 @@
     padding-top: 10px;
     padding-bottom: 10px;
   }  
+
+  .wishlist-badge {  
+    left: 0;
+  }
 </style>
 <script>  
-new Swiper(".swiper-container-{{- product.id -}}", {
+const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
     slidesPerView: 1,
     centeredSlides: true,
     effect: "fade",
@@ -246,7 +315,7 @@ new Swiper(".swiper-container-{{- product.id -}}", {
             const htmlMarkup = `
                  <section id="product_recommendation" class="content-justify-center my-5">
                     <div class="text-center"><h1>Also in store</h1></div>
-                    <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 row-cols-1 py-2" id="product_recommendation_body">
+                    <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
             `;
 
             html = htmlMarkup.trim();
@@ -258,13 +327,25 @@ new Swiper(".swiper-container-{{- product.id -}}", {
             //console.log(item);
             arrProducts[item] = `productInfoAnchor-${item.id}`;
             
+            ;    
+            if (+item.compare_at_price > 0 && +item.compare_at_price > +item.price ) { 
+              const itemsavings = (((+item.compare_at_price-item.price)/item.compare_at_price) * 100).toFixed(0);
+              //console.log("Item Saving :" + itemsavings);
+
+              var savingspct=`${itemsavings}%`;  
+            } else {
+              var savingspct=``;  
+            }
 
             let prdPrice = formatCcy((+item.price / 100));                   
             let prdPriceMin = formatCcy((+item.price_min / 100));                   
             let prdComparePrice = formatCcy((+item.compare_at_price_max / 100));                   
             let from = '';
+            let finalsaletag = '';
 
             if (item.price_varies) from = `from `;
+
+            if (item.tags.includes('Final Sale')) finalsaletag = 'FINAL SALE*'; 
 
             var card, iconstyle;
 
@@ -275,7 +356,7 @@ new Swiper(".swiper-container-{{- product.id -}}", {
             if(item.images.length > 0) {
                 card += `<div class="inner-img">`;
                 card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
-                        product-price="${from} ${prdPrice}"><img class="card-img-top" width="640" height="360" src="${item.images[0]}" alt="${item.title}"></a>`;
+                        product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
                 card += `<div class="text-hover">QUICK SHOP</div></div>`;
             }          
             card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-0">`;
@@ -284,7 +365,7 @@ new Swiper(".swiper-container-{{- product.id -}}", {
 
             if (item.compare_at_price_max > 0 ) { 
 
-              card += `<p>{% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+              card += `<p>${finalsaletag} ${savingspct}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
                 <del><span style="color: #AB0000;">${prdComparePrice}</span></del> ${from} ${prdPrice}</p>`;
 
                
@@ -327,7 +408,7 @@ new Swiper(".swiper-container-{{- product.id -}}", {
 
         wishlistSnippet.innerHTML = wishlistcard;
 
-        const referenceTitle = document.getElementById("prd-title");        
+        const referenceTitle = document.getElementById("qty-part");        
         referenceTitle.after(wishlistSnippet);
         
         // Create a custom event and dispatch to setup PopUp Modal 
@@ -368,8 +449,63 @@ new Swiper(".swiper-container-{{- product.id -}}", {
         function() { 
           checkLocaleBtn();         
         }, false);       
+    
+    const json_product = {{ product | json }};
+    //console.log(json_product);   
+    
+    const SelectElement = document.getElementById("productSelect");
+    //const checkValue = SelectElement.options[SelectElement.selectedIndex].value;
+    //const checkText = SelectElement.options[SelectElement.selectedIndex].text;
+ 
+  function varSelectChange (e) {
+    const value = e.target.value;
+    //const text = SelectElement.options[SelectElement.selectedIndex].text;
+    const variantresult = json_product.variants.find( ({ id }) => id === +value );
+
+    let variant_img_id = (variantresult.featured_image === null) ? false : variantresult.featured_image.id ;
+
+    if (value) {
+        //document.getElementById("pick").textContent = `Value Selected: ${value} ${text}`;
+        //console.log(variantresult);
+
+        const curr_price = +variantresult.price/100;
+        const variantPrice = formatCcy((+variantresult.price / 100));    
+        const compare_price = +variantresult.compare_at_price/100;                
+        const variantComparePrice = formatCcy((+variantresult.compare_at_price / 100));
+        const savings = ((+(compare_price-curr_price)/compare_price) * 100).toFixed(0);               
+        if (+variantresult.compare_at_price > 0 && +variantresult.compare_at_price > +variantresult.price ) { 
+          var pricetag=`${savings}% <svg class="tag-badge">{% render 'tag-badge' %} </svg>
+          <del><span style="color: #AB0000;">${variantComparePrice}</span></del> ${variantPrice}`;
+        } else { 
+          var pricetag=`${variantPrice}`;
+        } 
+
+        document.getElementById("prd-price").innerHTML = pricetag ; 
+
+        if (variant_img_id ) {
+          let variantimg = document.querySelector(`[variant-img-id='${variant_img_id}']`); 
+          if ( variantimg ){
+            //console.log(variantimg);
+            let variantimgindex = +variantimg.getAttribute('data-swiper-slide-index');
+            // +1 for swiper
+            variantimgindex += 1;           
+            //console.log(variantimgindex);
+            swiper.slideTo(variantimgindex);
+            swiper.update();
+          }
+        }            
+        
+    } else {
+        //document.getElementById("pick").textContent = "";
+    }   
+  };
+
+
+  SelectElement.addEventListener("click", (e) => varSelectChange(e) );
+  SelectElement.addEventListener("change", (e) => varSelectChange(e) );
 
 </script>
+
 {% schema %}
 {
     "name": "product pages",
@@ -379,7 +515,26 @@ new Swiper(".swiper-container-{{- product.id -}}", {
         "id": "dynamic_button_checkbox",
         "label": "Enable Dynamic Buy Button",
         "default": false
-    }]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Show Short Description",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Heading Info"
+      
+    },
+    {
+      "type": "richtext",
+      "id": "subinfo",
+      "label": "Additional Info"
+      
+    }
+  ]
 }
 {% endschema %}
 

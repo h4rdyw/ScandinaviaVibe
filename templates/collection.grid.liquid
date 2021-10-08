@@ -18,6 +18,9 @@
           {% if tag contains 'Highlight' %}
             {% assign highlightbox = 'true' %}
            {% endif %}  
+           {% if tag contains 'Final Sale' %}
+            {% assign finalsale = 'true' %}
+           {% endif %}     
       {% endfor %}      
       
       {% if highlightbox == 'true' %}        
@@ -55,11 +58,10 @@
         <div class="card-body bg-dark d-flex flex-column flex-fill align-items-end justify-content-end">
             <h5 class="h5"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
             {% comment %} <p class="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;{{ product.price | money_without_trailing_zeros }}</p>             {% endcomment %}
-            <div style="height:40px;">
+            <div style="height:auto;">
             <p class="text-white">{% if product.compare_at_price_max > 0 %}
-              {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
-              <del><span style="color: white;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
-            
+              {% render 'discount', product : product, finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg></br>
+              <del><span style="color: white;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>              {% assign finalsale = 'false' %}
             {% endif %}
 
             {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>       
@@ -74,7 +76,7 @@
               {% assign iconstyle = '' %} 
               <svg class="star-badge">{% render 'star-badge' %}</svg>  
               {% else %}
-              {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+              {% assign iconstyle = 'style="transform:translateX(-35px);"' %} 
             {% endif %} 
 
             
@@ -96,15 +98,15 @@
   
   <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content">
+        <div class="modal-content rounded-0">
             <div class="modal-header" style="border-bottom: none;">
-              <h1 id="productInfoTitle" class="text-product-title"></h1>
+              <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
             </div>
             <div class="modal-body">
                 <div class="row">
                       <div class="col-12 col-md-6">
-                        <img class="img-fluid" style="min-height:50vh;height:480px;width:480px;" src="" id="productInfoImg" alt="">
+                        <img class="img-fluid modal-img" src="" id="productInfoImg" alt="">
                         <div id="badge"></div>
                       </div>
                       <div class="col-12 col-md-6">
@@ -195,7 +197,7 @@ input {
    }  
 {% endstyle %}
 <style>
-@media only screen and (max-width: 992px) {
+@media only screen and (max-width: 1200px) {
   .container {
     max-width: 100% !important;
   }

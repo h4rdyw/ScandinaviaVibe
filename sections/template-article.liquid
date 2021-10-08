@@ -33,6 +33,14 @@
                 {% when 'excerpt' %}                     
                     <div class="my-4">{{ article.excerpt }}</div>   
 
+
+                {% when 'video_url' %}         
+                    <div class="my-4">
+                          <div class="ratio ratio-16x9">
+                            <lite-youtube videoid="{{ block.settings.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+                          </div>
+                    </div>   
+
                 {% else %}
 
                               
@@ -40,22 +48,7 @@
               
           {% endfor %}  
 
-          {% for block in section.blocks %}
-            {% assign item = block.settings %}
-            {% if block.type == 'video_url' %}
-                
-              
-            <div class="my-4">
-              <!--<iframe width="560" height="315" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>-->
-                <div class="ratio ratio-16x9">
-                <!-- Use the element. You may use it before the lite-yt-embed JS is executed. -->
-                  <lite-youtube videoid="{{ item.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
-                </div>
-            </div>   
-            
-            {% endif %}
-            
-          {% endfor %}
+          
         </div>
         <div class="comment-section">
           {% if blog.comments_enabled? %}
@@ -177,6 +170,7 @@
             "name": "Video",
             "type": "video_url",
             "settings": [
+                
                 {
                     "type": "text",
                     "id": "title",
@@ -188,7 +182,8 @@
                     "type": "video_url",
                     "id": "video_url",
                     "accept": ["youtube","vimeo"],                    
-                    "label": "Video URL"
+                    "label": "Video URL",
+                    "info": "Video will appear on all blog post with this template"
                 },
                 {
                     "type": "url",

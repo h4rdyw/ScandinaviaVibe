@@ -15,7 +15,6 @@
     assign bodytextcolorhover = settings.body_textcolor_hover
     assign accordeonheadercolor = settings.accordeon_header_textcolor    
 -%}
-
 {{ font_header | font_face }}
 {{ font_navbar | font_face }}
 {{ font_body | font_face }}
@@ -39,13 +38,12 @@ h1,h2,h3,h4,h5.h6,button {
 html {
     scroll-behavior: smooth;
 }
-
 body {
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
     background-color: {{ bodybgcolor }};
-    -webkit-font-smoothing: antialiased;
+    -webkit-font-smoothing: antialiased;  
+    -webkit-overflow-scrolling: touch;
 }
-
 header {
     padding: 0 25px;
 }
@@ -53,7 +51,6 @@ img {
     aspect-ratio: attr(width) / attr(height);
     object-fit: cover;
   }
-
 .text-navbar {
     color: {{ navbartextcolor }};
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
@@ -66,12 +63,10 @@ img {
     font-weight: 600;
     text-decoration: none;
 }
-
 .text-product-link:hover {
     color: {{ producttextcolorhover }};
     text-decoration: underline;
 }
-
 .text-product-title {
     /* color: {{ producttextcolor }};*/
     font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
@@ -79,31 +74,35 @@ img {
     font-weight: 700;
     text-decoration: none;
 }
-
+.text-product-detail-title {
+  /* color: {{ producttextcolor }};*/
+  font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+  font-size: 1.75rem;
+  font-weight: 900;
+  text-decoration: none;
+}
 .text-product-header {
   /* color: {{ producttextcolor }};*/
   font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
   font-weight: 700;
   text-decoration: none;
 }
-
 .text-product-desc {
     /* color: {{ producttextcolor }};*/
     font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }};
     text-decoration: none;
 }
-
 .text-header-title {
   font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
   font-size: 1.25rem;
   font-weight: 800;
   text-decoration: none;
 }
-
 .text-line {
     border-bottom: 1px solid;
     margin-bottom: -1px;
 }
+
 .text-underline-hover {
     text-decoration-line: none !important;
 }
@@ -134,6 +133,11 @@ nav .navbar-nav li a {
 .nav-link {
     /* color: {{ navbartextcolor }}!important; */
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
+}
+
+.nav-link-prd {
+  color: {{ navbartextcolor }}!important; */
+  font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }} !important;
 }
 
 body .navbar-light .navbar-toggler {
@@ -269,7 +273,6 @@ body .navbar-light .navbar-toggler {
       transform: scale(1.1);
   }
     
-  /* Original text overlay */
   .text-hover {
     opacity: 0;
     font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
@@ -283,50 +286,25 @@ body .navbar-light .navbar-toggler {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;  
+    z-index: -1;
   }
     
-  /* New overlay appearance on hover */
   .inner-img:hover .text-hover {
     opacity: 1;
     z-index: 1;
     pointer-events: none;
-  }
-  
-  /*original 
-  button {
-    appearance: auto;
-    -webkit-writing-mode: horizontal-tb !important;
-    text-rendering: auto;
-    color: -internal-light-dark(black, white);
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    display: inline-block;
-    text-align: center;
-    align-items: flex-start;
-    cursor: default;
-    background-color: -internal-light-dark(rgb(239, 239, 239), rgb(59, 59, 59));
-    box-sizing: border-box;
-    margin: 0em;
-    font: 400 13.3333px Arial;
-    padding: 1px 6px;
-    border-width: 2px;
-    border-style: outset;
-    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-    border-image: initial;
-}
-*/
+  }   
 
 input:focus {
   outline: 3px solid {{ navbarbgcolor }} !important;
   outline-offset: 0;
 }
+
  select:focus {
   outline: 3px solid {{ navbarbgcolor }} !important;
   outline-offset: 0;
  }
+
 a.btn {
   display: inline-block;
   font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
@@ -345,12 +323,10 @@ a.btn {
   a.btn:hover {
     filter: brightness(120%);    
   }
-
   a.btn:focus {
     outline: 3px solid {{ producttextcolorhover }};
     outline-offset: 0;
   }
-
   a.btn:active {
     outline: 3px solid {{ producttextcolorhover }};
     outline-offset: 0;
@@ -373,10 +349,31 @@ a.btn {
     border-color: none;   
   }  
 
+  .shopify-payment-button__button--unbranded {
+    display: inline-block;
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
+    font-size: 1.25rem;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    padding: 11px 30px;
+    background-color: {{ buttoncolor }};
+    background-image: linear-gradient(to bottom,{{ buttoncolor }},#11171B);
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    border-width: 0px;
+    border-radius: 0;
+    border-color: none;   
+  }
+
+  .shopify-payment-button__button--unbranded:hover {
+    filter: brightness(120%) saturate(120%);
+  }
+  
   .btn-add-to-cart:hover {
     filter: brightness(120%) saturate(120%);
   }
-    
+
   .btn-add-to-cart:disabled {
     display: inline-block;
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
@@ -418,7 +415,6 @@ a.btn {
   a.btn-reg:hover {
     color: white;
   }
-
   a {
       text-decoration: none;
       color: {{ producttextcolor }};
@@ -448,13 +444,11 @@ a.btn {
   text-transform: uppercase;
   font-weight: 900;
 }
-
 .status_unfulfilled {
   color: red;
   text-transform: uppercase;
   font-weight: 900;
 }
-
 .status_paid {
   color: green;
   text-transform: uppercase;
@@ -466,13 +460,13 @@ a.btn {
   text-transform: uppercase;
   font-weight: 900;
 }
+
 .accordion-button {
   color: {{ accordeonheadercolor }};
   font-weight: 500;
 }
 
-.accordion-button:focus {
-  
+.accordion-button:focus {  
   border-color: transparent;
   color:  {{ navbartextcolor }};
   }
@@ -482,6 +476,7 @@ a.btn {
   background-color: transparent;
   font-weight: 700;
 }
+
 .accordion-flush .accordion-collapse {
   font-weight: 600;
 }
@@ -493,4 +488,14 @@ a.btn {
   position: relative;
   transition: all 0.4s ease 0s;
   color: {{ producttextcolor }};
+}
+.blog-excerpt {
+  display: flex;
+  margin-top: 0;
+  margin-left: 0;
+  font-weight: 500;
+  text-align: left;
+  vertical-align: top;
+  font-style: italic;
+  font-size: 0.9rem;
 }

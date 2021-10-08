@@ -13,20 +13,20 @@
     <div class="d-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-3">
       {% for article in blog.articles %}
         <div class="col d-flex">
-          <div class="card d-flex flex-fill shadow rounded-0">
+          <div class="card d-flex flex-fill shadow-none rounded-0 border-0">
             {% if article.image.src != null  %}
-              <a href="{{ article.url }}"><img src="{{ article.image.src | img_url: 'master' }}" class="card-img-top" width="640" height="360" style="object-fit: cover;" loading="lazy" alt="{{ article.image.alt }}"></a>
+              <a href="{{ article.url }}"><img src="{{ article.image.src | img_url: 'master' }}" class="card-img-top" width="360" height="360" style="object-fit: cover;" loading="lazy" alt="{{ article.image.alt }}"></a>
             {% else %}
               {{ 'image' | placeholder_svr_tag: 'card-img-top' }}     
-            {% endif %}  <h5 class="text-center my-2"><a class="text-underline-hover" href="{{ article.url }}">{{ article.title }}</a></h5>
-            <div class="card-body d-flex flex-fill flex-column justify-content-center py-2">
+            {% endif %}  <h5 class="my-2"><a class="text-underline-hover" href="{{ article.url }}">{{ article.title }}</a></h5>
+            <div class="card-body d-flex flex-fill flex-column justify-content-start py-0 px-0">
               
               {% comment %} {{ article.author }} @ {{ article.created_at }} {% endcomment %}
-              <p class="card-text">
+              <p class="blog-excerpt">
                 {% if article.excerpt.size > 0 %}
-                  {{ article.excerpt }}
+                  {{ article.excerpt | strip_html  }}
                 {% else %}
-                  <p>{{ article.content | strip_html | truncatewords: 100 }}</p>
+                  {{ article.content | strip_html | truncatewords: 100 }}
                 {% endif %}
               </p>
             </div>    
@@ -34,8 +34,7 @@
         </div>
       {% endfor %}
     </div>
-
-
+        
   {% render 'pagination', paginate: paginate %}
   {% endpaginate %}
 </div>

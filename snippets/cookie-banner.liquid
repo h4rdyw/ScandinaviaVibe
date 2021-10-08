@@ -1,0 +1,43 @@
+{% assign text = "We use cookies to provide the best experience on our website. If you continue we assume that you understand this." %}
+{% assign more_info = "Learn more" %}
+{% assign privacy_url = "pages/privacy-policy" %}
+{% assign button_text = "Accept" %}
+ 
+<div id="se-cookies-message-container">
+    <div id="se-cookies-message">
+        <div class="se-cookies-text">
+            {{ text }} <a href="{{ privacy_url }}">{{ more_info }}</a>
+        </div>
+        <a href="javascript:SE_CloseCookiesWindow();" id="se-accept-cookies-checkbox">{{ button_text }}</a>
+    </div>
+</div>
+ 
+<script>
+  function SE_setCookie (name, value, days) {
+    var expires = "";
+    if (days) {
+      var date = new Date();
+      date.setTime(date.getTime() + (days*24*60*60*1000));
+      expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+  }
+  function SE_getCookie (name) {
+    var pair = document.cookie.match(new RegExp(name + '=([^;]+)'));
+    return !!pair ? pair[1] : null;
+  }
+  var cookiesName = 'cookies_accepted';
+  function SE_CheckCookies () {
+    if(!SE_getCookie(cookiesName)) {
+      var cookies_message = document.getElementById("se-cookies-message");
+      cookies_message.className += " se-cookies-message-open";
+    }
+  }
+  function SE_CloseCookiesWindow () {
+    SE_setCookie(cookiesName, true, 9999);
+    document.getElementById("se-cookies-message-container").removeChild(document.getElementById("se-cookies-message"));
+  }
+  document.addEventListener('DOMContentLoaded', function () {
+    SE_CheckCookies();
+  });
+</script>

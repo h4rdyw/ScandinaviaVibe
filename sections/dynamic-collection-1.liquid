@@ -96,7 +96,10 @@
                                 {% endif %}    
                                 {% if tag contains 'Award' %}
                                     {% assign awardbox = 'true' %}
-                                   {% endif %}   
+                                {% endif %}   
+                                {% if tag contains 'Final Sale' %}
+                                    {% assign finalsale = 'true' %}
+                                {% endif %}   
                             {% endfor %}
 
                             <div class="col d-flex">
@@ -114,14 +117,15 @@
                                     </div>>
                                     {% endif %}
                             
-                                    <div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-1">
+                                    <div class="card-body d-flex flex-column justify-content-start text-center bg-light pb-1">
                                         <h6><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h6>    
                                         <p span class="text-line"></p>
-                                        <div style="height:40px;">
+                                        <div style="height:auto;">
                                         <p>{% if product.compare_at_price_max > 0 %}
-                                            {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
-                                            <del><span style="color: #DF362D;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
+                                            {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                                            <del><span style="color: #DF362D;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>                                                                                        
                                         {% endif %}
+                                        {% assign finalsale = 'false' %}
                         
                                         {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>            
                                         {%- render 'button-wishlist', product: product -%}

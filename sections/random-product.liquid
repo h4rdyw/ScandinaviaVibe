@@ -40,7 +40,10 @@
                     {% endif %}    
                     {% if tag contains 'Award' %}
                         {% assign awardbox = 'true' %}
-                       {% endif %}   
+                    {% endif %}   
+                    {% if tag contains 'Final Sale' %}
+                        {% assign finalsale = 'true' %}
+                    {% endif %}      
                 {% endfor %}
 
                 {% if item.position == 'sidebar' %}        
@@ -62,17 +65,16 @@
                 
                         {% endif %}
                 
-                        <div class="card-body d-flex flex-column justify-content-end text-center pb-0">
+                        <div class="card-body d-flex flex-column justify-content-start text-center pb-1">
                             <h5 class="text-product-link"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
                             <p span class="text-line"></p>
                             <p>{% if product.compare_at_price_max > 0 %}
-                            {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                            {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
                             <del><span style="color: #DF362D;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
-                         
-                        
                             {% endif %}
+                            {% assign finalsale = 'false' %}
             
-                            {% if product.price_varies %} from {{ product.price_min }} {% endif %} {{ product.price | money_without_trailing_zeros }}</p>             
+                            {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>             
                             {%- render 'button-wishlist', product: product -%}
                             <div>
                                 {% if specialbox == 'true' %}      
@@ -80,13 +82,12 @@
                                     {% assign iconstyle = '' %} 
                                     <svg class="star-badge">{% render 'star-badge' %}</svg>  
                                     {% else %}
-                                    {% assign iconstyle = 'style="transform:translateX(-40px);"' %} 
+                                    {% assign iconstyle = 'style="transform:translateX(-35px);"' %} 
                                   {% endif %} 
         
                                 {% if awardbox == 'true' %}    
                                     {% assign awardbox = 'false' %}             
-                                    <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
-                                    
+                                    <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                                      
                                 {% endif %} 
                                 
                             </div>     

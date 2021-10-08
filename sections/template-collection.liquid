@@ -26,7 +26,7 @@
           <div class="clearfix filter">
 
             {% case collection.handle %}
-              {% when "collection" , "all" , "sale" %}
+              {% when "collection" , "all" , "sale" , "featured" %}
                 <p>Browse type:</p>
                 <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
                 <option value="">All</option>
@@ -78,15 +78,15 @@
   
   <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content">
+          <div class="modal-content rounded-0">
               <div class="modal-header" style="border-bottom: none;">
-                <h1 id="productInfoTitle" class="text-product-title"></h1>
+                <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
               </div>
               <div class="modal-body">
                   <div class="row">
                         <div class="col-12 col-md-6">
-                          <img class="img-fluid" style="min-height:50vh;height:480px;width:480px;" src="" id="productInfoImg" alt=""> 
+                          <img class="img-fluid modal-img"  src="" id="productInfoImg" alt=""> 
                           <div id="badge"></div>
                         </div>         
   
@@ -154,30 +154,55 @@
     }
     });
   </script> {% endcomment %}
+
   <script>  
-  
     var collFilters2 = jQuery('#filter_by_type');
     collFilters2.change(function() {
-    var newTags2 = [];
-    collFilters2.each(function() { 
-    if (jQuery(this).val()) {
-    newTags2.push(jQuery(this).val());
-    }
-    });
-    if (newTags2.length) {
-    var query = newTags2.join('+');
-    window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
-    } 
-    else {
-    {% if collection.handle %}
-    window.location.href = '/collections/{{ collection.handle }}';
-    {% elsif collection.products.first.type == collection.title %}
-    window.location.href = '{{ collection.title | url_for_type }}';
-    {% elsif collection.products.first.vendor == collection.title %}
-    window.location.href = '{{ collection.title | url_for_vendor }}';
-    {% endif %}
-    }
+      var newTags2 = [];
+      collFilters2.each(function() { 
+          if (jQuery(this).val()) {
+            newTags2.push(jQuery(this).val());
+          }
+        });
+      if (newTags2.length) {
+          var query = newTags2.join('+');
+          window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
+        } 
+      else {
+          {% if collection.handle %}
+          window.location.href = '/collections/{{ collection.handle }}';
+          {% elsif collection.products.first.type == collection.title %}
+          window.location.href = '{{ collection.title | url_for_type }}';
+          {% elsif collection.products.first.vendor == collection.title %}
+          window.location.href = '{{ collection.title | url_for_vendor }}';
+          {% endif %}
+        }
     });
   </script>
+  <!--<script>  
+    var collFilters2 = document.getElementById('#filter_by_type');
+    
+    collFilters2.onchange = function() {
+      var newTags2 = [];
+      collFilters2.each(function() { 
+          if (jQuery(this).val()) {
+            newTags2.push(jQuery(this).val());
+          }
+        });
+      if (newTags2.length) {
+          var query = newTags2.join('+');
+          window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
+        } 
+      else {
+          {% if collection.handle %}
+          window.location.href = '/collections/{{ collection.handle }}';
+          {% elsif collection.products.first.type == collection.title %}
+          window.location.href = '{{ collection.title | url_for_type }}';
+          {% elsif collection.products.first.vendor == collection.title %}
+          window.location.href = '{{ collection.title | url_for_vendor }}';
+          {% endif %}
+        }
+    });
+  </script>-->
   {% comment %}theme-check-enable{% endcomment %}
   

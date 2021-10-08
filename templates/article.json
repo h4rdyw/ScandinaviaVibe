@@ -20,15 +20,18 @@
         },
         "excerpt": {
           "type": "excerpt"
+        },
+        "video": {
+          "type": "video_url"
         }
-        
       },
       "block_order": [
         "featured_image",
         "title",
         "article_meta",
+        "excerpt",
         "content",
-        "sidebar1"
+        "video"
       ]
     }
     

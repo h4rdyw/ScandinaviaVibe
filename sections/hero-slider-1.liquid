@@ -1,0 +1,614 @@
+  <!-- Hero slider-->
+{% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% assign colortexthover = section.settings.color_text_hover %}
+
+{% for block in section.blocks %}
+
+  {% if block.settings.unique_id %}
+    {% assign swiper_id = block.settings.unique_id %}  
+    {% endif %}
+  
+  {% if block.settings.slide_effect %}
+    {% assign slide_effect = block.settings.slide_effect %}
+  {% endif %}
+
+  {% if block.settings.delay %}
+    {% assign slide_delay = block.settings.delay %}
+  {% endif %}
+
+  {% if block.settings.speed %}
+    {% assign slide_speed = block.settings.speed %}
+  {% endif %}
+
+  {% if block.settings.height %}
+    {% assign slider_height = block.settings.height %}
+  {% endif %}
+
+  <section class="container-fluid mx-0 px-0 py-0">      
+  {% if slider_height  %}
+      <style scoped>
+        .swiper-container-{{ swiper_id }} {
+          overflow: hidden;
+          height: {{ slider_height }}vh !important;          
+        }          
+      </style>
+  {% endif %}  
+  
+  <div class="swiper-container swiper-container-{{ swiper_id }}" id="hero-slider-{{- swiper_id -}}" unique-id="{{ swiper_id }}" effect="{{ slide_effect }}" delay="{{ slide_delay }}" speed="{{ slide_speed }}">
+     <div class="swiper-wrapper">
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' %}
+        {% if block.type == 'hero_slider' %}         
+        
+            {% if block.settings.image_slide != blank %}
+              {% assign hero_url = block.settings.image_slide | img_url: 'master' %} 
+            {% else %}
+              {% assign hero_url = block.settings.hero_slide_img_url %}
+            {% endif%}
+             <style scoped>              
+                  .slide-1-{{ swiper_id }} {
+                    background: url({{ hero_url }}) no-repeat center center;
+                    background-size: cover;                    
+                  }                              
+              </style>      
+
+            {% if block.settings.image_mobile_slide != blank %}
+              {% assign hero_url_mobile = block.settings.image_mobile_slide | img_url: 'master' %} 
+              <style scoped>              
+                @media only screen and (max-width: 499px) {
+                  .slide-1-{{ swiper_id }} {
+                    background: url({{ hero_url_mobile }}) no-repeat center center;
+                    background-size: cover;                    
+                  }
+                }               
+              </style>                          
+            {% endif %}
+            
+            {% if block.settings.video_slide_url != blank %}
+              {% assign hero_url_video = block.settings.video_slide_url %}   
+            {% endif %}
+            
+
+
+            {% assign colortextmain = block.settings.color_text_main %}
+            {% assign fontsize_main = block.settings.font_size_main %}
+                   
+            {% if block.settings.show_background_color_main %}
+            {% assign bgcolormain = "background-color: " | append: block.settings.color_bg_main |append: ';' %}
+            {% else %} 
+            {% assign bgcolormain = "background-color: transparent;" %}
+            {% endif %}
+
+            {% assign textcolormain = "color : " | append:  block.settings.color_text_main | append: ';' %}
+            {% assign titlecolormain = "color : " | append:  block.settings.color_title_main | append: ';' %}
+            {% assign bgmainopacity = "opacity : " | append: block.settings.bg_main_opacity | append: '%;' %}
+            {% assign slide_effect = block.settings.slide_effet %}
+         
+      
+   
+            <div class="swiper-slide hero bg-center bg-cover d-flex align-items-center slide-1-{{ swiper_id }}">
+              <div class="container-fluid">
+                <div class="row text-lg-center">
+                  <div class="col-lg-8">
+                    <p class="h6 text-uppercase text-muted mb-3">{{ block.settings.title }}</p>
+                    <h1 class="hero-heading line-height-sm mb-2 title" data-swiper-parallax="-200">{{ block.settings.header }}</h1>
+                    <div class="row">
+                      <div class="col-lg-5 mx-auto">
+                        <p class="font-weight-light text-muted mb-4 mt-3 subtitle" data-swiper-parallax="-400">{{ block.settings.description }}</p>
+                      </div>
+                    </div><a class="btn btn-primary text" href="{{ block.settings.button_link }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if block.settings.image_slide2 != blank %}
+              {% assign hero_url2 = block.settings.image_slide2 | img_url: 'master' %} 
+            {% else %}
+              {% assign hero_url2 = block.settings.hero_slide_img_url2 %}
+            {% endif%}            
+
+            {% assign colortextmain2 = block.settings.color_text_main2 %}
+            {% assign fontsize_main2 = block.settings.font_size_main2 %}
+                   
+            {% if block.settings.show_background_color_main2 %}
+            {% assign bgcolormain2 = "background-color: " | append: block.settings.color_bg_main2 |append: ';' %}
+            {% else %} 
+            {% assign bgcolormain2 = "background-color: transparent;" %}
+            {% endif %}
+
+            {% assign textcolormain2 = "color : " | append:  block.settings.color_text_main2 | append: ';' %}
+            {% assign titlecolormain2 = "color : " | append:  block.settings.color_title_main2 | append: ';' %}
+            {% assign bgmainopacity2 = "opacity : " | append: block.settings.bg_main_opacity2 | append: '%;' %}
+         
+            <style scoped>              
+                  .slide-2-{{ swiper_id }} {
+                    background: url({{ hero_url2 }}) no-repeat center center;
+                    background-size: cover;                    
+                  }                              
+            </style>      
+
+            {% if block.settings.image_mobile_slide2 != blank %}
+              {% assign hero_url_mobile2 = block.settings.image_mobile_slide2 | img_url: 'master' %} 
+              <style scoped>              
+                @media only screen and (max-width: 499px) {
+                  .slide-2-{{ swiper_id }} {
+                    background: url({{ hero_url_mobile2 }}) no-repeat center center;
+                    background-size: cover;                    
+                  }
+                }               
+              </style>              
+
+            
+            {% endif %}
+
+            <div class="swiper-slide hero bg-center bg-cover d-flex align-items-center slide-2-{{ swiper_id }}">
+              <div class="container-fluid">
+                <div class="row text-lg-center">
+                  <div class="col-lg-8">
+                    <p class="h6 text-uppercase text-muted mb-3">{{ block.settings.title2 }}</p>
+                    <h1 class="hero-heading line-height-sm mb-2 title" data-swiper-parallax="-200">{{ block.settings.header2 }}</h1>
+                    <div class="row">
+                      <div class="col-lg-5 mx-auto">
+                        <p class="font-weight-light text-muted mb-4 mt-3 subtitle" data-swiper-parallax="-400">{{ block.settings.description2 }}</p>
+                      </div>
+                    </div><a class="btn btn-primary text" href="{{ block.settings.button_link2 }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label2 }}</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {% if block.settings.image_slide3 != blank %}
+              {% assign hero_url3 = block.settings.image_slide3 | img_url: 'master' %} 
+            {% else %}
+              {% assign hero_url3 = block.settings.hero_slide_img_url3 %}
+            {% endif%}
+
+            {% if block.settings.image_mobile_slide3 != blank %}
+              {% assign hero_url_mobile3 = block.settings.image_mobile_slide3 | img_url: 'master' %} 
+            {% else %} 
+              {% assign hero_url_mobile3 = hero_url3 %} 
+            {% endif %}
+
+            {% assign colortextmain3 = block.settings.color_text_main3 %}
+            {% assign fontsize_main3 = block.settings.font_size_main3 %}
+                   
+            {% if block.settings.show_background_color_main3 %}
+            {% assign bgcolormain3 = "background-color: " | append: block.settings.color_bg_main3 |append: ';' %}
+            {% else %} 
+            {% assign bgcolormain3= "background-color: transparent;" %}
+            {% endif %}
+
+            {% assign textcolormain3 = "color : " | append:  block.settings.color_text_main3 | append: ';' %}
+            {% assign titlecolormain3 = "color : " | append:  block.settings.color_title_main3 | append: ';' %}
+            {% assign bgmainopacity3 = "opacity : " | append: block.settings.bg_main_opacity3 | append: '%;' %}
+            {% assign slide_effect = block.settings.slide_effet %}
+         
+            <div class="swiper-slide hero bg-center bg-cover d-flex align-items-center" style="background: url({{ hero_url3 }})">
+              <div class="container-fluid">
+                <div class="row text-lg-center">
+                  <div class="col-lg-8">
+                    <p class="h6 text-uppercase text-muted mb-3">{{ block.settings.title }}</p>
+                    <h1 class="hero-heading line-height-sm mb-2 title" data-swiper-parallax="-200">{{ block.settings.header3 }}</h1>
+                    <div class="row">
+                      <div class="col-lg-5 mx-auto">
+                        <p class="font-weight-light text-muted mb-4 mt-3 subtitle" data-swiper-parallax="-400">{{ block.settings.description3 }}</p>
+                      </div>
+                    </div><a class="btn btn-primary text" href="{{ block.settings.button_link3 }}" data-swiper-parallax="-600"><i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label3 }}</a></div>
+                </div>
+              </div>
+            </div>         
+          </div>
+        {% endif %}
+      {% endif %}
+      <div class="swiper-pagination-{{ swiper_id }} px-4 py-2 text-end h5 font-weight-light"></div>
+    </div>
+
+ 
+  </section>
+    {% endfor %}
+
+          
+    
+<style>
+/*
+     Other
+    ------------------------
+*/
+.overflow-visible {
+    overflow: visible !important;
+  }
+  
+  .shadow-0 {
+    box-shadow: none !important;
+  }
+  
+  .bg-center {
+    background-position: center center !important;
+  }
+  
+  .bg-cover {
+    background-size: cover !important;
+  }
+  
+  @media (min-width: 992px) {
+    .hero-heading {
+      font-size: 4rem;
+    }
+  }
+  
+  .line-height-sm {
+    line-height: 1 !important;
+  }
+  
+  .reset-anchor {
+    color: inherit;
+    transition: all 0.3s;
+    text-decoration: none !important;
+  }
+  
+  .reset-anchor:hover, .reset-anchor:focus {
+    text-decoration: none;
+  }
+  
+  .text-gray {
+    color: #6c757d !important;
+  }
+  
+  .social-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    background: #dee2e6;
+    color: #212529;
+    transition: all 0.3s;
+    font-size: 0.75rem;
+    text-decoration: none;
+  }
+  
+  .social-icon:hover, .social-icon:focus {
+    background: #4650dd;
+    color: #fff;
+  }
+  
+  .text-shadow {
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .text-underlined {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .text-underlined::after {
+    content: '';
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: #4650dd;
+    bottom: 2px;
+    left: 0;
+  }
+  /*
+*
+* ===============================================================
+* HERO
+* ===============================================================
+*
+*/
+.hero {
+    padding: 10rem 0 8rem;
+  }
+  
+  @media (min-width: 992px) {
+    .hero {
+      padding: 6rem 0;
+      min-height: 40rem;
+    }
+  }
+  
+  .sub-hero {
+    padding: 9rem 0 5rem;
+  }
+  
+  @media (min-width: 992px) {
+    .sub-hero {
+      padding: 3rem 0;
+      min-height: 20rem;
+    }
+  }
+  /* ==========================================
+      SWIPER SLIDER
+     ========================================== */
+  .swiper-container {
+      overflow: hidden;      
+    }  
+  .swiper-button-prev, .swiper-button-next {
+    width: auto !important;
+    height: auto !important;
+    top: auto !important;
+    bottom: 0 !important;
+    color: #6c757d !important;
+    background: #f8f9fa !important;
+    transition: all 0.3s;
+  }
+  
+  .swiper-button-prev::after, .swiper-button-next::after {
+    display: none;
+  }
+  
+  .swiper-button-prev:hover, .swiper-button-next:hover {
+    background: #4650dd !important;
+    color: #fff !important;
+  }
+  
+  .swiper-divider {
+    font-size: 0.7rem;
+    color: #aaa;
+  }
+  
+  .swiper-button-prev {
+    left: 50% !important;
+    -webkit-transform: translateX(-102%);
+    transform: translateX(-102%);
+    right: auto !important;
+  }
+  
+  .swiper-button-next {
+    right: 50% !important;
+    -webkit-transform: translateX(102%);
+    transform: translateX(102%);
+    leftt: auto !important;
+  }
+  
+  .swiper-button-disabled {
+    opacity: 0.5 !important;
+  }
+  
+  .swiper-thumbnails .swiper-slide img {
+    opacity: 0.7 !important;
+    transition: all 0.3s !important;
+    cursor: pointer !important;
+    width: auto;
+		height: auto;
+    
+  }
+
+
+
+  .swiper-thumbnails .swiper-slide-thumb-active img {
+    opacity: 1 !important;
+  }
+  
+</style>
+
+<script>
+    var sliderID = document.querySelectorAll('.swiper-container');
+    console.log(sliderID);
+
+    var firstSlide = Math.floor(Math.random() * 3)
+
+    sliderID.forEach( (el) => {
+      var uniqID = el.getAttribute("unique-id");
+      //var slideEffect = sliderID.getAttribute("effect");
+      console.log(uniqID);
+      var swiperName = el.id;
+      console.log(swiperName);
+      var slideEffect = el.attributes['effect'].value;
+      console.log(slideEffect);
+      var slideSpeed = el.attributes['speed'].value;
+      console.log(slideSpeed);
+      var slideDelay = el.attributes['delay'].value;
+      console.log(slideDelay);
+      
+
+      var $swiperName = new Swiper( `#${swiperName}`, {
+              parallax: true,
+              speed: +slideSpeed,
+              effect: slideEffect,
+              initialSlide: firstSlide,
+              autoplay: {
+                  delay: +slideDelay,
+                  disableOnInteraction: true,
+              },
+              pagination: {
+                  el: `.swiper-pagination-${uniqID}`,
+                  type: "custom",
+                  renderCustom: function (swiper, current, total) {
+                      return (
+                          ' <span class="h2">' +
+                          ("0" + current).slice(-2) +
+                          "</span> " +
+                          ' <span class="swiper-divider">/</span> ' +
+                          ' <span class="text-muted">' +
+                          ("0" + total).slice(-2)
+                      );
+                      +"</span> ";
+                  },
+              },
+          });
+          console.log($swiperName);    
+    })
+
+
+
+</script>
+{% schema %}
+    
+{ 
+    "name": "Hero Slider", 
+    "class": "section", 
+    "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Common Title"
+          },
+          {
+              "type": "color",
+              "id": "color_text_hover",
+              "label": "Link hover color",
+              "default": "#eeeeee"              
+            },
+            {
+                "type": "page",
+                "id": "page_handle",
+                "label": "Select a page"
+              },
+              {
+                "type": "text",
+                "id": "unique_id",
+                "label": "Slider Unique id / name"
+              }, 
+              {
+                "type": "range",
+                "id": "height",
+                "label": "Slider View Port Height",
+                "default": 100,
+                "unit": "%",
+                "min": 40,
+                "max": 100,
+                "step": 1
+              },                            
+              {
+                "type": "text",
+                "id": "slide_effect",
+                "label": "Slide Effect",
+                "default": "slide"
+              },
+              {
+                "type": "number",
+                "id": "speed",
+                "label": "Speed",
+                "default": 700
+              },             
+              {
+                "type": "number",
+                "id": "delay",
+                "label": "Delay",
+                "default": 2500
+              }               
+      ],
+    "blocks": [
+      {
+        "type": "hero_slide",
+        "name": "Hero Slide ",  
+
+        "settings": [ 
+          
+          {
+            "type": "header",
+            "content": "Slide 1"
+          },
+          { "type": "image_picker", 
+            "id": "image_slide", 
+            "label": "Slide Background Image"
+          },
+          { "type": "image_picker", 
+            "id": "image_mobile_slide", 
+            "label": "Mobil Slide Background Image"
+          },
+          { "type": "url", 
+            "id": "hero_slide_img_url", 
+            "label": "Slide Image URL" 
+          },
+          { "type": "text", 
+            "id": "title", 
+            "default": "Example Title",
+            "label": "Slide Title"
+          },
+          { "type": "text", 
+            "id": "header", 
+            "default": "Example Header",
+            "label": "Slide Header"
+          },
+          { "type": "richtext", 
+            "id": "description", 
+            "default": "<p>Example paragraph</p>",
+            "label": "Slide Description" 
+          },
+          {
+            "type": "checkbox",
+            "id": "text_inside_box",
+            "label": "Show Description",
+            "default": true
+          },
+          { "type": "text", 
+            "id": "button_label", 
+            "default": "Button",
+            "label": "Button Label" 
+          },
+          { "type": "url", 
+          "id": "button_link", 
+          "label": "Button Link" 
+          },
+          { "type": "video_url",
+            "id": "video_slide_url",
+            "accept": ["youtube","vimeo"],                    
+            "label": "Slide Video URL"
+          },
+          {
+            "type": "color",
+            "id": "color_bg_main",
+            "label": "Description Background Color",
+            "default": "#333333"
+          },          
+          {
+            "type":   "range",
+            "id":     "bg_main_opacity",
+            "min":    20,
+            "max":    100,
+            "step":   5,
+            "unit":   "%",
+            "label":  "Background Opacity",
+            "default":   100      
+          },
+          {
+            "type": "checkbox",
+            "id": "show_background_color_main",
+            "label": "Show Background Color",
+            "default": true
+          },
+          {
+            "type": "color",
+            "id": "color_title_main",
+            "label": "Title color - Main",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "color_text_main",
+            "label": "Text color - Main",
+            "default": "#ffffff"
+          },  
+          {
+            "type":   "range",
+            "id":     "font_size_main",
+            "min":    8,
+            "max":    36,
+            "step":   1,
+            "unit":   "px",
+            "label":  "Font size - Main",
+            "default":   14
+          }
+        ]
+      }
+    ],      
+        "presets": [
+        {
+          "category": "Hero",
+          "name": "Hero Slider"
+        }
+      ]
+  }
+  
+  {% endschema %}
+  {% comment %}theme-check-enable{% endcomment %}

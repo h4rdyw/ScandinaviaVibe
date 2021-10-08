@@ -13,8 +13,7 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- <script src="https://unpkg.com/vue@3.0.5"></script> -->
-    <script src="{{ 'Wishlist.js' | asset_url }}" defer="defer"></script>
-
+    <script src="{{ 'Wishlist.js' | asset_url }}" defer="defer"></script> 
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
@@ -25,10 +24,11 @@
     {% section 'announcement-bar' %}
 
     <!-- Header hook for plugins -->
-    {{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}
+    <!--{{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
     {{ 'application.css.scss' | asset_url | stylesheet_tag }}
     {{ 'font-style.css' | asset_url | stylesheet_tag }}   
-    {{ 'lite-yt-embed.css' | asset_url | stylesheet_tag }}     
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.8.0/gsap.min.js"></script>-->
   </head>
   <body>
    
@@ -44,7 +44,8 @@
     {{ 'bootstrap.min.js' | asset_url | script_tag }}
     {{ 'application.js' | asset_url | script_tag }}
     {{ 'lite-yt-embed.js' | asset_url | script_tag }}
-    
+    {{ 'lite-yt-embed.css' | asset_url | stylesheet_tag }}     
+    {% render 'cookie-banner' %}
   </body>
 </html>
 {% comment %}theme-check-enable{% endcomment %}

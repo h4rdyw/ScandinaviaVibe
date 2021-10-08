@@ -14,7 +14,7 @@
     >
     <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="{{ routes.root_url }}">ScandinaviaVibe</a>
+    <a class="navbar-brand" href="{{ routes.root_url }}">{{ shop.name }}</a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         {% for link in linklists.main-menu.links %} {% assign child_list_handle
@@ -73,7 +73,9 @@
       <a href="/pages/wishlist" id="button-wishlist-cart"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
     </div>  
       <div id="cart-icon" style="display:inline-block;">
-      <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
+      {% comment %} <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a> {% endcomment %}
+      <a href="{{ routes.cart_url }}"><svg class="heart-badge" alt="cart">{% render 'cart-icon' %}</svg><a><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
+
     </div>
   </div>
   </div>
