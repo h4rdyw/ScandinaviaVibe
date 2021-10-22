@@ -1,5 +1,5 @@
 {% comment %}theme-check-disable{% endcomment %}
-<div class="position-relative text-center bg-light py-5">
+<div class="position-relative text-center bg-none py-5">
   <div class="col-md-5 p-lg-5 pt-3 mx-auto">
     <h1 class="display-4">
       {{ blog.title }}    
@@ -10,16 +10,16 @@
 
 <div class="container py-2">
   {% paginate blog.articles by 8 %}
-    <div class="d-flex row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-3">
+    <div class="row d-flex row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 g-3">
       {% for article in blog.articles %}
         <div class="col d-flex">
-          <div class="card d-flex flex-fill shadow-none rounded-0 border-0">
+         <div class="card d-flex flex-fill shadow-none rounded-0 border-0">
             {% if article.image.src != null  %}
-              <a href="{{ article.url }}"><img src="{{ article.image.src | img_url: 'master' }}" class="card-img-top" width="360" height="360" style="object-fit: cover;" loading="lazy" alt="{{ article.image.alt }}"></a>
+              <a href="{{ article.url }}"><img src="{{ article.image.src | img_url: 'master' }}" class="card-img-top" width="240" height="240" style="object-fit: cover;" loading="lazy" alt="{{ article.image.alt }}"></a>
             {% else %}
               {{ 'image' | placeholder_svr_tag: 'card-img-top' }}     
-            {% endif %}  <h5 class="my-2"><a class="text-underline-hover" href="{{ article.url }}">{{ article.title }}</a></h5>
-            <div class="card-body d-flex flex-fill flex-column justify-content-start py-0 px-0">
+            {% endif %}  <h5 class=px-2 my-2"><a class="text-underline-hover" href="{{ article.url }}">{{ article.title }}</a></h5>
+            <div class="card-body d-flex flex-fill flex-column justify-content-start py-0 px-0 card-backdrop">
               
               {% comment %} {{ article.author }} @ {{ article.created_at }} {% endcomment %}
               <p class="blog-excerpt">
@@ -31,11 +31,29 @@
               </p>
             </div>    
           </div>
-        </div>
+          {% comment %} {% render 'blog-slideupcard' %} {% endcomment %}
+        </div>       
       {% endfor %}
     </div>
         
   {% render 'pagination', paginate: paginate %}
   {% endpaginate %}
 </div>
+<style scoped>      
+    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+      .card-backdrop {
+        background-color: rgba(255, 255, 255, 0.35); 
+        -webkit-backdrop-filter: blur(10px);
+        backdrop-filter: blur(10px);
+      }
+    }
+  
+    
+    /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+      .card-backdrop {
+        background-color: rgba(255, 255, 255, .5);
+      }
+    }
+  </style>
 {% comment %}theme-check-enable{% endcomment %}

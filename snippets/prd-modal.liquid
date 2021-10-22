@@ -1,0 +1,201 @@
+{% comment %}theme-check-disable{% endcomment %}
+<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content rounded-0 border-0">
+            <div class="modal-header" style="border-bottom: none;">
+              <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body" id="modalprdbody">
+                <div class="row d-flex">
+                      <div id="modalimgcol" class="col-12 col-md-6 col-auto">
+                        <img class="img-fluid modal-img"  src="" id="productInfoImg" loading="lazy" alt=""> 
+                        <div id="badge"></div>
+                      </div>         
+
+                      <div class="col-12 col-md-6 col-auto"> 
+                        <p id="productInfoDescription" class="text-product-desc"></p>
+                        <style scoped>
+                          .form-select {
+                              border-left: none;
+                              border-right: none;
+                              border-top: none;
+                              font-weight: 600 !important;
+                          }
+                          input {
+                            border-left: none;
+                            border-right: none;
+                            border-top: none;
+                            border-bottom: 1px solid #ced4da;                              
+                        }    
+                        </style>
+                        <form action="#" id="addToCartForm" class="row mx-auto">
+                          <p id="productInfoPrice" class="text-header-title" style="line-height:2.5rem;"></p>
+                          <select name="id" id="modalItemID" class="form-select col-auto w-100 overflow-hidden" style="display:inline;">
+                          </select>
+                          <p></p>
+                          
+                          <ul id="qty-part" class="list-inline mb-4">
+                            <li class="list-inline-item me-3"><strong>Quantity</strong></li>
+                            <li class="list-inline-item">
+                              <div class="border d-flex align-items-center justify-content-between p-1">
+                                <div class="quantity py-0">
+                                  <button class="dec-btn p-0" onclick="event.preventDefault();decrease(this)"><i class="fas fa-caret-left"></i></button>
+                                  <input class="form-control border-0 shadow-0 p-0 quantity-result" type="text" name="quantity" id="modalItemQuantity" value="1" style="font-weight:600;">
+                                  <button class="inc-btn p-0" onclick="event.preventDefault();increase(this)"><i class="fas fa-caret-right"></i></button>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>  
+                          <P></P>
+                          <button type="submit" id="btnAddToCart" class="btn-add-to-cart w-100">Add to Cart</button>
+                          <p></p>                  
+                        </form>
+                        <div class="text-center close-modal-bottom" style="min-height:55px;">
+                          <button type="button" id="btnBottomClose" class="btn-close-modal" data-bs-dismiss="modal" aria-label="close">                                       
+                            <svg class="icon-close-modal" alt="cancel add to cart">{% render 'icon-xsquare' %}</svg>
+                          </button>
+                        </div>                  
+                      </div>
+                </div>             
+            </div> 
+            {% comment %} <div class="modal-footer" style="border-top: none;">
+              <div class="col-12 col-md-6"></div>
+              <div class="col-12 col-md-6 px-2">
+                <style scoped>
+                  .form-select {
+                      border-left: none;
+                      border-right: none;
+                      border-top: none;
+                  }
+                  input {
+                    border-left: none;
+                    border-right: none;
+                    border-top: none;
+                    border-bottom: 1px solid #ced4da;
+
+                    body.modal-open {
+                      margin-left: auto !important;
+                      margin-right: auto !important;
+                      overflow-y: scroll !important;
+                      overflow-x: scroll !important;
+                      }
+                }
+
+                
+                
+                  </style>
+                <form action="#" id="addToCartForm" class="row">
+                  <p id="productInfoPrice" class="text-header-title"></p>
+                  <select name="id" id="modalItemID" class="form-select col-auto w-100 overflow-hidden">
+                  </select>
+                  
+                  <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
+                  <P></P>
+                  <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
+                  <p></p>                  
+                </form>
+                <div class="text-center">
+                  <button type="button" class="btn-close-modal" data-bs-dismiss="modal" aria-label="close">                                       
+                    <svg class="icon-close-modal" alt="cancel add to cart">{% render 'icon-xsquare' %}</svg>
+                  </button>
+                </div>
+              </div>              
+            </div> {% endcomment %}
+        </div>
+    </div>
+</div>
+<style>
+  
+  @media only screen and (min-width : 768px) {
+      .close-modal-bottom {
+        height: 0 !important;
+        display: none;
+    }
+  }
+  
+  .icon-close-modal {
+    height: 32px;
+    width: 32px;
+    fill: transparent;
+    stroke: #11171B;
+    transition: fill 0.3s ease;
+  }
+  .btn-close-modal {  
+    opacity: 1;  
+    width: 32px;
+    height: 32px;
+    padding-left: 1px;
+    padding-right: 1px;
+    position: relative;
+    border:none;
+    background-color: transparent;
+    transition: 0.15s;
+    fill: transparent;
+    stroke: transparent;
+    transition: fill 0.3s ease;
+  }
+ 
+  body.modal-open {
+    height: 100%;
+    -webkit-overflow-scrolling: auto;
+  }
+
+  html.modal-open {
+    height: 100%;
+    -webkit-overflow-scrolling: auto;
+  }
+ 
+  .modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1040;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000 !important;
+  }
+  .modal-backdrop.fade {
+    opacity: 0;
+  }
+  .modal-backdrop.show {
+    opacity: 0.6;
+  }
+
+  /*
+  @media only screen and (max-width: 768px) {
+    body.modal-open {
+     position: fixed;
+     left: 0 !important;
+     top: 0 !important;
+     bottom: 0 !important;
+     right: 0 !important;
+    }
+  
+    html.modal-open {
+     position: fixed;
+     left: 0 !important;
+     top: 0 !important;
+     bottom: 0 !important;
+     right: 0 !important;
+    }
+  }
+  */
+</style>  
+
+<script>
+  function increase(x) {   
+    var inputVal = x.previousElementSibling;
+    inputVal.value++;
+}
+function decrease(x) {
+    var inputVal = x.nextElementSibling;
+    if (inputVal.value > 1) {
+        inputVal.value--;
+    }
+}
+
+
+</script>
+{% comment %}theme-check-enable{% endcomment %}

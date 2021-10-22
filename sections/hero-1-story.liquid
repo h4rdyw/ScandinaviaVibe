@@ -7,6 +7,8 @@
 
 
 {% if block.type == 'hero_story' %} 
+{% assign headingcolor = block.settings.heading_textcolor %}
+{% assign descfontsize = block.settings.font_size_desc %}
 {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
 {% assign story_handle = story_handle | plus : 1 %}
 
@@ -17,12 +19,12 @@
      {% assign hero_img_url = block.settings.hero_story_img_url %}
 {% endif %}
 
-  <div class="py-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex bg-light">
+  <div class="py-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex">
 
-    <!--/  Hero on The Left / -->
-    
+   <!-- VIDEO -->    
     {% if block.settings.video_story_url %}
 
+    <!--/  Hero on The Left / -->
 
     {% if block.settings.placement < 2 %}
         <div class="col d-flex flex-fill"> 
@@ -35,7 +37,7 @@
               </div>          
               <div class="hero-1-stuff-{{ story_handle }}">
                   {% if block.settings.title %}
-                    <h1>{{ block.settings.title }}</h1>
+                    <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>
                   {% endif %}  
                   {% if block.settings.button_link %}
                     <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
@@ -43,7 +45,7 @@
               </div>
             </div>    
            </div>
-           <div class="col px-4 d-flex align-content-stretch">
+           <div class="col px-4 d-flex align-content-stretch" style="font-size: {{ descfontsize }}px;">
             <p>{{ block.settings.description }}</p>
           </div>
     
@@ -51,7 +53,7 @@
 
         <!--/  Hero on The Right / -->
 
-          <div class="col px-4 d-flex flex-fill">
+          <div class="col px-4 d-flex flex-fill" style="font-size: {{ descfontsize }}px;">
             <p>{{ block.settings.description }}</p>
           </div>  
           <div class="col d-flex flex-fill">        
@@ -65,7 +67,7 @@
                 </div>   
                 <div class="hero-1-stuff-{{ story_handle }}">
                   {% if block.settings.title %}
-                    <h1>{{ block.settings.title }}</h1>  
+                    <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>  
                   {% endif %}
                   
                   {% if block.settings.button_link %}
@@ -93,22 +95,22 @@
               <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
               <div class="hero-1-stuff-{{ story_handle }}">
                 {% if block.settings.title %}                
-                   <h1>{{ block.settings.title }}</h1>
+                   <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>
                 {% endif %}  
-                {% if block.settings_button_link %}
+                {% if block.settings.button_link %}
                   <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>
                 {% endif %}
               </div>
           </div>    
       </div>
-      <div class="col px-4 d-flex flex-fill align-content-stretch">
+      <div class="col px-4 d-flex flex-fill align-content-stretch" style="font-size: {{ descfontsize }}px;">
       <p>{{ block.settings.description }}</p>
       </div>
 
     {% else %}
     
     <!--/ Hero On the right /-->
-    <div class="col px-4 d-flex flex-fill">
+    <div class="col px-4 d-flex flex-fill" style="font-size: {{ descfontsize }}px;">
       <p>{{ block.settings.description }}</p>
     </div>  
     <div class="col d-flex flex-fill">
@@ -116,7 +118,7 @@
           <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
           <div class="hero-1-stuff-{{ story_handle }}">
             {% if block.settings.title %}
-              <h1>{{ block.settings.title }}</h1>
+              <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>
             {% endif %}
               {% if block.settings.button_link %}
                 <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
@@ -147,7 +149,9 @@
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
       {{ storyhandle }} {
         -webkit-backdrop-filter: blur(10px);
+        background-color: rgba(255, 255, 255, 0.35); 
         backdrop-filter: blur(10px);
+        border-radius: 2px;
       }
     }
   
@@ -214,10 +218,32 @@
           "default": "Example Heading",
           "label": "Heading Title"
         },
+        {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
         { "type": "richtext", 
           "id": "description", 
           "default": "<p>Example paragraph</p>",
           "label": "Description" 
+        },
+        {
+          "type": "color",
+          "id": "descr_textcolor",
+          "label": "Description Text Color",
+          "default": "#11171B"
+        },
+        {
+          "type":   "range",
+          "id":     "font_size_desc",
+          "min":    8,
+          "max":    36,
+          "step":   1,
+          "unit":   "px",
+          "label":  "Story Font size",
+          "default":   16
         },
         { "type": "text", 
           "id": "button_label", 
@@ -278,7 +304,7 @@
         padding: 15px;
       }
        {% endcomment %}
-      
+             
 </style>
 
 <!-- -->

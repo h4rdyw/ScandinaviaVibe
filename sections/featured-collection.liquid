@@ -1,26 +1,38 @@
 {% comment %}theme-check-disable{% endcomment %}
+{%- liquid 
+    
+assign xxlcard = settings.xxl_card 
+assign xlcard = settings.xl_card 
+assign lcard = settings.l_card 
+assign mcard = settings.m_card 
+assign scard = settings.s_card 
+assign xscard = settings.xs_card 
+assign xsoverride = settings.xsoverride_card 
+assign cardwidth = settings.card_img_width_frontpage 
+assign cardheight = settings.card_img_height_frontpage 
 
-{% assign offset_products = section.settings.offset_products %}
-{% assign number_of_products = section.settings.number_of_products %}
-{% assign randomize = section.settings.randomize %}
-{% assign section_id = section.settings.section_id %}
+assign offset_products = section.settings.offset_products 
+assign number_of_products = section.settings.number_of_products 
+assign randomize = section.settings.randomize 
+assign section_id = section.settings.section_id 
 
-{% assign min = 0 %}
-{% assign max = offset_products %}
-{% assign diff = max | minus: min %}
-{% assign random_number = "now" | date: "%S" | modulo: diff | plus: min %}            
+assign min = 0 
+assign max = offset_products 
+assign diff = max | minus: min 
+assign random_number = "now" | date: "%S" | modulo: diff | plus: min 
 
-{% assign limit_products = "limit: " | append: number_of_products %}
-{% assign offset_products = "offset: " | append: random_number %}            
+assign limit_products = "limit: " | append: number_of_products 
+assign offset_products = "offset: " | append: random_number    
+-%}
 
 <section class="container py-4">
      <h2 class="text-center my-3">{{ section.settings.title }}</h2>
-     <div id="prdRow" class="row d-flex g-3 row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 py-5">
+     <div id="prdRow" class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-5">
 
         {% if randomize == true  %}   
             {% for product in collections[section.settings.featured_collection].products limit: number_of_products offset: random_number %}
 
-                {% render 'prd-card' , product: product, section_id: section_id %}
+                {% render 'prd-card' , product: product, section_id: section_id , cardwitdh : cardwidth , cardheight : cardheight %}
 
             {% endfor %} 
            
@@ -28,7 +40,7 @@
 
             {% for product in collections[section.settings.featured_collection].products limit: number_of_products %}
 
-            {% render 'prd-card' , product: product , section_id: section_id %}
+            {% render 'prd-card' , product: product , section_id: section_id , cardwitdh : cardwidth , cardheight : cardheight %}
 
             {% endfor %}           
 
@@ -38,41 +50,9 @@
      </div>
      
  </section>
- <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-        <div class="modal-content rounded-0">
-            <div class="modal-header" style="border-bottom: none;">
-                <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                      <div class="col-12 col-md-6">                       
-                        <img class="img-fluid modal-img" src="" id="productInfoImg" alt="">
-                        <div id="badge"></div>
-                      </div>
-                      <div class="col-12 col-md-6 px-2">
-                        <p id="productInfoPrice" class="text-header-title"></p>
-                        <p id="productInfoDescription" class="text-product-desc"></p>                        
-                      </div>                     
-                </div>             
-            </div>
-            <div class="modal-footer" style="border-top: none;">
-                <div class="col-12 col-md-6"></div>
-                <div class="col-12 col-md-6 px-2">
-                    <form action="#" id="addToCartForm" class="row">
-                        <select name="id" id="modalItemID" class="form-select col-auto">
-                        </select>
-                        <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
-                        <p></p>
-                        <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
-                        <p></p>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+ {% render 'prd-modal' %}
+ 
  
 {% schema %}
 {

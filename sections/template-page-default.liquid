@@ -1,0 +1,78 @@
+{% if section.settings.container == 'container' %}
+    {% assign container_class = 'container' %}
+{% else %}
+    {% assign container_class = 'container-fluid' %}
+{% endif %}
+
+<div class="{{ container_class }} py-5">
+    
+
+    {% for block in section.blocks %}
+        {% case block.type %}
+            {% when 'page_title' %}
+                <h1 class="py-2">{{ page.title }}</h1>
+
+            {% when 'page_date' %}
+                {% if section.settings.show_published_date %}
+                    <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
+                {% endif %}
+            {% when 'page_content' %}
+                <div class="py-5">{{ page.content }}</div>               
+            {% else %}
+                
+        {% endcase %}
+        
+    {% endfor %}
+</div>
+
+
+
+{% schema %}
+    {
+        "name": "Page Settings",
+        "settings": [
+            {
+
+            "type": "select",
+            "id": "container",
+            "label": "layout",
+            "options": [
+                {
+                    "value": "container",
+                    "label": "Container"
+                },
+                {
+                    "value": "container-fluid",
+                    "label": "Container Fluid"
+                }
+            ],
+            "default": "container"
+            },
+            {
+                "type": "checkbox",
+                "id": "show_published_date",
+                "default": true,
+                "label": "show Publish Date"
+
+            }
+        ],
+        "blocks": [
+            {
+                "type": "page_title",
+                "name": "Title",
+                "limit": 1
+            },
+            {
+                "type": "page_date",
+                "name": "Date",
+                "limit": 1
+            },
+            {
+                "type": "page_content",
+                "name": "Content",
+                "limit": 1
+            }
+        ]
+    }
+{% endschema %}
+

@@ -7,7 +7,7 @@
         {% assign media-video = media-video | plus: 1 %}
         <div class="col d-flex">
             <div class="card d-flex flex-fill">
-                <div class="ratio ratio-16x9" style="min-width:360px;">
+                <div class="ratio ratio-16x9" style="min-width:300px;">
                 {{ media | video_tag: controls: true }}
                 </div>
             </div>
@@ -19,7 +19,7 @@
         {% assign video1  = video[0] | split: '/embed/' %}
          <div class="col d-flex">
             <div class="card d-flex flex-fill">
-                <div class="ratio ratio-16x9" style="min-width:360px;">               
+                <div class="ratio ratio-16x9" style="min-width:300px;">               
                   <lite-youtube videoid="{{ video1[1] }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                 </div>
             </div>

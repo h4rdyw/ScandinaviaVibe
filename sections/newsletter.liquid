@@ -22,7 +22,7 @@
     <div class="container">
     <div class="section_form">
       {% if section.settings.newsletter_title != blank %}
-        <h5 class="text-header-title" style="font-size:1.25rem;">{{ section.settings.newsletter_title }}</h5>
+        <h2 class="text-header-title" style="font-size:1.25rem;">{{ section.settings.newsletter_title }}</h2>
       {% endif %}
       {% if section.settings.newsletter_text != blank %}
         <div class="newsletter-text">{{ section.settings.newsletter_text }}</div>
@@ -75,131 +75,6 @@
 /* #Newsletter
 ================================================== */
 
-/*--- Newsletter popup ---*/
-
-.newsletter-popup.remodal {
-  background-color: {{ settings.newsletter_popup_background_color }};
-  max-width: 740px;
-  overflow:hidden;
-  padding:0;
-  {% if settings.use_newsletter_border == true %}
-    border: 5px solid {{ settings.border_color }};
-  {% endif %}
-  @include respond-to('medium'){
-    line-height: 0;
-  }
-  .popup-signup-show--false {
-    display: none;
-  }
-}
-
-.newsletter-image--true.align-right .remodal-close {
-  left: 0;
-}
-
-.newsletter-both-names--false {
-  .newsletter input[type="text"] {
-    width: 100%;
-  }
-}
-
-.newsletter-both-names--true {
-  .newsletter input[type="text"] {
-    width: 49%;
-    float: left;
-    @include respond-to('small') {
-      width: 100%;
-    }
-  }
-  .firstName {
-    margin-right: 2%;
-  }
-}
-
-.newsletter-img {
-  width: 40%;
-  display: inline-block;
-  float: {{ settings.newsletter_popup_image_align }};
-  @include respond-to('medium'){
-    width: 100%;
-  }
-  img {
-    width: 100%;
-    display: block;
-  }
-}
-
-.newsletter-info {
-  text-align: {{ settings.newsletter_popup_text_align }};
-  color: {{ settings.newsletter_popup_color }};
-  overflow: hidden;
-  background-color: {{ settings.newsletter_popup_background_color }};
-  height: auto;
-  float: left;
-  @include respond-to('medium'){
-    padding: 20px;
-    width: 100% !important;
-    position: relative;
-  }
-  input.contact_email[type="email"] {
-    width: 65%;
-    float: left;
-    @include respond-to('medium'){
-      width: 100%;
-    }
-  }
-  #contact_form input.sign_up[type="submit"] {
-    width: calc(35% - 8px);
-    margin-left: 8px;
-    float: left;
-    @include respond-to('medium'){
-      margin-left: 0;
-      width: 100%;
-    }
-  }
-}
-
-.newsletter-image--false {
-  .newsletter-info {
-    width: 100%;
-    position: relative;
-    height: auto;
-    float: none;
-  }
-}
-
-.align-left .newsletter-info {
-  right:0;
-}
-
-.newsletter-description h2 {
-  color: {{ settings.newsletter_popup_color }};
-  margin-top: 0;
-}
-
-.newsletter-description {
-  width: 60%;
-  padding: 30px;
-  margin: 0 auto;
-
-  {% if settings.newsletter_bg != nil %}
-    @include respond-to('large'){
-      position: absolute;
-      top: 50%;
-      -webkit-transform: translateY(-50%);
-      -ms-transform: translateY(-50%);
-      transform: translateY(-50%);
-    }
-  {% endif %}
-
-  @include respond-to('medium'){
-    font-size: inherit;
-    width: auto;
-  }
-  @include respond-to('xlarge'){
-    font-size: inherit;
-  }
-}
 
 /*--- Newsletter section above footer ---*/
 

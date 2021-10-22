@@ -1,22 +1,30 @@
 {% comment %}theme-check-disable{% endcomment %}
-{% if section.settings.image != nil %}
-    <header class="banner center page_banner">
-      <img  src="{{ section.settings.image | img_url: 'master' }}"
-            width="640"
-            height="360"
-            alt="{% if section.settings.image.alt != blank %}{{ section.settings.image.alt | escape }}{% else %}{{ page.title | escape }}{% endif %}"
-            
-            loading="lazy"
-             />
-      <div class="caption">
-        <h1 class="headline">{{ section.settings.title }}</h1>
-        <p class="subtitle">{{ section.settings.subtitle }}</p>
+{{ 'application.css' | asset_url | stylesheet_tag }} 
+
+{%- liquid 
+  assign hero_url = section.settings.image | img_url: 'master'
+  assign section_id = section.settings.section_id 
+  assign divider_heading = section.settings.title 
+  assign divider_desc = section.settings.divider_description | strip_html
+  -%} 
+  
+  <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
+    <div class="container py-5">
+      <div class="row px-1">
+        <div class="col-lg-6 ms-auto">
+          <h2 class="hero-heading">{{ divider_heading }}</h2>
+          <p class="text-muted">{{ divider_desc }}</p>
+        </div>
       </div>
-    </header>
-  {% endif %}
-  
-  <a name="pagecontent" id="pagecontent"></a>
-  
+    </div>
+    <style scoped>              
+        .{{ section_id }}-bg-cover {
+           background: url({{ hero_url }}) no-repeat center center;
+           background-size: cover;                    
+        }                              
+    </style>      
+
+
   <div class="container py-5">
   
     <div>
@@ -76,7 +84,8 @@
   </div>
   
   
-  
+</section>
+
   {% schema %}
   
   {
@@ -89,13 +98,23 @@
         "id": "title",
         "label": "Heading",
         "default": "Contact Us"
+      },      
+      { 
+        "type": "image_picker", 
+        "id": "image", 
+        "label": "Hero Image"
       },
+      { 
+        "type": "url", 
+        "id": "hero_img_url", 
+        "label": "Image URL" 
+      },          
       {
-        "type": "text",
-        "id": "subtitle",
-        "label": "Subheading",
-        "default": "We'll be in touch"
-      }
+        "type": "richtext",
+        "id": "divider_description",
+        "default": "<p></p>",
+        "label": "Description"
+      }      
     ]
   }
   

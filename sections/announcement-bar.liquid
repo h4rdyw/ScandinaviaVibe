@@ -4,7 +4,7 @@
     {% if section.settings.home_page_only == false or template.name == 'index' %}
     <style>
       .announcement-bar {
-        {% if section.settings.show_background_color %} background-color: {{ section.settings.color_bg }}; {% else %} background-color: transparent; {% endif %}
+        {% if section.settings.show_background_color %} background-color: {{ section.settings.color_bg }}!important; {% else %} background-color: transparent; {% endif %}
           text-align: center;
         {% if section.settings.header_padding > 0 %}
           top: {{ section.settings.header_padding }}px !important;
@@ -31,6 +31,7 @@
         @media only screen and (max-width: 600px) {
           .announcement-bar p {
           font-size: 14px !important;
+          padding: 9px 0;
         }
       }
       
@@ -149,7 +150,7 @@
         {
           "type": "checkbox",
           "id": "sticky_header",
-          "label": "Sticky Header ",
+          "label": "Fixed Bar",
           "default": true
         },
       {

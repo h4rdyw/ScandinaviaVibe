@@ -1,0 +1,120 @@
+ <!-- Divider section-->
+ {% assign page_handle = page.handle %}
+ {% assign collection_handle = collection.handle %}
+ {% assign template_handle = template.name %}
+ {% for block in section.blocks %}
+
+  {%- liquid 
+  assign hero_url = block.settings.image | img_url: 'master'
+  assign section_id = block.settings.section_id 
+  assign divider_heading = block.settings.title 
+  assign divider_desc = block.settings.divider_description 
+  -%} 
+
+ 
+ 
+{% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.collection_handle == collection_handle  or template_handle == 'list-collections' %}
+
+ <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
+    <div class="container py-2">
+      <div class="row px-1">
+        <div class="col-lg-6 ms-auto">
+          <h2 class="hero-heading">{{ divider_heading }}</h2>
+          <p class="text-muted">{{ divider_desc | strip_html }}</p>
+          {% if block.settings.button_link %}
+          <a class="btn btn-primary" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <style scoped>              
+        .{{ section_id }}-bg-cover {
+           background: url({{ hero_url }}) no-repeat center center;
+           background-size: cover;                    
+        }                              
+    </style>      
+  </section>
+{% endif %} 
+{% endfor %}
+
+  {% schema %}
+  {
+    "name": "Divider",
+    "settings": [
+      {
+      "type": "text",
+      "id": "title",
+      "label": "Common Title"                 
+      }
+    ],
+    "blocks": [
+      {
+      "type": "divider",
+      "name": "Divider",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        {
+          "type": "blog",
+          "id": "blog_handle",
+          "label": "Select a blog"
+        },
+        {
+          "type": "collection",
+          "id": "collection_handle",
+          "label": "Select a collection"
+        },
+        {
+          "type": "text",
+          "id": "section_id",
+          "default": "gallery",
+          "label": "Section Unique Name / ID"
+        },           
+        { 
+          "type": "image_picker", 
+          "id": "image", 
+          "label": "Hero Image"
+        },
+        { 
+          "type": "url", 
+          "id": "hero_img_url", 
+          "label": "Image URL" 
+        },
+        
+        { "type": "text", 
+          "id": "button_label", 
+          "default": "Button",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link", 
+        "label": "Button Link" 
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Divider Header",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "divider_description",
+          "default": "<p>Featured description</p>",
+          "label": "Description"
+        }       
+        
+    ]
+  }
+],
+    
+    "presets": [
+    {
+        "category": "divider",
+        "name": "Divider"
+    }
+    ]
+}
+  {% endschema %}

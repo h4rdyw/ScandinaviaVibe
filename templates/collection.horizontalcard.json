@@ -1,0 +1,8 @@
+{
+    "sections" : {
+        "template": {
+            "type": "collection-horizontalcard"
+        }
+    },
+    "order" : [ "template" ]
+}

@@ -1,10 +1,17 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% assign blog_handle = blog.handle %}
+{% assign collection_handle = collection.handle %}     
+{% assign template_handle = template.name %}
+{% assign collection_template_suffix = collection.template_suffix %}
 
-<section class="container-fluid px-0 py-0 bg-none">
-    <div class="container-fluid d-flex flex-wrap row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
+<section class="container-fluid px-0 py-0 bg-none">  
+    <div class="container-fluid d-flex flex-wrap row-cols-xxl-4 row-cols-l-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
         {% for block in section.blocks %}
-            {% render 'brand-card', block: block  %}         
-   
+                {% if block.settings.page_handle == page_handle or template == 'index' or block.settings.collection_handle == collection_handle or template_handle == 'list-collections' or block.settings.blog_handle == blog_handle or collection_template_suffix != nil %}
+
+                {% render 'brand-card', block: block  %}         
+            {% endif %}
        {% endfor %}
      </div>     
    </div>
@@ -16,7 +23,7 @@
      }
    }
    </style>
- 
+</section> 
 
 {% schema %}
     {
@@ -36,9 +43,28 @@
                 "name": "Brand",
                 "settings": [
                     {
+                        "type": "page",
+                        "id": "page_handle",
+                        "label": "Select a page"
+                    },
+                    {
+                        "type": "blog",
+                        "id": "blog_handle",
+                        "label": "Select a blog"
+                    },
+                    {
+                        "type": "collection",
+                        "id": "collection_handle",
+                        "label": "Select a collection"
+                    },
+                    {
                         "type": "image_picker",
                         "id": "image",
                         "label": "Brand Image"
+                    },
+                    { "type": "url", 
+                        "id": "brand_img_url", 
+                        "label": "Image URL" 
                     },
                     {
                         "type": "text",

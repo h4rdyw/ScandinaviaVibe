@@ -11,21 +11,21 @@
 
  <article itemscope itemtype="https://schema.org/BlogPosting">
   <div class="container py-5">
-    <div class="row">
-      <div class="col-12 col-md-8 py-2">
+    <div class="row row-cols">
+      <div class="col-12 col-md-8">
         <div class="article-section">
           {% for block in section.blocks %}
             {% case block.type %}
                 {% when 'featured_image' %}
                     {% if article.image != blank %}
-                        <img src="{{ article.image | img_url: 'master' }}" class="img-fluid eounded w-100" style="width: 100%; min-height: 50vh; max-height:70vh;object-fit: cover;" >    
+                        <img src="{{ article.image | img_url : 'master' }}" class="img-fluid eounded w-100" style="width: 100%; min-height: 50vh; max-height:70vh;object-fit: cover;" >    
                       {% endif %}
 
                 {% when 'title' %}
                     <div class="article-title my-2"><h1 class="display-4">{{ article.title }}</h1></div>
 
-                {% when 'article_meta' %}
-                    <!-- /<div class="article-meta my-2"><p class="lead">{{ author }} / {{ date }}</p> </div> /-->
+                {% comment %} {% when 'article_meta' %}
+                    <div class="article-meta my-2"><p class="lead">{{ author }} / {{ date }}</p> </div> {% endcomment %}
 
                 {% when 'content' %}    
                     <div class="my-2">{{ article.content }}</div>                
@@ -34,12 +34,19 @@
                     <div class="my-4">{{ article.excerpt }}</div>   
 
 
-                {% when 'video_url' %}         
+
+                {% when 'video_url' %}        
+                  {% if block.settings.video_url.id %}                
+                  
                     <div class="my-4">
                           <div class="ratio ratio-16x9">
                             <lite-youtube videoid="{{ block.settings.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                           </div>
                     </div>   
+                  {% endif %}  
+
+                {% comment %} {% when 'featured_gallery' %}                     
+                   {% render 'prd-gallery' %}    {% endcomment %}
 
                 {% else %}
 
@@ -67,12 +74,12 @@
               {% render 'pagination', paginate: paginate %}
             {% endpaginate %}
           
-            <div>
+            <div class="py-5">
               {% form 'new_comment', article %}
               
                 {% include 'form-error', form: form %}
                 
-                <div class="my-5 p-2 bg-light">
+                <div class="my-2 p-2 bg-light">
                   <h3> Leave a comment</h3>
                   <div class="form-floating my-3">    
                     <input class="form-control" type="text" name="comment[author]" id="CommentAuthor" placeholder="name" value="{{ form.author }}" autocapitalize="words">
@@ -93,13 +100,13 @@
                 <button type="submit" class="btn-reg" name="update">POST</button>
 
               {% endform %}
+
             </div>
           {% endif %}
         </div>
       </div>
       
-      {% comment %} <div class="col12 col-md-4">Sidebar</div> {% endcomment %}
-       <div class="col12 col-md-4">
+       <div class="col-12 col-md-4">
             <div class="sidebar-section">
               {% for block in section.blocks %}
                 {% assign item = block.settings %}
@@ -108,23 +115,22 @@
                   {% when 'image' %}
                
                     <div class="mb-4">
-                        <h2 class="h2">{{ item.title }}</h2>
                         <a href="{{ item.url }}">
                             <img src="{{ item.image | img_url: 'medium' }}" class="w-100">
-                        </a>             
+                        </a>     
+                        <h2 class="h2">{{ item.title }}</h2>
+        
                     </div>          
                     {% when 'video_url' %}
 
-                    {% comment %} <div class="mb04">
+                    {% when 'text' %}
+                      <div class="mb-4">
                         <h3 class="h3">{{ item.title }}</h3>
                         <p>{{ item.description }}</p>
-
-                    </div>    {% endcomment %}
-                 {% else %}   
-                    <div class="mb04">
-                      <h3 class="h3">{{ item.title }}</h3>
-                      <p>{{ item.description }}</p>
-                    </div>
+                      </div>
+                      
+                    {% else %}   
+                    
                   {% endcase %}
                 
               {% endfor %}
@@ -165,8 +171,8 @@
               "type": "excerpt",
               "name": "Article Excerpt",
               "limit": 1
-          },
-          {
+            },
+            {
             "name": "Video",
             "type": "video_url",
             "settings": [
@@ -190,9 +196,9 @@
                     "id": "link",
                     "label": "Link"
                 }
-            ]
-        },
-          {
+              ]
+            },
+            {
             "name" : "SidebarImage",
             "type" : "image",
             "settings" : [
@@ -213,28 +219,92 @@
                     "id": "url",
                     "label": "Link"
                 }
-            ]
-        },
-        {
-          "name": "Sidebar Text",
-          "type": "text",
-          "settings": [
-              {
-                  "type": "text",
-                  "id": "title",
-                  "label": "Title",
-                  "default": "Sidebar Title"
+              ]
+            },
+            { 
+            "name": "Sidebar Text",
+            "type": "text",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "title",
+                    "label": "Title",
+                    "default": "Sidebar Title"
 
+                },
+                {
+                    "type": "richtext",
+                    "id": "description",
+                    "label": "Description"
+                }
+              ]
+            },
+            {
+            "name": "Featured Product Gallery",  
+            "type": "featured_gallery",
+            "settings": [ 
+              {
+                "type": "article",
+                "id": "article_handle",
+                "label": "Select an article"
               },
               {
-                  "type": "richtext",
-                  "id": "description",
-                  "label": "Description"
-              }
+                "type": "collection",
+                "id": "featured_collection",
+                "label": "Collection"
+              },
+              {
+                "type": "text",
+                "id": "section_id",
+                "default": "gallery",
+                "label": "Section Unique Title / ID"
+              },
+              {
+                "type": "text",
+                "id": "title",
+                "default": "Featured Gallery",
+                "label": "Title"
+              },
+              {
+                "type": "richtext",
+                "id": "gallery_description",
+                "default": "<p>Featured products</p>",
+                "label": "Description"
+              },
+              {
+                "type": "range",
+                "id": "number_of_products",
+                "label": "Number of Products to Show",
+                "default": 10,
+                "min": 1,
+                "max": 25,
+                "step": 1
+              },
+              {
+                "type": "checkbox",
+                "id": "randomize",
+                "default": false,
+                "label": "Randomize"
+              },
+              {
+                "type": "range",
+                "id": "offset_products",
+                "label": "Random Offset Max",
+                "default": 5,
+                "min": 5,
+                "max": 100,          
+                "step": 1
+              },
+              {
+                "type": "checkbox",
+                "id": "slide_navigation",
+                "default": false,
+                "label": "Navigation Button"
+              }   
+              ]
+            }
           ]
         }
-      ]
-     }
  {% endschema %}
 
  

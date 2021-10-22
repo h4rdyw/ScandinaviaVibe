@@ -1,4 +1,3 @@
-<!--/ page handle diffrentiates with each page -->
 {% comment %}theme-check-disable{% endcomment %}
 <div class="container">   
       {% assign page_handle = page.handle %}
@@ -34,8 +33,6 @@
                 <h1 class="h3">{{ item.page_title }}</h1> 
                 <div class="my-4">
                   <div class="ratio ratio-16x9">
-                  {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                  {% comment %} <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"></iframe> {% endcomment %}
                   <lite-youtube videoid="{{ item.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
 
                   </div>
@@ -49,11 +46,7 @@
               {% assign page_content = block.settings.page_handle %}  
                   {{ pages[page_content].content }}
             {% endcomment %}
-            {% if block.type == 'video_url' %}                   
-                    
-              
-            
-            {% endif %}
+           
           {% endif %}
         {% endfor %}
   
@@ -167,41 +160,5 @@
       }
       ]
     }
-  {% endschema %}
-
-  {% comment %} <script>
-    
-    iFrameResize({log: true ,
-      checkOrigin: false,
-      minHeight: 200,
-      sizeHeight: true,
-      sizeWidth: true,
-      warningTimeout:0,
-      heightCalculationMethod: 'taggedElement'
-    }, '#iFrameSideBar')
-  </script> {% endcomment %}
-  
-  {% comment %} <script>
-    jQuery(window).on('load', function(){
-      var parentBody = window.parent.document.body;
-      var iFrameResize = parentBody.iFrameResize;
-
-      //var iFrameResize = parentBody.window.iFrameResize; 
-
-      iFrameResize({
-
-          checkOrigin: false,
-
-          log: true, // Disable in production - this just logs to console
-
-          sizeHeight: true,
-
-          sizeWidth: false,
-
-          heightCalculationMethod : 'taggedElement'
-
-          })
-
-  })
-  </script> {% endcomment %}
-    {% comment %}theme-check-enable{% endcomment %}
+  {% endschema %}  
+  {% comment %}theme-check-enable{% endcomment %}

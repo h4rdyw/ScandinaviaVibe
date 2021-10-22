@@ -68,7 +68,7 @@
         "type": "font_picker",
         "id": "body_text_font",
         "label": "Font",
-        "default": "Mono"
+        "default": "mono"
       },
       {
         "type": "header",
@@ -123,20 +123,11 @@
       {
         "type": "header",
         "content": "Root HTML Font Size"
-      },
-      {
-        "type": "range",
-        "id": "root_font_size",
-        "label": "Font Size",
-        "default": 16,
-        "unit": "px",
-        "min": 13,
-        "max": 25,
-        "step": 1
-      },
+      },      
       {
         "type": "header",
-        "content": "Root Font %"
+        "content": "Root Font %",
+        "info": "For modern browsers, default font size is 62.50% of 1rem (1 rem = 16px)"
       },
       {
         "type": "range",
@@ -147,6 +138,102 @@
         "min": 62,
         "max": 200,
         "step": 2
+      }
+    ]
+  },
+  {
+    "name": "Product Card",
+    "settings": [
+      {
+        "type": "number",
+        "id": "xxl_card",
+        "label": "XXL Screen",
+        "default": 5
+      },
+      {
+        "type": "number",
+        "id": "xl_card",
+        "label": "XL Screen",
+        "default": 4
+      },
+
+      {
+        "type": "number",
+        "id": "l_card",        
+        "label": "Large Screen",
+        "default": 3
+      },
+      {
+        "type": "number",
+        "id": "m_card",        
+        "label": "Medium Screen",
+        "default": 3        
+      },
+      {
+        "type": "number",
+        "id": "s_card",        
+        "label": "Small Screen",
+        "default": 2
+      },
+      {
+        "type": "number",
+        "id": "xs_card",        
+        "label": "XS Screen",
+        "default": 1
+      },
+      {
+        "type": "number",
+        "id": "xsoverride_card",        
+        "label": "Override XS, Default Smallest",
+        "default": 2
+      },
+      {
+        "type": "number",
+        "id": "card_img_width_coll",        
+        "label": "Image Width - Collection",
+        "default": 640
+      },
+      {
+        "type": "number",
+        "id": "card_img_height_coll",        
+        "label": "Image Height - Collection",
+        "default": 360
+      },
+      {
+        "type": "number",
+        "id": "card_img_width_frontpage",        
+        "label": "Image Width - Featured/FrontPage",
+        "default": 640
+      },
+      {
+        "type": "number",
+        "id": "card_img_height_frontpage",        
+        "label": "Image Height - Featured/FrontPage",
+        "default": 360
+      },
+      {
+        "type": "number",
+        "id": "card_img_width_horizontal",        
+        "label": "Image Width - Horizontal Card",
+        "default": 150
+      },
+      {
+        "type": "number",
+        "id": "card_img_height_horizontal",        
+        "label": "Image Height - Horizontal Card",
+        "default": 150
+      },
+      {
+        "type": "number",
+        "id": "card_img_width_gallery",        
+        "label": "Image Width - Gallery",
+        "default": 240
+      },
+      {
+        "type": "number",
+        "id": "card_img_height_gallery",        
+        "label": "Image Height - Gallery",
+        "default": 240
       }
     ]
   }

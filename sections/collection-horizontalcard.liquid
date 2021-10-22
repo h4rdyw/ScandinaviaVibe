@@ -1,12 +1,21 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign xxlcard = settings.xxl_card %}
+{% assign xlcard = settings.xl_card %}
+{% assign lcard = settings.l_card %}
+{% assign mcard = settings.m_card %}
+{% assign scard = settings.s_card %}
+{% assign xscard = settings.xs_card %}
+{% assign cardwidth = settings.card_img_width_horizontal %}
+{% assign cardheight = settings.card_img_height_horizontal %}
+{% assign section_id = collection.handle %}
+
 
 <section class="container py-5">
-    {% paginate collection.products by 8 %}
+    {% paginate collection.products by 12 %}
     
       <h1 class="text-center py-2">{{ collection.title }}</h1>
   
-      {% render 'pagination' , paginate: paginate %}
-
+  
       <div class="row row-cols-md-6 row-cols-sm-2">
         <div class="col">
           <div class="clearfix filter">
@@ -25,7 +34,7 @@
         
         <div class="col">
           <div class="clearfix filter">
-            {% if collection.handle == 'sale' %}
+            {% if collection.handle == 'collection' %}
               <p>Browse type:</p>
               <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
               <option value="">All</option>
@@ -61,53 +70,35 @@
       </div>         
     </div> {% endcomment %}
   
-    <div class="row row-cols g-2 d-flex row-cols-xxl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 py-2">                                      
-        {% render 'prdcard-list' for collection.products as product %}       
-    </div>
+   <div class="row d-flex g-3 row-cols-xxl-{{ lcard}} row-cols-xl-{{ mcard }} row-cols-lg-{{ mcard }} row-cols-md-{{ scard }} row-cols-sm-2 row-cols-1 py-2">
   
+        {% comment %} {% assign image = product.featured_media.preview_image %}
+  
+        {% assign product_short_description = product.description | truncatewords: 15, '...' %}
+        {% assign product_descriptions = product.description | split: '$$$$$$' %}
+  
+        {% assign product_descriptions_length = product_descriptions.size %}
+  
+        {% if product_descriptions_length > 1 %}
+          {% assign product_short_description = product_descriptions[0] %}
+          {% assign product_description = product_descriptions[1] %}
+  
+        {% endif %} 
+   {% endcomment %}
+          
+                    
+            {% render 'prdcard-list' for collection.products as product , section_id : section_id , cardwidth : cardwidth , cardheight : cardheight %}
+       
+    </div>
+    
     {% render 'pagination' , paginate: paginate %}
     {% endpaginate %}
   
   </section>
   
-  <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content rounded-0">
-              <div class="modal-header" style="border-bottom: none;">
-                <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                        <div class="col-12 col-md-6">
-                          <img class="img-fluid modal-img" src="" id="productInfoImg" alt=""> 
-                          <div id="badge"></div>
-                        </div>         
-  
-                        <div class="col-12 col-md-6"> 
-                          <p id="productInfoPrice" class="text-header-title"></p>
-                          <p id="productInfoDescription" class="text-product-desc"></p>
-                        </div>
-                  </div>             
-              </div> 
-              <div class="modal-footer" style="border-top: none;">
-                <div class="col-12 col-md-6"></div>
-                <div class="col-12 col-md-6 px-2">
-                  <form action="#" id="addToCartForm" class="row">
-                    <select name="id" id="modalItemID" class="form-select col-auto w-100">
-                    </select>
-                    <p></p> 
-                    <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
-                    <P></P>
-                    <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
-                    <p></p>
-                  </form>
-                </div>              
-              </div>
-          </div>
-      </div>
-  </div>
-  
+  {% render 'prd-modal' %}
+ 
+
   <style>
     .form-select {
         border-left: none;

@@ -1,7 +1,4 @@
-<!--/ page handle diffrentiates with each page -->
 {% comment %}theme-check-disable{% endcomment %}
-
-
 <div class="container-fluid">
     <div class="row">
       {% assign page_handle = page.handle %}
@@ -40,14 +37,10 @@
                       <h1 class="h3">{{ item.page_title }}</h1> 
                       <div class="my-4">
                         <div class="ratio ratio-16x9">
-                        {% comment %} <iframe id="iFrame2" src="https://www.youtube.com/embed/{{ item.video_url.id }}" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                        {% comment %} <iframe id="iFrameSideBar"src="https://www.youtube.com/embed/{{ item.video_url.id }}"  width="100%"  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe> {% endcomment %}
-                        {% comment %} <iframe src="https://www.youtube.com/embed/{{ item.video_url.id }}"></iframe> {% endcomment %}
                         <lite-youtube videoid="{{ item.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
 
                         </div>
                       </div>   
-                    {% comment %} {% when 'richtext' %}     {% endcomment %}
                       <div class="my-4"><p>{{ item.description }}</p></div>   
                 {% endcase %}  
            
@@ -146,86 +139,6 @@
       }
       ]
     }
-  {% endschema %}
-  
-  
-  {% comment %} <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> 
-      <script type="text/javascript" src="./assets/iframeResizer.min.js"></script>
-      <script type="text/javascript" src="./assets/iframeResizer.contentWindow.js"></script> {% endcomment %}
-      {% comment %} <script>
-        iFrameResize({autoResize: true, log: true ,
-          minHeight: '310px',
-          minWidth: '100%',
-          heightCalculationMethod: 'taggedElement'
-        }, '#iFrameSection')
-      </script> {% endcomment %}
-      
-  
-      {% comment %} <script type="text/javascript">
-        
-  
-        var callbackDisplay = 'p#callback'
-  
-        iFrameResize({
-          log: true, // Enable console logging
-          inPageLinks: true,
-          onResized: function (messageData) {
-            // Callback fn when resize is received
-            $(callbackDisplay).html(
-              '<b>Frame ID:</b> ' +
-                messageData.iframe.id +
-                ' <b>Height:</b> ' +
-                messageData.height +
-                ' <b>Width:</b> ' +
-                messageData.width +
-                ' <b>Event type:</b> ' +
-                messageData.type
-            )
-          },
-          onMouseEnter: function (messageData) {
-            // Callback fn when mouse enters iframe
-            $(callbackDisplay).html(
-              '<b>Frame ID:</b> ' +
-                messageData.iframe.id +
-                ' <b>ScreenX:</b> ' +
-                messageData.screenX +
-                ' <b>ScreenY:</b> ' +
-                messageData.screenY +
-                ' <b>Event type:</b> ' +
-                messageData.type
-              )
-          },
-          onMouseLeave: function (messageData) {
-            // Callback fn when mouse enters iframe
-            $(callbackDisplay).html(
-              '<b>Frame ID:</b> ' +
-                messageData.iframe.id +
-                ' <b>ScreenX:</b> ' +
-                messageData.screenX +
-                ' <b>ScreenY:</b> ' +
-                messageData.screenY +
-                ' <b>Event type:</b> ' +
-                messageData.type
-            )
-          },
-          onMessage: function (messageData) {
-            // Callback fn when message is received
-            $(callbackDisplay).html(
-              '<b>Frame ID:</b> ' +
-                messageData.iframe.id +
-                ' <b>Message:</b> ' +
-                messageData.message
-            )
-            alert(messageData.message)
-            document
-              .getElementsByTagName('iframe')[0]
-              .iFrameResizer.sendMessage('Hello back from parent page')
-          },
-          onClosed: function (id) {
-            // Callback fn when iFrame is closed
-            $(callbackDisplay).html('<b>IFrame (</b>' + id + '<b>) removed from page.</b>')
-          },
-  
-        })
-      </script> {% endcomment %}
+  {% endschema %} 
+ 
       {% comment %}theme-check-enable{% endcomment %}

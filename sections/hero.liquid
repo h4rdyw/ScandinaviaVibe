@@ -1,58 +1,141 @@
 {% comment %}theme-check-disable{% endcomment %}
-
-<section class="inner-hero-section" style="object-fit: cover;">
-  {% if section.settings.image != blank %}
-    <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" loading="lazy">
-  {% else %}
-    {% capture current %}{% cycle 1,2 %}{% endcapture %}
-    {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
-  {% endif %}
-  <div class="container py-5">
-    <div class="row">
-      <div class="col-lg-6 col-md-8 mx-auto">
-        <h1>{{ section.settings.title }}</h1>
-        {{ section.settings.description }}
-        <a href="{{ section.settings.button_link }}" class="btn-reg">{{ section.settings.button_label }}</a>
-      </div>
-    </div>  
-  </div>
+{%- liquid 
   
+assign section_id = section.settings.section_id 
+assign hero_url = section.settings.image | img_url: 'master'
+assign top_margin = section.settings.top_margin
+assign bg_position = section.settings.bg_position
+
+assign topmargin = "padding-top: "  | append : top_margin | append : "px ! important;" 
+assign bgposition = "background-position: "  | append : top_margin | append : "px ! important;" 
+
+if section.settings.container == 'container' 
+  assign container_class = 'container' 
+else 
+  assign container_class = 'container-fluid' 
+endif
+-%}
+
+<section class="inner-hero-section" style="{{ topmargin }}">
+  <div class="{{ container_class }} {{ section_id }}-bg-cover">
+    <!-- >
+    {% if section.settings.image != blank %}
+      <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" loading="lazy">
+    {% else %}
+      {% capture current %}{% cycle 1,2 %}{% endcapture %}
+      {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+    {% endif %}
+  -->
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-lg-6 col-md-8 mx-aut0 py-5">
+          <h1>{{ section.settings.title }}</h1>
+          {{ section.settings.description }}
+          <a href="{{ section.settings.button_link }}" class="btn-reg">{{ section.settings.button_label }}</a>
+        </div>
+      </div>  
+    </div>
+  </div>  
 </section>
+<style scoped>              
+.{{ section_id }}-bg-cover {
+   background: url({{ hero_url }}) no-repeat center {{ bg_position }};
+   background-size: cover;                    
+ }                              
+</style>      
+{% if container_class == 'container' %}
+  <style scoped>
+    @media only screen and (max-width: 768) {
+      .container {
+        max-width: 100% !important;
+      }
+    }
+  </style>     
+{% endif %}
 
 {% schema %} 
 { 
   "name": "Hero", 
   "class": "hero-section", 
   "settings": [ 
-   { "type": "image_picker", 
-      "id": "image", 
-      "label": "Heading Background Title"
-    },
-    { "type": "text", 
-      "id": "title", 
-      "default": "Example Heading",
-      "label": "Heading Title"
-    },
-    { "type": "richtext", 
-      "id": "description", 
-      "default": "<p>Example paragraph</p>",
-      "label": "Description" 
-    },
-    { "type": "text", 
-      "id": "button_label", 
-      "default": "Button",
-      "label": "Button Label" 
-    },
-    { "type": "url", 
-    "id": "button_link", 
-    "label": "Button Link" 
-  }
-  ],
-  "presets": [
-  {
-    "category": "Hero",
-    "name": "Simple Hero"
-  }]
+    {
+
+      "type": "select",
+      "id": "container",
+      "label": "layout",
+      "options": [
+          {
+              "value": "container",
+              "label": "Container"
+          },
+          {
+              "value": "container-fluid",
+              "label": "Container Fluid"
+          }
+      ],
+      "default": "container"
+      },
+      {
+        "type": "text",
+        "id": "section_id",
+        "default": "hero",
+        "label": "Section Unique Title / ID"
+      },     
+      {
+        "type": "text",
+        "id": "top_margin",
+        "default": "auto",
+        "label": "Top Margin"
+      },                 
+      { "type": "image_picker", 
+        "id": "image", 
+        "label": "Heading Background Title"
+      },
+      {
+        "type": "select",
+        "id": "bg_position",
+        "label": "Background Position",
+        "options": [
+          {
+              "value": "top",
+              "label": "Top"
+          },
+          {
+              "value": "center",
+              "label": "Center"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ],
+        "default": "center"
+      },                 
+      { "type": "text", 
+        "id": "title", 
+        "default": "Example Heading",
+        "label": "Heading Title"
+      },
+      { "type": "richtext", 
+        "id": "description", 
+        "default": "<p>Example paragraph</p>",
+        "label": "Description" 
+      },
+      { "type": "text", 
+        "id": "button_label", 
+        "default": "Button",
+        "label": "Button Label" 
+      },
+      { "type": "url", 
+      "id": "button_link", 
+      "label": "Button Link" 
+    }
+    ],
+    "presets": [
+    {
+      "category": "Hero",
+      "name": "Simple Hero"
+    }]
 } 
 {% endschema %}
 {% comment %}theme-check-enable{% endcomment %}

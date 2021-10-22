@@ -1,0 +1,292 @@
+<!-- Featured products-->
+{% comment %}theme-check-disable{% endcomment %}
+{% assign cardwidth = settings.card_img_width_gallery %}
+{% assign cardheight = settings.card_img_height_gallery %}
+{% assign blog_handle = blog.handle %}
+{% assign page_handle = page.handle %}
+{% for block in section.blocks %}
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.blog_handle == blog_handle %}
+        {% assign offset_products = block.settings.offset_products %}
+        {% assign number_of_products = block.settings.number_of_products %}
+        {% assign randomize = block.settings.randomize %}
+        {% assign section_id = block.settings.section_id %}
+        {% assign slide_navigation = block.settings.slide_navigation %}
+        {% assign slide_autoplay = block.settings.slide_autoplay %}
+        {% assign slide_delay = block.settings.delay %}
+
+        {% assign min = 0 %}
+        {% assign max = offset_products %}
+        {% assign diff = max | minus: min %}
+        {% assign random_number = "now" | date: "%S" | modulo: diff | plus: min %}            
+        {% assign limit_products = "limit: " | append: number_of_products %}
+        {% assign offset_products = "offset: " | append: random_number %}    
+
+        {% if randomize == true %}
+        {% else %}
+          {% assign random_number = 0  %}      
+        {% endif %}
+          
+
+        <section class="container py-5">
+            <div class="container pt-2">
+              <header class="mb-3 text-center">
+                <h2 class="mb-0">{{ block.settings.title }}</h2>
+                <p class="text-muted">{{ block.settings.gallery_description  | strip_html }}</p>
+              </header>
+              <div class="swiper-container swiper-gallery pt-5" id="featuredProducts-{{- section_id -}}" unique-id="{{ section_id }}" slide-navigation="{{ slide_navigation }}" autoplay={{ slide_autoplay }} delay="{{ slide_delay }}">        
+
+                <div class="swiper-wrapper">
+                  <!-- Product-->
+                  {% for product in collections[block.settings.featured_collection].products limit: number_of_products offset: random_number %}
+                    {% assign image = product.featured_media.preview_image %}
+                    {% for tag in product.tags %}
+                      {% if tag contains 'Special' %}
+                      {% assign specialbox = 'true' %}
+                      {% endif %}
+                
+                      {% if tag contains 'Award' %}
+                        {% assign awardbox = 'true' %}
+                      {% endif %}
+                
+                      {% if tag contains 'Final Sale' %}
+                        {% assign finalsale = 'true' %}
+                      {% endif %}
+                
+                    {% endfor %} 
+
+                    <div class="swiper-slide pb-5">
+
+                      <!--
+                      <div class="card border-0">
+                      <div class="product">
+
+                        <a href="javascript:;"><img class="card-img-top" src="{{ image | img_url : 'master' }}" width="200" height="200" loading="lazy" alt="{{ product.title }}"></a>
+                        <div class="cta shadow d-inline-block">
+                          <a class="product-btn" href="javascript:;" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}"><i class="fas fa-heart"></i></a>
+                          <a class="product-btn" href="javascript:;" data-bs-toggle="modal"><i class="fas fa-expand"></i></a>
+                          <a class="product-btn" href="cart.html"><i class="fas fa-dolly-flatbed"></i></a></div>
+                      </div>
+
+                      
+                      <div class="card-body d-flex flex-column flex-fill justify-content-end bg-none text-center pb-1">
+                        <p class="text-product-subtitle"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
+                        <p span class="text-line"></p>
+                        <div style="height:auto;">
+                        <p>{% if product.compare_at_price_max > 0 %}                                    
+                            {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg></br>
+                          <del><span style="color: #AB0000;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
+                        
+                        {% endif %}
+
+                        {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>            
+                        {%- render 'button-wishlist', product: product -%}
+                        </div>
+                      </div>
+                    </div>  -->
+              
+                    <div class="card d-flex flex-fill border-0">          
+                      <div class="card-img-top">
+                          <div class="img-wrapper">                
+                              {% if image != blank %} 
+                                  <div class="inner-img">
+                                    <a href="javascript: void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                                        product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
+                                    ><img class="card-img-top" width="{{ cardwidth }}" height="{{ cardheight }}" src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
+                                    ></a>
+                                    {% unless product.available %}                        
+                                      <div class="text-hover">SOLD OUT</div>                             
+                                      {% else %}
+                                      <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>     
+                                     {% endunless %}   
+                                  </div>
+                              {% else %}     
+                                <div class="inner-img">        
+                                        {{ 'product-1' | placeholder_svg_tag : 'inner-img' }}    
+                                </div>        
+                              {% endif %}
+                          </div>  
+                      </div>
+                      
+                      <div class="card-body d-flex flex-column flex-fill justify-content-start bg-light text-center pb-1">
+                          <p class="text-product-subtitle"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
+                          <p span class="text-line"></p>
+                          <div style="height:auto;">
+                          <p>{% if product.compare_at_price_max > 0 %}                                    
+                              {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg></br>
+                            <del><span style="color: #AB0000;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
+                          
+                          {% endif %}
+
+                          {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>            
+                          {%- render 'button-wishlist', product: product -%}
+                          </div>
+
+                          {% comment %} {% assign prddesc = product.description %} 
+                          {% render 'product_description' , product_original_description : prddesc, description_type: 'short'  %}  %}  {% endcomment %}
+                          {% comment %} {{ product_short_description}} {% endcomment %}
+                          <div style="pointer-events:none;">
+                              {% if specialbox == 'true' %}      
+                                  {% assign specialbox = 'false' %}              
+                                  {% assign iconstyle = '' %} 
+                                  <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                              {% else %}
+                                  {% assign iconstyle = 'style="transform:translateX(-35px);"' %} 
+                              {% endif %} 
+
+                              {% if awardbox == 'true' %}     
+                                  {% assign awardbox = 'false' %}                                                     
+                                  <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                  
+                              {% endif %}                     
+                          </div>  
+                      </div>        
+                    </div>            
+                  </div>
+
+                  {% endfor %}        
+
+
+                  
+                </div>
+                
+                <div class="swiper-button-prev swiper-button-prev-{{ section_id }}-{{ product.id }} px-3 py-2">
+                  <svg class="svg-icon-light svg-icon-md">{% render 'icon-arrow-left-short' %}</svg>Prev                  
+                </div>
+                <div class="swiper-button-next swiper-button-next-{{ section_id }}-{{ product.id }} px-3 py-2">Next
+                <svg class="svg-icon-light svg-icon-md">{% render 'icon-arrow-right-short' %}</svg>
+                </div>
+              </div>
+          </section>
+    {% endif %}
+{% endfor %}
+
+{% render 'prd-modal' %}
+
+<script>
+   /*var featuredProducts = new Swiper("#featuredProducts", {
+        loop: true,
+        breakpoints: {
+            640: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 4,
+            },
+            1024: {
+                slidesPerView: 5,
+            },
+        },
+        spaceBetween: 25,
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });*/    
+</script>
+
+{% schema %}
+{
+    "name": "Featured Product Gallery",
+    "settings": [
+      {
+      "type": "text",
+      "id": "title",
+      "label": "Common Title"                 
+      }
+    ],
+    "blocks": [
+      {
+      "type": "featured_gallery",
+      "name": "Featured Product Gallery",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        {
+          "type": "blog",
+          "id": "blog_handle",
+          "label": "Select a blog"
+        },
+        {
+          "type": "collection",
+          "id": "featured_collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "section_id",
+          "default": "gallery",
+          "label": "Section Unique Title / ID"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Featured Gallery",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "gallery_description",
+          "default": "<p>Featured products</p>",
+          "label": "Description"
+        },
+        {
+          "type": "range",
+          "id": "number_of_products",
+          "label": "Number of Products to Show",
+          "default": 10,
+          "min": 1,
+          "max": 25,
+          "step": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "randomize",
+          "default": false,
+          "label": "Randomize"
+        },
+        {
+          "type": "range",
+          "id": "offset_products",
+          "label": "Random Offset Max",
+          "default": 5,
+          "min": 5,
+          "max": 100,          
+          "step": 1
+        },
+        {
+          "type": "checkbox",
+          "id": "slide_navigation",
+          "default": false,
+          "label": "Navigation Button"
+        },
+        {
+          "type": "checkbox",
+          "id": "slide_autoplay",
+          "default": false,
+          "label": "Auto play"
+        },  
+        {
+          "type": "number",
+          "id": "delay",
+          "default": 7000,
+          "label": "Speed delay (msecond)"
+        }        
+    ]
+  }
+],
+    
+    "presets": [
+    {
+        "category": "collection",
+        "name": "Product Gallery"
+    }
+    ]
+}
+{% endschema %}
+{{ 'prdgallery.css' | asset_url | stylesheet_tag }} 
+{% comment %} {{ 'application.css' | asset_url | stylesheet_tag }}  {% endcomment %}
+{{ 'styles.css' | asset_url | stylesheet_tag }}  
+{% comment %}theme-check-enable{% endcomment %}

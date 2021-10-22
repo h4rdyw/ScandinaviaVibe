@@ -1,0 +1,22 @@
+{
+    "sections": {
+      "main": {
+        "type": "template-page-default",
+        "settings": {},
+        "blocks": {
+            "title": {
+                "type": "page_title"
+            },
+            "date": {
+                "type": "page_date"
+            },
+            "content": {
+                "type": "page_content"
+            }
+        }
+      }
+    },
+    "order": [
+      "main"
+    ]
+ }

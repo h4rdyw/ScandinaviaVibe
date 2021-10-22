@@ -4,10 +4,9 @@
 {% if block.settings.page_handle == page_handle  or template == 'index' %}
   {% if block.type == 'hero_block' %}
   {% assign hero_url = block.settings.hero_img_url %}
-
+  {% assign slider_height = block.settings.height %}
   {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
-  {% assign hidefilterbackdropmobile = block.settings.also_filter_backdrop_mobile %}
-
+  {% assign filterbackdropmobile = block.settings.also_filter_backdrop_mobile %}
   <!--/ use image or Image Url /-->
   {% if block.settings.image != blank %}
     {% assign hero_url = block.settings.image | img_url: 'master' %} 
@@ -26,7 +25,7 @@
   {% assign left_pos_mobile = block.settings.left_position_mobile %}
   {% assign top_pos_mobile = block.settings.top_position_mobile %} 
 
-
+<section>
     <div class="hero-container">
       <div class="hero"></div> 
       <div id="hero" class="hero-stuff lazy">
@@ -40,7 +39,7 @@
     <div class="container mx-auto">
       <div class="row text-center" style="color: {{ block.settings.descr_textcolor }};"><p>{{ block.settings.description }}</p></div>
     </div>
-        
+  </section>        
   {% endif %}
 {% endif %} 
 {% endfor %}
@@ -66,6 +65,16 @@
           "id": "page_handle",
           "label": "Select a page"
         },
+        {
+        "type": "range",
+        "id": "height",
+        "label": "Slider View Port Height",
+        "default": 100,
+        "unit": "%",
+        "min": 40,
+        "max": 100,
+        "step": 1
+        },                            
         { 
           "type": "image_picker", 
           "id": "image_mobile", 
@@ -143,13 +152,13 @@
         {
           "type": "checkbox",
           "id": "hide_filter_backdrop",
-          "label": "Hide Back Drop (All)",
+          "label": "Hide Back Drop",
           "default": true
         },
         {
           "type": "checkbox",
           "id": "also_filter_backdrop_mobile",
-          "label": "Also Show Backdrop on Mobile",
+          "label": "Hide Backdrop on Mobile",
           "default": true
         }     
       ]
@@ -169,7 +178,7 @@
 
 <style>
     .hero-container {
-        height: 66vh;
+        height: {{ slider_height }}vh;
         width: 100%;
         overflow: hidden;
         position: relative;
@@ -211,7 +220,7 @@
 
      
 
-      @media only screen and (max-width: 576px) {
+      @media only screen and (max-width: 575px) {
         .hero-stuff {
         position: absolute;
         top: {{ top_pos_mobile }}px;
@@ -225,11 +234,12 @@
      }     
 </style>
 
-<!-- -->
 {% unless hidefilterbackdrop %}
   <style scoped>
+  @media only screen and (min-width: 992px) {
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     .hero-stuff {
+      background-color: rgba(255, 255, 255, 0.35); 
       -webkit-backdrop-filter: blur(10px);
       backdrop-filter: blur(10px);
     }
@@ -241,16 +251,18 @@
       background-color: rgba(255, 255, 255, .2);
     }
   }
+}
 </style>
 {% endunless %}
 
-{% unless hidefilterbackdropmobile %}
+{% unless filterbackdropmobile %}
 <style scoped>
-  @media only screen and (max-width: 576px) {
+  @media only screen and (max-width: 441px) {
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     .hero-stuff {
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
+      background-color: rgba(255, 255, 255, 0.35); 
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
     }
   }
 

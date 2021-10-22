@@ -1,5 +1,4 @@
 {% comment %}theme-check-disable{% endcomment %}
-{{ 'product.css' | asset_url | stylesheet_tag }}
 
 {% assign current_product = product.selected_or_first_available_variant %} 
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
@@ -20,12 +19,7 @@
   <p></p>
     <div class="row flex-column-reverse flex-lg-row">
         <div class="d-flex flex-fill flex-column col-lg-8 col-md-12 col-12">
-            {% comment %} <img class="img-fluid"
-                src="{{ product_image | img_url: 'large' }}" alt="{{ product_image.alt }}"  id="{{ product_image.alt }}"/>
-                {% for image in product.images %} 
-                <img src="{{ image.src | img_url: 'medium' }}" alt="{{ image.alt }}"> 
-                {% endfor%} {% endcomment %}
-            {% comment %} {% render 'product-image-slider' %} {% endcomment %}
+            
               <div class="d-flex flex-fill swiper-container swiper-container-{{- product.id -}}">
                 <div class="swiper-wrapper flex-fill">
                   {% if product.images.size > 1  %}
@@ -35,7 +29,7 @@
 
 
                   {% for image in product.images %}            
-                    <div variant-img-id="{{ image.id }}" class="swiper-slide">
+                    <div variant-img-id="{{ image.id }}" class="swiper-slide" variant-id="">
                       <img src="{{ image.src | img_url : 'master' }}" alt="{{ image.alt | escape }}" width="480" height="480" loading="lazy"/>
 
                       {% if imgnum == 'true' %}                       
@@ -82,16 +76,7 @@
                   
                   {% endif %}</div></div>
                 </div>
-              </div>
-              
-            <!--<div class="w-100 mx-auto">       
-                <div class="container-fluid px-0 mx-auto">
-                  <div class="d-flex g-3 row row-cols row-cols-xxl-2 row-cols-lg-2 row-cols-md-2 row-cols-1 align-items-center py-2">
-                  {% render 'product-video', product:product %}
-                  </div>
-                </div>   
-              </div>-->
-
+              </div>             
         </div>
         
         <div class="d-flex flex-column flex-fill col-lg-4 col-md-12 col-12">
@@ -116,7 +101,7 @@
               <p id="final-sale" class="text-header-title">FINAL SALE*</p>            
             {% endif %}
 
-            <p id="prd-price" class="text-header-title">
+            <p id="prd-price" class="text-header-title" style="line-height:2.5rem;">
               {% if product.compare_at_price_max > 0 %}
                 {% render 'discount', product : product %}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
                 <del><span style="color: #AB0000;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
@@ -136,9 +121,20 @@
             
             {% endif %}
             {% form 'product', product, class:"product-form, id:"AddToCartForm %}
+              {% assign availability_count = 0 %}    
+
                 <div id="selectOptions" class="mb-3">
+                  {% if product.has_only_default_variant %}
+                    <input name="id" value="{{ product.first_available_variant.id }}" type="hidden">
+                    {% for variant in product.variants %}
+                      {% if variant.available %}
+                          {% assign availability = availability_count | plus: 1 %}
+                      {% endif %}    
+                    {% endfor %}
+
+                  {% else %}
+
                     <select name="id" id="productSelect" class="form-select">
-                        {% assign availability_count = 0 %}    
 
                         {% for variant in product.variants %}
                             {% if variant.available %}
@@ -151,22 +147,38 @@
                                   {% assign pricenew = variant.price | money_without_trailing_zeros  %}
                                   {% assign desc = variant.title | append : ' ' | append : pricenew %}
                                 {% endif %}
+                          {% assign availability = availability_count | plus: 1 %}
                                 <option value="{{ variant.id }}">{{ desc }}</option>
                             {% else %}
                                 <option value="{{ variant.id }}" disabled="disabled"> {{ variant.title }}</option>
                             {% endif %}                       
                         {% endfor %}
                     </select>
+                  {% endif %}  
                 </div>
                 
-                <div id="qty-part" class="row row-cols-2 mb-3">
+                {% comment %} <div id="qty-part" class="row row-cols-2 mb-3">
                   <div class="col text-end">
                   Quantity
                   </div>
                   <div class="col">
                     <input type="number" class="form-control form-inline" name="quantity" id="Quantity" value="1" min="1">
                   </div>                  
-                </div>
+                </div> {% endcomment %}
+
+                <ul id="qty-part" class="list-inline mb-4">
+                  <li class="list-inline-item me-3"><strong>Quantity</strong></li>
+                  <li class="list-inline-item">
+                    <div class="border d-flex align-items-center justify-content-between p-1">
+                      <div class="quantity py-0">
+                        <button class="dec-btn p-0" onclick="event.preventDefault();decrease(this)"><i class="fas fa-caret-left"></i></button>
+                        <input class="form-control border-0 shadow-0 p-0 quantity-result" type="text" name="quantity" id="Quantity" value="1" aria-label="Quantity" style="font-weight:600;" >
+                        <button class="inc-btn p-0" onclick="event.preventDefault();increase(this)"><i class="fas fa-caret-right"></i></button>
+                      </div>
+                    </div>
+                  </li>
+                </ul>  
+                <p></p>
                 <button type="submit" name="add" id="AddToCart" class="btn-add-to-cart w-100" {% unless availability > 0 %} disabled="disabled" >Sold Out {% else %} >Add to Cart {% endunless %}</button>
                 <p></p>
               
@@ -191,6 +203,8 @@
 </div> 
 /-->
 
+{% render 'prd-modal' %}
+<!--
 <div id="productInfoModal" class="modal modalfade" tabIndex="-1" aria-hidden="true" style="z-index:2001;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content rounded-0">
@@ -231,6 +245,9 @@
         </div>
     </div>
 </div>
+-->
+{{ 'product.css' | asset_url | stylesheet_tag }}
+{% comment %} {{ 'application.css' | asset_url | stylesheet_tag }} {% endcomment %}
 
 <style scoped>
   input {
@@ -269,12 +286,31 @@
   .wishlist-badge {  
     left: 0;
   }
+
+  
+  
+  
 </style>
 <script>  
+window.addEventListener('load', 
+  function() { 
+    checkLocaleBtn();         
+    const element = document.querySelector('#productSelect');
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
+  }, false);       
+
+
+
+
+const json_product = {{ product | json }};
+//console.log(json_product);   
+
 const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
     slidesPerView: 1,
     centeredSlides: true,
     effect: "fade",
+    fadeEffect: { crossFade: true },
     loop: true,
     observer: true, 
     observeParents: true,  
@@ -283,7 +319,29 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
       nextEl: ".swiper-button-next-{{- product.id -}}"
     }    
   })
-  
+
+  {% comment %} swiper.on('slideChange', function () {
+    let slideIndex = this.activeIndex 
+    console.log("Index : " + slideIndex);     
+    let attributeName = document.querySelectorAll(`[data-swiper-slide-index='${slideIndex}']`);     
+    attributeName.forEach( e => {
+      //console.log(e.attributes);
+      let variantimgid = e.attributes['variant-img-id'].value;
+      //console.log(variantimgid);
+      
+      const arrresult = json_product.variants.map(e => e.featured_image);
+      //console.log(arrresult);
+
+      const varidresult = arrresult.find( ({ id }) => id === +variantimgid );
+      //console.log(varidresult);
+      const variant_id=varidresult.variant_ids[0];
+      //console.log(variant_id);
+
+      document.getElementById('productSelect').value = variant_id
+
+    })
+  });
+   {% endcomment %}
     //var productRecommendationBody = document.getElementById('product_recommendation_body');
     fetch('/recommendations/products.json?product_id={{ product.id }}')
     .then(resp => resp.json())
@@ -357,10 +415,17 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
                 card += `<div class="inner-img">`;
                 card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
                         product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
-                card += `<div class="text-hover">QUICK SHOP</div></div>`;
+                
+                if (item.available) {                
+                card += `<div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div></div>`    
+                } else {
+                card += `<div class="text-hover">SOLD OUT</div></div>`;
+                }
+
+
             }          
-            card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-0">`;
-            card += `<a class="text-product-link" style="font-size:1.25rem;" href="${item.url}">${item.title}</a>`;
+            card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-1">`;
+            card += `<p class="text-product-title"><a class="text-product-link" style="font-size:1.25rem;" href="${item.url}">${item.title}</a></p>`;
             card += `<p span class="text-line"></p>`;
 
             if (item.compare_at_price_max > 0 ) { 
@@ -406,6 +471,7 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
 
         wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
 
+        
         wishlistSnippet.innerHTML = wishlistcard;
 
         const referenceTitle = document.getElementById("qty-part");        
@@ -445,17 +511,16 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
 
     var PrdTemplate;
  
-    window.addEventListener('load', 
-        function() { 
-          checkLocaleBtn();         
-        }, false);       
     
-    const json_product = {{ product | json }};
-    //console.log(json_product);   
     
-    const SelectElement = document.getElementById("productSelect");
+    const SelectElement = document.getElementById("productSelect") || false ; 
     //const checkValue = SelectElement.options[SelectElement.selectedIndex].value;
     //const checkText = SelectElement.options[SelectElement.selectedIndex].text;
+    if (SelectElement) {
+    SelectElement.addEventListener("click", (e) => varSelectChange(e) );
+    SelectElement.addEventListener("change", (e) => varSelectChange(e) );
+    SelectElement.addEventListener("focus", (e) => varSelectChange(e) );
+    }
  
   function varSelectChange (e) {
     const value = e.target.value;
@@ -487,7 +552,7 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
           if ( variantimg ){
             //console.log(variantimg);
             let variantimgindex = +variantimg.getAttribute('data-swiper-slide-index');
-            // +1 for swiper
+            // +1 for swiperjs
             variantimgindex += 1;           
             //console.log(variantimgindex);
             swiper.slideTo(variantimgindex);
@@ -500,15 +565,22 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
     }   
   };
 
-
-  SelectElement.addEventListener("click", (e) => varSelectChange(e) );
-  SelectElement.addEventListener("change", (e) => varSelectChange(e) );
-
+function increase(x) {
+    
+    var inputVal = x.previousElementSibling;
+    inputVal.value++;
+}
+function decrease(x) {
+    var inputVal = x.nextElementSibling;
+    if (inputVal.value > 1) {
+        inputVal.value--;
+    }
+}
 </script>
 
 {% schema %}
 {
-    "name": "product pages",
+    "name": "product detail page",
     "settings": [
     {
         "type": "checkbox",

@@ -26,14 +26,15 @@
   <div class="img-wrapper d-flex">
 
       <div class="card d-flex flex-fill border-0">          
-          <div class="card-img-top">
+          <div class="card-img-top" onClick="javascript:void(0);">
               {% if image != blank %} 
                   <div class="inner-img">
-                  <a href="javascript:;" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
+                  <a href="javascript:void(0);" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
                       product-price="{{ product.price | money_without_trailing_zeros }}"
                   ><img class="card-img-top" width="640" height="360" src="{{  image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
                   ></a>
-                  <div class="text-hover">BUY NOW</div>     
+                  <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg>QUICK SHOP</div>     
+
                   </div>
                 
               {% else %}     

@@ -23,48 +23,45 @@
   </div>
 
   
-  <div class="row d-flex row-cols-lg-4  row-cols-md-3 row-cols-2 g-2 py-2">
+  <div class="row d-flex row-cols-lg-4  row-cols-md-3 row-cols-sm-2 row-cols-1 g-2 py-2">
     {% if search.performed %}
       {% for item in search.results %}
-        {% if item.object_type == 'product' %}
+        {% if item.object_type == 'product' %}          
           
         <div class="col d-flex">
-          <div class="card shadow">
+          <div class="card shadow flex-fill">
             {% if item.featured_image %}
               <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
-                {{ item.featured_image.src | img_url: '640x360' | img_tag: item.featured_image.alt, 'card-img-top' }}
+                <img src="{{ item.featured_image.src | img_url: 'master' }}" class="card-img-top" width="240" height="240" style="object-fit: cover;" loading="lazy" alt="{{ item.featured_image.alt }}">
                </a>
-
-
             {% endif %}
-            <div class="card-body">
-            
+            <div class="card-body flex-fill">            
             <h5>{{ item.title | link_to: item.url }}</h5>
-            <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+            <p>[collection] {% render 'product-description' , product: item, type: 'short' %}</p>
             </div>
           </div>
         </div>    
-    
+
         {% else if item.object_type == 'article' %}
 
-          <div class="col d-flex ">
-            <div class="card shadow">
+          <div class="col d-flex-fill">
+            <div class="card shadow d-flex flex-fill">
               {% if item.image %}
                 <a href="{{ item.url | within: collection }}" title="{{ item.title | escape }}">
-                  {{ item.image.src | img_url: 'medium' | img_tag: item.image.alt, 'card-img-top' }}
+                <img src="{{ item.image.src | img_url: 'master' }}" class="card-img-top" width="240" height="240" style="object-fit: cover;" loading="lazy" alt="{{ item.image.alt }}">
                 </a>
               {% endif %}
-              <div class="card-body">
+              <div class="card-body flex-fill">
               
               <h5>{{ item.title | link_to: item.url }}</h5>
-              <p>{{ item.content | strip_html | truncatewords: 50 }}</p>
+              <p>[blog] {{ item.content | strip_html | truncatewords: 20 }}</p>
               </div>
             </div>
           </div>    
       {% endif %}
 
       {% else %}
-        <p class="text-cart-empty"> No results</p>
+        <p class="text-cart-empty">No results</p>
       {% endfor %}
     
   </div>

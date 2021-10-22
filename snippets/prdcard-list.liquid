@@ -1,4 +1,15 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign cardwidth = cardwidth %}
+{% unless cardwidth %}
+    {% assign cardwith = "150" %}
+{% endunless %}
+
+{% unless cardheight %}
+    {% assign cardheight = "150" %}
+{% endunless %}
+
+{% assign cardheight = cardheight %}
+
 {% for tag in product.tags %}
     {% if tag contains 'Special' %}
      {% assign specialbox = 'true' %}
@@ -18,14 +29,14 @@
     <div class="card bg-light d-flex flex-fill border-1 border-secondary rounded-0">
       <div class="row">
         <div class="col-auto ms-0 bg-none"> 
-            <div class="inner-img" style="min-width:150px;">
+            <div class="inner-img" style="min-width:{{ cardwidth }}px;">
                 <a href="javascript:;" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
                     product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}">      
-                <img src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" class="card-img-top flex-fill" width="640" height="360" style="max-height:150px;max-width:150px;object-fit:cover;"></a>
-                <div class="text-hover">QUICK SHOP</div>  
+                <img src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" class="card-img-top flex-fill" width="{{ cardwidth }}" height="{{ cardheight }}" style="max-height:{{ cardheight }}px;max-width:{{ cardwidth }}px;object-fit:cover;"></a>
+                <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>
             </div>
         </div>
-        <div class="col me-1 bg-none" style="z-index:999;">
+        <div class="col me-1 bg-none" style="z-index:990;">
           <div class="row my-0 pt-1 px-0 bg-none">                      
             <div class="card-body ps-0 pe-1 py-0 bg-none">
               <h6 class="text-product-title" style="font-size:1rem;">                    

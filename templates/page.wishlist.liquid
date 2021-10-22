@@ -1,7 +1,16 @@
+{%- liquid 
+assign xxlcard = settings.xxl_card
+assign xlcard = settings.xl_card
+assign lcard = settings.l_card
+assign mcard = settings.m_card
+assign scard = settings.s_card
+assign xscard = settings.xs_card
+assign xsoverride = settings.xsoverride_card
+-%}
 
 <section class="container py-5" id="wishlist">
   <h1 class="text-center py-2">{{ page.title }}</h1>
-  <div class="row d-flex g-3 row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 py-2" grid-wishlist>
+  <div class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2" grid-wishlist>
   <!-- <div class="grid" grid-wishlist> -->
     <div class="wishlist-spinner">
       <div class="spinner-border" role="status">
@@ -15,6 +24,9 @@
 <div class="text-center pb-2">
   <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
 </div>
+
+{% render 'prd-modal' %}
+<!--
 <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
   <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
       <div class="modal-content rounded-0">
@@ -52,6 +64,7 @@
       </div>
   </div>
 </div>
+-->
 
 <style>
 .form-select {

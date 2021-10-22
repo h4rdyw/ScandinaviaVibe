@@ -1,12 +1,27 @@
-
 {% comment %}theme-check-disable{% endcomment %}
-
+{% assign bodybgcolor = settings.body_bgcolor %}
 {% assign page_handle = page.handle %}
-
 {% for block in section.blocks %}
-
     {% if block.settings.page_handle == page_handle  or template == 'index' %}
+      {% if block.settings.hide_section_header == true %}
+        <style scoped>
+        .page-header{
+          display: none;
+          }
+        </style>
+      {% endif %}
+      
         {% if block.type == 'lookbook_story' %}         
+
+        {% assign viewheight = block.settings.height %}
+        {% assign top_margin = block.settings.top_margin %}
+        {% assign bg_position = block.settings.bg_position %}
+        {% assign topmargin = "padding-top: "  | append : top_margin | append : " ! important;" %}
+        {% assign bgposition = "background-position: "  | append : top_margin | append : " ! important;" %}
+        {% assign left_pos = block.settings.left_position %}
+        {% assign top_pos = block.settings.top_position %}
+        {% assign left_pos_mobile = block.settings.left_position_mobile %}
+        {% assign top_pos_mobile = block.settings.top_position_mobile %} 
 
             {% if block.settings.image_story  %}            
                 {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
@@ -29,11 +44,12 @@
             {% assign bgmainopacity = "opacity : " | append: block.settings.bg_main_opacity| append: '%;' %}
             {% assign img1effect = block.settings.img1_effet %}
 
-            <!-- opening tag omitted here, declared in the page.lookbok.liquid -->
+            {% comment %} opening tag omitted here, declared in the page.lookbok.liquid {% endcomment %}
             {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 
             {% endcomment %}
-               
-                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-wrap shadow-0 p-0 py-5">                    
+               <div class="container container-inner" style="{{ topmargin }}">
+                
+                <div class="row row-cols-lg-2 row-cols-md-2 row-cols-1 d-flex flex-fill shadow-lg px-0 py-5">                    
                 
 
                   <div class="col d-flex flex-column flex-fill px-1" style="{{ bgcolormain }}{{ bgmainopacity }}">
@@ -43,7 +59,7 @@
 
                           <div class="col d-flex flex-fill" style="{{ bgcolormain }}{{ bgmainopacity }}">
                               <div class="hero-2-container">
-                                <div class="w-100 mx-auto">
+                                <div class="w-100 mx-0">
                                     <div class="ratio ratio-16x9">
                                         <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                                     </div>
@@ -77,7 +93,7 @@
                                 {% else %} 
                               <div class="hero-1-container">
                               {% endif %} 
-                                  <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
+                                  <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat;background-position: center center;background-size: cover;height: {{ viewheight }}vh;width: 100%;padding: 40px;transition: transform 2s;"></div>
                                     <div class="hero-1-stuff">
                                         <h1 style="{{ titlecolormain }}position:sticky;top:10px;">{{ block.settings.title }}</h1>
                                         
@@ -123,7 +139,7 @@
                           Ready for the day ahead. {% endcomment %}
                   </div> 
                 <!-- /right/ -->
-                <div class="col d-flex flex-wrap px-1">
+                <div class="col d-flex flex-wrap px-1" style="height:{{ viewheight }}vh;">
 
                     {% if block.settings.image1 %}            
                         {% assign hero_img1_url = block.settings.image1 | img_url: 'medium' %} 
@@ -372,6 +388,7 @@
                         </div>
                 </div>
             </div>
+          </div>  
         {% endif %}
     {% endif %} 
 
@@ -405,6 +422,72 @@
           "id": "page_handle",
           "label": "Select a page"
         },        
+        {
+          "type": "text",
+          "id": "top_margin",
+          "default": "auto",
+          "label": "Top Margin"
+        }, 
+        {
+          "type": "range",
+          "id": "height",
+          "label": "Section View Port Height",
+          "default": 100,
+          "unit": "%",
+          "min": 40,
+          "max": 100,
+          "step": 1
+        },     
+        {
+          "type": "select",
+          "id": "bg_position",
+          "label": "Background Position",
+          "options": [
+            {
+                "value": "top",
+                "label": "Top"
+            },
+            {
+                "value": "center",
+                "label": "Center"
+            },
+            {
+              "value": "bottom",
+              "label": "Bottom"
+            }
+          ],
+          "default": "center"
+        },                                 
+        {
+          "type": "number",
+          "id": "top_position",
+          "label": "Text Top Position",
+          "default": 100      
+        },
+        {
+          "type": "number",
+          "id": "left_position",
+          "label": "Text Left Position",
+          "default": 80      
+        },
+        {
+          "type": "number",
+          "id": "top_position_mobile",
+          "label": "Text Top Position - Mobile",
+          "default": 100      
+        },
+        {
+          "type": "number",
+          "id": "left_position_mobile",
+          "label": "Text Left Position - Mobile",
+          "default": 60      
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_section_header",
+          "label": "Hide Page Header",
+          "default": true
+        },
         {
           "type": "header",
           "content": "MAIN BOX"
@@ -825,10 +908,12 @@
 {% endschema %}
 
 <style>
+
+
   /* text inside box */
     .hero-0-container {
       height: auto;
-      min-height: 100vh;
+      min-height: {{ viewheight }}vh;
       width: 100%;
       overflow: hidden;
       position: relative;
@@ -848,7 +933,7 @@
       /* video */
     .hero-2-container {
         height: auto;
-        min-height: 80vh;
+        min-height: {{ vewheight }}vh;
         width: 100%;
         overflow: hidden;
         position: relative;
@@ -856,14 +941,14 @@
       }
       
       
-      .hero-1 {
+      /*.hero-1 {
         background: url({{ hero_img_url }}) no-repeat center center;
         background-size: cover;
         height: 100%;
         width: 100%;
         padding: 40px;
         transition: transform 2s;
-      }
+      }*/
 
       .hero-1:hover {
         transform: scale(1.10);
@@ -889,10 +974,18 @@
       
       .hero-1-stuff {
         position: absolute;
-        top: 40px;
-        left: 40px;
+        top: {{ top_pos }}px;
+        left: {{ left_pos }}px;
       } 
-               
+        
+      @media only screen and (max-width: 575px) {
+        .hero-1-stuff {
+        position: absolute;
+        top: {{ top_pos_mobile }}px;
+        left: {{ left_pos_mobile }}px;
+        }
+      }
+
       .hero-2-stuff {
         position: relative;
         opacity: 75%;
@@ -910,7 +1003,7 @@
       }
 
       .customscrollbar::-webkit-scrollbar-track {
-        background-color: #e4e4e4;
+        background-color: #ededed;
         border-radius: 100px;
       }
 
@@ -919,12 +1012,36 @@
         border: 6px solid rgba(0, 0, 0, 0.18);
         border-left: 0;
         border-right: 0;
-        background-color: #8070d4;
+        background-color: #ededed;
       }
     
-      body {
-        background: ##f8f9fa!important;
+      {% comment %} body {
+        background: #fff!important;
+      } {% endcomment %}
+
+      @media only screen and (max-width: 767px) {
+        .hero-1 {
+          background-position: center top !important;
+        }
       }
+
+      @media only screen and (max-width: 575px) {
+          .container {
+            max-width: 100% !important;                        
+          }  
+          .container-inner {
+            max-width: 100% !important;                        
+          }
+
+          .shopify-section-lookbook-1 {
+            max-width: 100% !important;                        
+          }
+
+          
+       }      
+       
+      
+
 </style>
 
 {% comment %}theme-check-enable{% endcomment %}

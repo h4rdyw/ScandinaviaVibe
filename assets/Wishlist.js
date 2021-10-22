@@ -62,7 +62,7 @@ var setupGrid = function (grid) {
         });
       });
 
-    var productTileTemplateUrl = '/products/' + handle + '?view=card';
+    var productTileTemplateUrl = '/products/' + handle + '?view=wishlist';
     return fetch(productTileTemplateUrl).then(function (res) {
       return res.text();
     });

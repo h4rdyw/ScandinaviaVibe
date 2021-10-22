@@ -23,6 +23,9 @@
         },
         "video": {
           "type": "video_url"
+        },
+        "featured_gallery" : {
+        "type": "featured_gallery"
         }
       },
       "block_order": [
@@ -31,7 +34,8 @@
         "article_meta",
         "excerpt",
         "content",
-        "video"
+        "video",
+        "featured_gallery"
       ]
     }
     

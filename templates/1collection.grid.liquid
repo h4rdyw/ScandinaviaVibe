@@ -1,0 +1,206 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign section_id = collection.handle %}
+
+<section class="container px-0 py-5 bg-dark">
+    {% paginate collection.products by 12 %}
+    <h1 class="text-center text-white py-2">{{ collection.title }}</h1>
+    {% render 'pagination' , paginate: paginate %}
+
+    <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
+        {% for product in collection.products %}
+          {% assign image = product.featured_media.preview_image %}
+
+              {% for tag in product.tags %}
+                  {% if tag contains 'Special' %}
+                    {% assign specialbox = 'true' %}
+                  {% endif %}    
+                  {% if tag contains 'Award' %}
+                    {% assign awardbox = 'true' %}
+                  {% endif %}   
+                  {% if tag contains 'Highlight' %}
+                    {% assign highlightbox = 'true' %}
+                  {% endif %}  
+                  {% if tag contains 'Final Sale' %}
+                    {% assign finalsale = 'true' %}
+                  {% endif %}     
+              {% endfor %}      
+          
+            {% if highlightbox == 'true' %}        
+                  <!-- <div class="col d-flex flex-grow-1 bg-dark border-0 mx-1"> -->
+            <div class="col d-flex bg-dark border-0">
+              {% else %}
+            <div class="col d-flex bg-dark border-0">
+            {% endif %}
+            
+                <div class="card d-flex flex-fill bg-dark border-0">
+                    <div class="img-wrapper d-flex">             
+                      <div class="card-img-top" {% if highlightbox == 'true' %} style="object-fit:cover;filter: brightness(110%);" {% else %} style="object-fit: cover;" {% endif %}>
+                        {% if image != blank %}  
+                          <div class="inner-img">
+                            <a href="javascript:void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                              product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
+                            ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title| escape }}"  
+                            ></a>
+                            <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>     
+                          </div>
+                          {% assign highlightbox = 'false' %}
+                        </div>
+                        {% else %}             
+                        <div class="inner-img">
+                          {{ 'product-1' | placeholder_svg_tag: 'card-img-top' }}    
+                        </div>
+                        {% endif %}          
+                      </div>
+                    
+                      <div class="card-body bg-dark d-flex flex-column flex-fill align-items-end justify-content-end">
+                          <h5 class="h5 text-end"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></h5>    
+                          {% comment %} <p class="text-white">&nbsp;&nbsp;|&nbsp;&nbsp;{{ product.price | money_without_trailing_zeros }}</p>             {% endcomment %}
+                          <div style="height:auto;">
+                              <p class="text-white text-end">
+                                {% if product.compare_at_price_max > 0 %}
+                                {% render 'discount', product : product, finalsale : finalsale %}<svg class="tag-badge">{%- render 'tag-badge' -%}</svg></br>
+                                <del><span style="color: white;">{{ product.compare_at_price_max | money_without_trailing_zeros }}</span></del>
+                              {% assign finalsale = 'false' %}
+                              {% endif %}
+
+                              {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>       
+                              {%- render 'button-wishlist', product: product -%}     
+                          </div>
+                      </div>  
+                    <div>          
+
+                    {% if specialbox == 'true' %}      
+                        {% assign specialbox = 'false' %}              
+                        {% assign iconstyle = '' %} 
+                        <svg class="star-badge">{% render 'star-badge' %}</svg>  
+                    {% else %}
+                        {% assign iconstyle = 'style="transform:translateX(-35px);"' %} 
+                    {% endif %} 
+
+                      
+                    {% if awardbox == 'true' %}    
+                      {% assign awardbox = 'false' %}                                              
+                      <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
+                    {% endif %}            
+                </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+
+      {% render 'pagination' , paginate: paginate %}
+      {% endpaginate %}
+</section>    
+
+{% render 'prd-modal' %}
+
+<!-- 
+  <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+        <div class="modal-content rounded-0">
+            <div class="modal-header" style="border-bottom: none;">
+              <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                      <div class="col-12 col-md-6">
+                        <img class="img-fluid modal-img" src="" id="productInfoImg" alt="">
+                        <div id="badge"></div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <p id="productInfoPrice" class="text-header-title"></p>
+                        <p id="productInfoDescription" class="text-product-desc"></p>
+                      </div>
+                </div>             
+            </div>
+            <div class="modal-footer" style="border-top: none;">
+              <div class="col-12 col-md-6"></div>
+              <div class="col-12 col-md-6 px-2">
+                <form action="#" id="addToCartForm" class="row">
+                  <select name="id" id="modalItemID" class="form-select col-auto">
+                  </select>
+                  <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">                
+                  <P></P>
+                  <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
+                  <p></p>                 
+                </form>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+-->
+{% style %}
+.text-product-link {
+  color: #D4D4D4;
+  font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
+  text-decoration: none;
+}
+
+.text-product-link:hover {
+    color: {{ producttextcolorhover }};
+    text-decoration: underline;
+}
+
+.text-product-title {    
+    font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+    text-decoration: none;
+}
+
+input {
+      border-left: none;
+      border-right: none;
+      border-top: none;
+      border-bottom: 1px solid #ced4da;
+  }
+      
+  .form-select {
+      border-left: none;
+      border-right: none;
+      border-top: none;
+  }
+ 
+  .icon {
+      display: inline-flex;
+      align-self: center;
+      height: 32px;
+      width: 32px;
+      fill: transparent;
+      stroke: white !important;
+      transition: fill 0.3s ease;
+  }
+
+  .active .icon {
+     fill: #F652A0;
+     stroke: transparent;
+   }
+
+  .wishlist-badge {  
+      opacity: 1;  
+      width: 32px;
+      height: 32px;
+      padding-left: 1px;
+      padding-right: 1px;
+      position: absolute;
+      bottom: 30px !important;
+      left: 5px;
+      border:none;
+      background-color: transparent;
+      transition: 0.15s;
+      align-items: start;
+      fill: transparent;
+      stroke: #000;
+      transition: fill 0.3s ease;
+      overflow:visible !important;
+   }  
+{% endstyle %}
+<style>
+@media only screen and (max-width: 1200px) {
+  .container {
+    max-width: 100% !important;
+  }
+}
+</style>
+{% comment %}theme-check-enable{% endcomment %}

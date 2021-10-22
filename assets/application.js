@@ -1,4 +1,3 @@
-// Put your application javascript here
 'use strict';
 
 window.addEventListener('resize', adjustAnnouncementBar);
@@ -23,6 +22,53 @@ if (document.readyState !== 'loading') {
   });
 }
 
+/* hover on ios */
+(function (l) {
+  var i,
+    s = { touchend: function () {} };
+  for (i in s) l.addEventListener(i, s);
+})(document);
+
+function checkSafari() {
+  var is_chrome = navigator.userAgent.indexOf('Chrome') > -1;
+  var is_explorer = navigator.userAgent.indexOf('MSIE') > -1;
+  var is_firefox = navigator.userAgent.indexOf('Firefox') > -1;
+  var is_safari = navigator.userAgent.indexOf('Safari') > -1;
+  var is_opera = navigator.userAgent.toLowerCase().indexOf('op') > -1;
+  if (is_chrome && is_safari) {
+    is_safari = false;
+  }
+  if (is_chrome && is_opera) {
+    is_chrome = false;
+  }
+
+  if (
+    navigator.userAgent.indexOf('Safari') != -1 &&
+    navigator.userAgent.indexOf('Chrome') == -1
+  ) {
+    return true;
+  } else {
+    return false;
+  }
+}
+/* trigger touch on ios safari */
+function touchTrigger() {
+  if (checkSafari()) {
+    var el = document.getElementById('modalprdbody');
+    // desktop
+    //el.click();
+
+    // mobile
+    if (window.matchMedia('(max-width: 768px)').matches) {
+      //alert('touch');
+      var event1 = new Event('touchstart');
+      var event2 = new Event('touchend');
+      el.dispatchEvent(event1);
+      el.dispatchEvent(event2);
+    }
+  }
+}
+
 /* adjust annoucement bar position */
 var navBarCollapse = document.getElementById('navbarNav');
 navBarCollapse.addEventListener('hidden.bs.collapse', function () {
@@ -41,10 +87,32 @@ var myproductModal = document.getElementById('productInfoModal');
 if (myproductModal != null) {
   myproductModal.addEventListener('hidden.bs.modal', function (event) {
     checkLocaleBtn();
+
+    if (checkSafari()) {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        document.body.classList.remove('modal-fixed');
+        enableDocumentScrolling();
+      }
+    }
   });
 
+  /* before modal shown */
+  myproductModal.addEventListener('show.bs.modal', function (event) {
+    if (checkSafari()) {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        //console.log("enabling modal fixed, AFTER disabling scroll");
+        disableDocumentScrolling();
+        document.body.classList.add('modal-fixed');
+      }
+    }
+  });
+  /* when modal shown */
   myproductModal.addEventListener('shown.bs.modal', function (event) {
     checkLocaleBtn();
+    touchTrigger();
+    const element = document.querySelector('#modalItemID');
+    let changeEvent = new Event('change');
+    element.dispatchEvent(changeEvent);
   });
 }
 
@@ -53,7 +121,7 @@ function adjustAnnouncementBar() {
   var headerHeight = headerEl.offsetHeight;
   /*var headerBoxShadow = window.getComputedStyle(headerEl).boxShadow;*/
   /*var headerBoxShadowY = +headerBoxShadow.split("px")[2].trim();    ;*/
-  /*console.log('HeaderHeight:'+headerHeight);*/
+  //console.log('HeaderHeight:'+headerHeight);
 
   /*var x = document.getElementsByTagName("BODY")[0];
       console.log(x);*/
@@ -212,9 +280,10 @@ function getProductAnchors(prdId) {
     document.getElementById('productInfoModal'),
     {}
   );   */
-
-  if (document.getElementById(`${prdId}`) != null) {
+  const prdID = document.getElementById(`${prdId}`);
+  if (prdID != null) {
     //console.log(`Found ${prdId}`);
+
     var productInfoAnchors = document.querySelectorAll(`#${prdId}`);
 
     if (productInfoAnchors.length > 0) {
@@ -224,6 +293,8 @@ function getProductAnchors(prdId) {
         //console.log(item);
         item.addEventListener('click', event => {
           //console.log('Clicked');
+          event.stopImmediatePropagation();
+
           var url = '/products/' + item.getAttribute('product-handle') + '.js';
 
           fetch(url)
@@ -231,18 +302,27 @@ function getProductAnchors(prdId) {
             .then(function (data) {
               //console.log(data);
 
-              const modalSelectElement = document.getElementById('modalItemID');              
+              const modalSelectElement =
+                document.getElementById('modalItemID') || false;
 
-              modalSelectElement.addEventListener('click', e => varModalSelectChange(e,data));
-              modalSelectElement.addEventListener('change', e => varModalSelectChange(e, data));
+              if (modalSelectElement) {
+                modalSelectElement.addEventListener('click', e =>
+                  varModalSelectChange(e, data)
+                );
+                modalSelectElement.addEventListener('change', e =>
+                  varModalSelectChange(e, data)
+                );
+                modalSelectElement.addEventListener('focus', e =>
+                  varModalSelectChange(e, data)
+                );
+              }
 
-              
-              const productDescArr = data.description.split('$$$$$$');
+              let productDescArr = data.description.split('$$$$$$');
 
               // if (productDescArr.length > 1) {
               //   var productDesc = productDescArr[1];
               // } else {
-              var productDesc = productDescArr[0];
+              let productDesc = productDescArr[0];
               // }
               let prdBadge = ``;
               let finalsaletag = '';
@@ -276,9 +356,19 @@ function getProductAnchors(prdId) {
                 /* do nothing*/
               }
 
-              document.getElementById('productInfoImg').src = data.images[0];
+              //let productFeaturedImg = data.featured_image.split('?');
+              //if (productFeaturedImg.length > 0) {
+              //  document.getElementById('productInfoImg').style = `background: url(${productFeaturedImg[0]});`;
+              //}
+
+              document.getElementById('productInfoImg').src =
+                data.featured_image;
+              //const modalimg = document.getElementById('modalimgcol');
+              //modalimg.style.background = `url(${data.featured_image}) no-repeat center center`;
+              //modalimg.style.backgroundSize = "100%";
+
               document.getElementById('productInfoTitle').innerHTML =
-                data.title+finalsaletag;
+                data.title + finalsaletag;
 
               let from = '';
               if (data.price_varies) from = 'from ';
@@ -296,9 +386,9 @@ function getProductAnchors(prdId) {
                 //console.log(pctDiscount);
                 document.getElementById(
                   'productInfoPrice'
-                ).innerHTML = `<p>${pctDiscount.toFixed(
+                ).innerHTML = `${pctDiscount.toFixed(
                   0
-                )}%<svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg><del><span style="color: #DF362D;">${prdComparePrice}</span></del> ${from}${prdPrice}</p>`;
+                )}%<svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg><del><span style="color: #DF362D;">${prdComparePrice}</span></del> ${from}${prdPrice}`;
               } else {
                 document.getElementById('productInfoPrice').innerHTML =
                   item.getAttribute('product-price');
@@ -317,12 +407,13 @@ function getProductAnchors(prdId) {
               //   e.remove();
               // });
 
-              var variants = data.variants;
-              var variantSelect = document.getElementById('modalItemID');
+              const variants = data.variants;
+              const variantSelect = document.getElementById('modalItemID');
 
               variantSelect.innerHTML = '';
 
               var available = 0;
+
               variants.forEach(function (variant, index) {
                 //console.log(variant);
                 var varPrice = formatCurrency1(variant.price / 100);
@@ -331,7 +422,10 @@ function getProductAnchors(prdId) {
                 );
                 if (variant.available == true) {
                   available++;
-                  if (+variant.compare_at_price / 100 > 0 && (+variant.compare_at_price > +variant.price)  ) {
+                  if (
+                    +variant.compare_at_price / 100 > 0 &&
+                    +variant.compare_at_price > +variant.price
+                  ) {
                     var itemDesc =
                       variant.title +
                       ' (was ' +
@@ -342,8 +436,23 @@ function getProductAnchors(prdId) {
                     var itemDesc = variant.title + ' : ' + varPrice;
                   }
 
-                  variantSelect.options[variantSelect.options.length] =
-                    new Option(itemDesc, variant.id);
+                  if (
+                    variants.length == 1 &&
+                    variants[0].title == 'Default Title'
+                  ) {
+                    //console.log('Only variant');
+                    variantSelect.options[variantSelect.options.length] =
+                      new Option(itemDesc, variant.id);
+                    variantSelect.options[variantSelect.options.length] =
+                      new Option(itemDesc, variant.id).setAttribute(
+                        'selected',
+                        'selected'
+                      );
+                    variantSelect.style.display = 'none';
+                  } else {
+                    variantSelect.options[variantSelect.options.length] =
+                      new Option(itemDesc, variant.id);
+                  }
                 } else {
                   variantSelect.options[variantSelect.options.length] =
                     new Option(variant.option1, variant.id).setAttribute(
@@ -352,6 +461,12 @@ function getProductAnchors(prdId) {
                     );
                 }
               });
+
+              if (variants.length > 1) {
+                variantSelect.style.display = 'inline';
+                //console.log('inline');
+              }
+
               const btnAdd = document.getElementById('btnAddToCart');
               var text = btnAdd.firstChild;
 
@@ -372,6 +487,9 @@ function getProductAnchors(prdId) {
               }
 
               productModal.show();
+              checkModalScrollable();
+              let element = document.getElementById('btnAddToCart');
+              element.scrollIntoView(true);
             });
         });
       });
@@ -442,8 +560,6 @@ if (modalAddToCartForm != null) {
       });
   });
 }
-
-
 
 const AddtoCartErr = function () {
   //productModal.hide();
@@ -644,45 +760,225 @@ function formatCurrency(amount) {
 function varModalSelectChange(e, data) {
   //const json_product = {{ product | json }};
   //console.log(json_product);
+  //console.log(data);
 
   const value = e.target.value;
   //const text = SelectElement.options[SelectElement.selectedIndex].text;
   let variantresult = data.variants.find(({ id }) => id === +value);
 
-  let variant_img_id =
-    variantresult.featured_image === null
-      ? false
-      : variantresult.featured_image.id;
-      if (variant_img_id) {
-        //console.log(variant_img_id);
-        document.getElementById('productInfoImg').src = variantresult.featured_image.src;
-      }
-  
+  if (variantresult) {
+    let variant_img_id =
+      variantresult.featured_image === null
+        ? false
+        : variantresult.featured_image.id;
 
-  if (value) {
-    //console.log(variantresult);
-
-    const curr_price = +variantresult.price / 100;
-    const variantPrice = formatCurrency(+variantresult.price / 100);
-    const compare_price = +variantresult.compare_at_price / 100;
-    const variantComparePrice = formatCurrency(
-      +variantresult.compare_at_price / 100
-    );
-    const savings = (
-      ((compare_price - curr_price) / compare_price) *
-      100
-    ).toFixed(0);
-
-    if (+variantresult.compare_at_price > 0 && +variantresult.compare_at_price > +variantresult.price ) {
-      var pricetag = `${savings}% <svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg>
-      <del><span style="color: #AB0000;">${variantComparePrice}</span></del> ${variantPrice}`;
-    } else {
-      var pricetag = `${variantPrice}`;
+    if (variant_img_id) {
+      //console.log(variant_img_id);
+      document.getElementById('productInfoImg').src =
+        variantresult.featured_image.src;
     }
 
-    document.getElementById('productInfoPrice').innerHTML = pricetag;   
-    
-  
+    if (value) {
+      //console.log(variantresult);
+
+      const curr_price = +variantresult.price / 100;
+      const variantPrice = formatCurrency(+variantresult.price / 100);
+      const compare_price = +variantresult.compare_at_price / 100;
+      const variantComparePrice = formatCurrency(
+        +variantresult.compare_at_price / 100
+      );
+      const savings = (
+        ((compare_price - curr_price) / compare_price) *
+        100
+      ).toFixed(0);
+
+      if (
+        +variantresult.compare_at_price > 0 &&
+        +variantresult.compare_at_price > +variantresult.price
+      ) {
+        var pricetag = `${savings}% <svg class="tag-badge"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="32" fill="#DF362D" class="bi bi-tag-fill" viewBox="0 0 16 16"><path d="M2 1a1 1 0 0 0-1 1v4.586a1 1 0 0 0 .293.707l7 7a1 1 0 0 0 1.414 0l4.586-4.586a1 1 0 0 0 0-1.414l-7-7A1 1 0 0 0 6.586 1H2zm4 3.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/></svg></svg>
+      <del><span style="color: #AB0000;">${variantComparePrice}</span></del> ${variantPrice}`;
+      } else {
+        var pricetag = `${variantPrice}`;
+      }
+
+      document.getElementById('productInfoPrice').innerHTML = pricetag;
+    }
   }
 }
-  
+
+function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1) + min); //The maximum is inclusive and the minimum is inclusive
+}
+
+/* PRD GALLERY */
+const galleryID = document.querySelectorAll('.swiper-gallery');
+//console.log(galleryID);
+
+//multiply delay by random number
+const galleryFirstSlide = getRandomIntInclusive(1, 4);
+
+galleryID.forEach(el => {
+  //console.log(el);
+  const uniqID = el.getAttribute('unique-id');
+  const autoplay = el.getAttribute('autoplay');
+  const playdelay = el.getAttribute('delay');
+  let autoplayAttr = {};
+  if (autoplay == 'true') {
+    autoplayAttr = {
+      delay: +playdelay * galleryFirstSlide,
+      disableOnInteraction: true,
+    };
+  } else {
+    autoplayAttr = false;
+  }
+
+  const slideNavigation = el.getAttribute('slide-navigation');
+  //console.log(slideNavigation);
+  const swiperName = el.id;
+  const swiperTemp = document.querySelector(`#${swiperName}`);
+  //console.log(swiperTemp);
+  const children = swiperTemp.children;
+  //console.log(children);
+  if (slideNavigation == 'false') {
+    Array.from(children).forEach(item => {
+      // item.style.display = "inline-block";
+      //console.log(item);
+      if (item.classList.contains('swiper-button-prev')) {
+        item.classList.add('d-none');
+      }
+      if (item.classList.contains('swiper-button-next')) {
+        item.classList.add('d-none');
+      }
+    });
+  }
+
+  //use stopImmediatepropagation in productinfo modal
+  const $swiperName = new Swiper(`#${swiperName}`, {
+    loop: true,
+    autoplay: autoplayAttr,
+    preloadImages: false,
+    preventClicksPropagation: true,
+    preventClicks: true,
+    keyboard: {
+      enabled: true,
+      onlyInViewport: false,
+    },
+    mousewheel: {
+      invert: true,
+    },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+      },
+      768: {
+        slidesPerView: 4,
+      },
+      1024: {
+        slidesPerView: 5,
+      },
+    },
+    spaceBetween: 25,
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+  });
+});
+
+/* HERO SLIDER */
+const sliderID = document.querySelectorAll('.heroswiper-gallery');
+//console.log(sliderID);
+
+const sliderFirstSlide = getRandomIntInclusive(1, 3);
+
+sliderID.forEach(el => {
+  const uniqID = el.getAttribute('unique-id');
+  const swiperName = el.id;
+  const slideEffect = el.attributes['effect'].value;
+  const slideSpeed = el.attributes['speed'].value;
+  const slideDelay = el.attributes['delay'].value;
+
+  const $swiperName = new Swiper(`#${swiperName}`, {
+    parallax: true,
+    speed: +slideSpeed,
+    effect: slideEffect,
+    initialSlide: sliderFirstSlide,
+    autoplay: {
+      delay: +slideDelay,
+      disableOnInteraction: true,
+    },
+    pagination: {
+      el: `.swiper-pagination-${uniqID}`,
+      type: 'custom',
+      renderCustom: function (swiper, current, total) {
+        return (
+          ' <span class="h2">' +
+          ('0' + current).slice(-2) +
+          '</span> ' +
+          ' <span class="swiper-divider">/</span> ' +
+          ' <span class="text-muted">' +
+          ('0' + total).slice(-2)
+        );
+        +'</span> ';
+      },
+    },
+  });
+});
+
+function checkModalScrollable() {
+  const isScrollable = function (ele) {
+    // Compare the height to see if the element has scrollable content
+    const hasScrollableContent = ele.scrollHeight > ele.clientHeight;
+
+    // It's not enough because the element's `overflow-y` style can be set as
+    // * `hidden`
+    // * `hidden !important`
+    // In those cases, the scrollbar isn't shown
+    const overflowYStyle = window.getComputedStyle(ele).overflowY;
+    const isOverflowHidden = overflowYStyle.indexOf('hidden') !== -1;
+
+    return hasScrollableContent && !isOverflowHidden;
+  };
+  const thePrdModal = document.querySelector('.modal-body');
+  const theAtcModal = document.querySelector('#addToCartForm');
+  if (isScrollable(thePrdModal)) {
+    //console.log("scrollable");
+  } else {
+    //console.log("Non scrollable, remove touch");
+    thePrdModal.classList.add('modal-no-touch');
+    theAtcModal.classList.add('modal-no-touch');
+  }
+}
+
+function disableDocumentScrolling() {
+  if (document.documentElement.style.position != 'fixed') {
+    // Get the top vertical offset.
+    var topVerticalOffset =
+      typeof window.pageYOffset != 'undefined'
+        ? window.pageYOffset
+        : document.documentElement.scrollTop
+        ? document.documentElement.scrollTop
+        : 0;
+    // Set the document to fixed position (this is the only way around IOS' overscroll "feature").
+    document.documentElement.style.position = 'fixed';
+    // Set back the offset position by user negative margin on the fixed document.
+    document.documentElement.style.marginTop = '-' + topVerticalOffset + 'px';
+  }
+}
+
+function enableDocumentScrolling() {
+  if (document.documentElement.style.position == 'fixed') {
+    // Remove the fixed position on the document.
+    document.documentElement.style.position = null;
+    // Calculate back the original position of the non-fixed document.
+    var scrollPosition =
+      -1 * parseFloat(document.documentElement.style.marginTop);
+    // Remove fixed document negative margin.
+    document.documentElement.style.marginTop = null;
+    // Scroll to the original position of the non-fixed document.
+    window.scrollTo(0, scrollPosition);
+  }
+}

@@ -1,3 +1,4 @@
+{% comment %}theme-check-disable{% endcomment %}
 {%- liquid 
     assign bodybgcolor = settings.body_bgcolor
     assign font_navbar = settings.navbar_text_font
@@ -22,12 +23,12 @@
 {{ font_productdescription | font_face }}
 
 {% if root_font_size == 62 %}
-  <!-- default font size is 62.50% of 1rem (16px) root , settings does not allow faction, set it here -->
+  {% comment %} <!-- default font size is 62.50% of 1rem (16px) root , settings does not allow faction, set it here --> {% endcomment %}
     :root {
-        font-size: 62.5%;    }
+        font-size: 62.5% !important;    }
 {% else %}        
 :root {
-    font-size: {{ root_font_size }}%;    
+    font-size: {{ root_font_size }}% !important;    
 }
 {% endif %}
 
@@ -37,10 +38,14 @@ h1,h2,h3,h4,h5.h6,button {
 
 html {
     scroll-behavior: smooth;
-}
+    overscroll-behavior-y: contain; 
+    -webkit-overflow-scrolling: touch;
+  }
+  
 body {
     font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
     background-color: {{ bodybgcolor }};
+    overscroll-behavior-y: contain;
     -webkit-font-smoothing: antialiased;  
     -webkit-overflow-scrolling: touch;
 }
@@ -56,7 +61,6 @@ img {
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }};
     text-decoration: none;    
 }
-
 .text-product-link {
     color: {{ producttextcolor }};
     font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
@@ -68,27 +72,33 @@ img {
     text-decoration: underline;
 }
 .text-product-title {
-    /* color: {{ producttextcolor }};*/
     font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 1 rem;
+    font-weight: 800;
+    text-transform: uppercase;
     text-decoration: none;
+    lihe-height:1 rem;    
+}
+.text-product-subtitle {
+  font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+  font-size: 1rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  text-decoration: none;
 }
 .text-product-detail-title {
-  /* color: {{ producttextcolor }};*/
   font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
+  text-transform: uppercase;
   font-size: 1.75rem;
   font-weight: 900;
   text-decoration: none;
 }
 .text-product-header {
-  /* color: {{ producttextcolor }};*/
   font-family: {{ font_producttitle.family }}, {{ font_productdescription.fallback_families }};
   font-weight: 700;
   text-decoration: none;
 }
 .text-product-desc {
-    /* color: {{ producttextcolor }};*/
     font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }};
     text-decoration: none;
 }
@@ -99,10 +109,10 @@ img {
   text-decoration: none;
 }
 .text-line {
+    margin-top: 0px;
     border-bottom: 1px solid;
     margin-bottom: -1px;
 }
-
 .text-underline-hover {
     text-decoration-line: none !important;
 }
@@ -129,15 +139,20 @@ nav .navbar-nav li a {
     color: {{ navbartextcolor }}!important;   
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
-
 .nav-link {
     /* color: {{ navbartextcolor }}!important; */
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 
 .nav-link-prd {
-  color: {{ navbartextcolor }}!important; */
+  color: {{ navbartextcolor }}!important; 
   font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }} !important;
+}
+
+.nav-link-prd.active {
+  color: {{ navbartextcolor }}!important; 
+  font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }} !important;
+  font-weight: 900;
 }
 
 body .navbar-light .navbar-toggler {
@@ -187,6 +202,19 @@ body .navbar-light .navbar-toggler {
   fill: white;
   transform: translateY(7px);
 }
+.icon-globe {  
+	opacity: 1;
+	position: relative;
+  width: 40px;
+	height: 40px;
+  padding-left:4px;
+  padding-right: 1px;  
+	transition: 0.15s;
+  fill: transparent;
+  stroke: transparent;
+  transition: fill 0.3s ease;
+  transform: translateY(4px);
+}
 .wishlist-badge {  
 	opacity: 1;  
 	width: 32px;
@@ -203,7 +231,22 @@ body .navbar-light .navbar-toggler {
   stroke: #000;
   transition: fill 0.3s ease;
 }
-
+.share-badge {  
+	opacity: 1;  
+	width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	bottom: 1px;
+	left: 45px;
+  border:none;
+  background-color: transparent;
+	transition: 0.15s;
+  fill: transparent;
+  stroke: #000;
+  transition: fill 0.3s ease;
+}
 .star-badge {
 	opacity: 1;
 	width: 32px;
@@ -235,8 +278,6 @@ body .navbar-light .navbar-toggler {
 	width: 32px;
 	height: 32px;
 	position: relative;
-	/* top: 5px; */
-	/* left: 25px; */
   transform:rotate(90Deg) translateX(5px);;
 	transition: 0.15s;
 	pointer-events: none;
@@ -246,8 +287,8 @@ body .navbar-light .navbar-toggler {
 #btn-back-to-top {
     position: fixed;
     border-radius: 50%;
-    background-color: {{ navbarbgcolor }};    
-    background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
+    /#background-color: {{ navbarbgcolor }};  */  
+    /*background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);*/
     bottom: 100px;
     right: 25px;    
     display: none;
@@ -277,7 +318,7 @@ body .navbar-light .navbar-toggler {
     opacity: 0;
     font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
     color: #fff;
-    font-size: 2rem;
+    font-size: 1.5rem;
     line-height: 1.5em;
     text-shadow: 2px 2px 2px #000;
     text-align: center;
@@ -364,8 +405,24 @@ a.btn {
     border-width: 0px;
     border-radius: 0;
     border-color: none;   
+    line-height: 1.25;
   }
 
+  shopify-payment-button__button {
+    border-radius: 4px;
+    border: none;
+    box-shadow: 0 0 0 0 transparent;
+    color: white;
+    cursor: pointer;
+    display: block;
+    font-size: 1em;
+    font-weight: 500;
+    line-height: 1.25;
+    text-align: center;
+    width: 100%;
+    transition: background 0.2s ease-in-out;
+  }
+  
   .shopify-payment-button__button--unbranded:hover {
     filter: brightness(120%) saturate(120%);
   }
@@ -493,9 +550,11 @@ a.btn {
   display: flex;
   margin-top: 0;
   margin-left: 0;
+  padding: 6px;
   font-weight: 500;
   text-align: left;
   vertical-align: top;
   font-style: italic;
   font-size: 0.9rem;
 }
+{% comment %}theme-check-enable{% endcomment %}

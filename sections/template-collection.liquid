@@ -1,4 +1,14 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign xxlcard = settings.xxl_card %}
+{% assign xlcard = settings.xl_card %}
+{% assign lcard = settings.l_card %}
+{% assign mcard = settings.m_card %}
+{% assign scard = settings.s_card %}
+{% assign xscard = settings.xs_card %}
+{% assign xsoverride = settings.xsoverride_card %}
+{% assign cardwidth = settings.card_img_width_coll %}
+{% assign cardheight = settings.card_img_height_coll %}
+{% assign section_id = collection.handle %}
 
 <section class="container py-5">
     {% paginate collection.products by 10 %}
@@ -67,8 +77,8 @@
       </div>         
     </div> {% endcomment %}
   
-    <div class="row d-flex g-3 row-cols-xxl-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-1 py-2">                                      
-        {% render 'prd-card' for collection.products as product %}       
+    <div class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2">                                      
+        {% render 'prd-card' for collection.products as product , section_id : section_id , cardwitdh : cardwidth , cardheight : cardheight %}       
     </div>
   
     {% render 'pagination' , paginate: paginate %}
@@ -76,7 +86,9 @@
   
   </section>
   
-  <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
+  {% render 'prd-modal' %}
+  
+  {% comment %} <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
           <div class="modal-content rounded-0">
               <div class="modal-header" style="border-bottom: none;">
@@ -127,7 +139,7 @@
           </div>
       </div>
   </div>
-  
+   {% endcomment %}
   
   {% comment %} <script>  
   

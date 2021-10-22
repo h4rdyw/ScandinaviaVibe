@@ -23,5 +23,21 @@
     
 </div>
 </div>
-
+{% render 'prd-modal' %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      update_cart();
+      adjustAnnouncementBar();
+      //get all productInfoAnchor
+      var testPrd = document.querySelectorAll('[id^="productInfoAnchor-"]');
+      var arrtesPrd = Array.from(testPrd);
+      //console.log('All productInfoAnchor ');
+      //console.log(arrtesPrd);
+  
+      testPrd.forEach(item => {
+        //console.log(item.id);
+        getProductAnchors(item.id);
+      });
+    });
+</script>
 {% comment %}theme-check-enable{% endcomment %}
