@@ -1,14 +1,19 @@
- <!-- Divider section-->
  {% assign page_handle = page.handle %}
  {% assign collection_handle = collection.handle %}
  {% assign template_handle = template.name %}
  {% for block in section.blocks %}
 
   {%- liquid 
-  assign hero_url = block.settings.image | img_url: 'master'
+  if block.settings.image
+    assign hero_url = block.settings.image | img_url: 'master'
+  else
+    assign hero_url = block.settings.hero_img_url 
+  endif 
   assign section_id = block.settings.section_id 
   assign divider_heading = block.settings.title 
   assign divider_desc = block.settings.divider_description 
+  assign headingcolor = block.settings.heading_textcolor
+
   -%} 
 
  
@@ -19,10 +24,10 @@
     <div class="container py-2">
       <div class="row px-1">
         <div class="col-lg-6 ms-auto">
-          <h2 class="hero-heading">{{ divider_heading }}</h2>
-          <p class="text-muted">{{ divider_desc | strip_html }}</p>
+          <h2 class="hero-heading" style="color: {{ headingcolor }};">{{ divider_heading }}</h2>
+          <p class="text-muted" style="color: {{ headingcolor }};">{{ divider_desc | strip_html }}</p>
           {% if block.settings.button_link %}
-          <a class="btn btn-primary" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
+          <a class="btn-reg" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
           {% endif %}
         </div>
       </div>
@@ -70,8 +75,8 @@
         {
           "type": "text",
           "id": "section_id",
-          "default": "gallery",
-          "label": "Section Unique Name / ID"
+          "default": "divider",
+          "label": "Section Unique Name or ID - Must use for multiple blocks"
         },           
         { 
           "type": "image_picker", 
@@ -100,11 +105,17 @@
           "label": "Title"
         },
         {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
+        {
           "type": "richtext",
           "id": "divider_description",
           "default": "<p>Featured description</p>",
           "label": "Description"
-        }       
+        }     
         
     ]
   }

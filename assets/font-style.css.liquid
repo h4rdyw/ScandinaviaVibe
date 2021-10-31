@@ -16,11 +16,11 @@
     assign bodytextcolorhover = settings.body_textcolor_hover
     assign accordeonheadercolor = settings.accordeon_header_textcolor    
 -%}
-{{ font_header | font_face }}
-{{ font_navbar | font_face }}
-{{ font_body | font_face }}
-{{ font_producttitle | font_face }}
-{{ font_productdescription | font_face }}
+{{ font_header | font_face: font_display: 'swap' }}
+{{ font_navbar | font_face: font_display: 'swap' }}
+{{ font_body | font_face: font_display: 'swap' }}
+{{ font_producttitle | font_face: font_display: 'swap' }}
+{{ font_productdescription | font_face: font_display: 'swap' }}
 
 {% if root_font_size == 62 %}
   {% comment %} <!-- default font size is 62.50% of 1rem (16px) root , settings does not allow faction, set it here --> {% endcomment %}

@@ -5,7 +5,50 @@
     {% paginate collection.products by 12 %}
     <h1 class="text-center text-white py-2">{{ collection.title }}</h1>
     {% render 'pagination' , paginate: paginate %}
+    <div class="d-flex flex-row row row-cols-md-6 row-cols-sm-2">
+      <div class="col">
+        <div class="clearfix filter">
+          <p>Sort by :</p>
+          <select name="sorting" id="sort_by" class="form-select form-select-sm w-auto">
+            {% for option in collection.sort_options %}
+              <option value="{{ option.value }}"
+              {% if option.value == collection.sort_by %}
+                selected="selected"
+              {% endif %}
+            >{{ option.name }}</option>
+            {% endfor %}
+          </select>
+        </div>  
+      </div>
+      
+      <div class="col">
+        <div class="clearfix filter">
 
+          {% case collection.handle %}
+            {% when "collection" , "all" , "sale" , "featured" %}
+              <p>Browse type:</p>
+              <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
+              <option value="">All</option>
+              {% for product_type in collection.all_types %}
+              {% if current_tags contains product_type %}
+              <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+              {% else %}
+              <option value="{{ product_type | handle }}">{{ product_type }}</option>
+              {% endif %}
+              {% endfor %}
+              </select>
+            {% when "featured" %}
+               
+            {% else %}
+
+          {% endcase %}
+          
+        </div>   
+    
+      </div>
+
+    </div>
+    <p></p>
     <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
         {% for product in collection.products %}
           {% assign image = product.featured_media.preview_image %}
@@ -204,4 +247,34 @@ input {
   }
 }
 </style>
+<script>
+  var collFilters2 = document.getElementById('filter_by_type');
+  collFilters2.addEventListener('change', function(e) {
+    var newTags2 = [];         
+    if (e.target.value) newTags2.push(e.target.value);
+    //console.log(e.target.value);
+    //console.log(newTags2);
+ 
+
+  if (newTags2.length > 0) {
+    var query = newTags2.join('+');
+    var loc = '{{ 'product_type' | link_to_tag: 'product_type' }}';
+    //console.log(loc);
+    var loc1 = loc.match(/href="([^"]*)/)[1];
+    //console.log(loc1);
+    var href= loc1.replace('product_type', query);
+    //console.log(href);
+    window.location.href = href;
+  } else {
+    {% if collection.handle %}
+    window.location.href = '/collections/{{ collection.handle }}';
+    {% elsif collection.products.first.type == collection.title %}
+    window.location.href = '{{ collection.title | url_for_type }}';
+    {% elsif collection.products.first.vendor == collection.title %}
+    window.location.href = '{{ collection.title | url_for_vendor }}';
+    {% endif %}
+  }
+  
+  });
+</script>
 {% comment %}theme-check-enable{% endcomment %}

@@ -70,11 +70,11 @@
     </div>
     <div class="px-0">
     <div style="display:inline-block;">
-      <a href="/pages/wishlist" id="button-wishlist-cart"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
+      <a href="/pages/wishlist" id="button-wishlist-cart" aria-label="Wishlist"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
     </div>  
       <div id="cart-icon" style="display:inline-block;">
       {% comment %} <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a> {% endcomment %}
-      <a href="{{ routes.cart_url }}"><svg class="heart-badge" alt="cart">{% render 'cart-icon' %}</svg><a><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
+      <a href="{{ routes.cart_url }}"><svg class="heart-badge" aria-label="Cart" alt="cart">{% render 'cart-icon' %}</svg><a><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a>
 
     </div>
   </div>

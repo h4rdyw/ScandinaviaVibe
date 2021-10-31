@@ -34,7 +34,8 @@
         
         <div class="col">
           <div class="clearfix filter">
-            {% if collection.handle == 'collection' %}
+            {% case collection.handle %}
+              {% when "collection" , "all" , "sale" , "featured" %}
               <p>Browse type:</p>
               <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
               <option value="">All</option>
@@ -46,7 +47,12 @@
               {% endif %}
               {% endfor %}
               </select>
-            {% endif %}
+
+            {% when "featured" %}
+                 
+              {% else %}
+
+            {% endcase %}
           </div>   
       
         </div>
@@ -139,7 +145,7 @@
     });
   </script> {% endcomment %}
   <script>  
-  
+  /*
     var collFilters2 = jQuery('#filter_by_type');
     collFilters2.change(function() {
     var newTags2 = [];
@@ -162,6 +168,30 @@
     {% endif %}
     }
     });
+*/
+    var collFilters2 = document.getElementById('filter_by_type');
+    collFilters2.addEventListener('change', function(e) {
+      var newTags2 = [];         
+      if (e.target.value) newTags2.push(e.target.value);
+   
+  
+    if (newTags2.length > 0) {
+      var query = newTags2.join('+');
+      var loc = '{{ 'product_type' | link_to_tag: 'product_type' }}';
+      var loc1 = loc.match(/href="([^"]*)/)[1];
+      var href= loc1.replace('product_type', query);
+      window.location.href = href;
+    } else {
+      {% if collection.handle %}
+      window.location.href = '/collections/{{ collection.handle }}';
+      {% elsif collection.products.first.type == collection.title %}
+      window.location.href = '{{ collection.title | url_for_type }}';
+      {% elsif collection.products.first.vendor == collection.title %}
+      window.location.href = '{{ collection.title | url_for_vendor }}';
+      {% endif %}
+    }
+    
+    });  
   </script>
   {% comment %}theme-check-enable{% endcomment %}
   

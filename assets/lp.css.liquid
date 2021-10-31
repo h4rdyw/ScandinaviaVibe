@@ -1,0 +1,77 @@
+{% assign productcolortexthover = settings.product_textcolor_hover %}
+
+    .category-block {
+        padding-bottom: 60%;
+        display: block;
+        position: relative;
+      }
+      
+      .category-block::before {
+        content: '';
+        width: calc(100% - 1rem);
+        height: calc(100% - 1rem);
+        border: 1px solid #fff;
+        position: absolute;
+        top: 0.5rem;
+        left: 0.5rem;
+        z-index: 999;
+        display: block;
+      }
+      
+      .category-block-sm {
+        padding-bottom: 0;
+        padding: 1rem;
+      }
+      
+      .category-block-sm .category-block-title {
+        position: relative;
+        width: 100%;
+        display: block;
+        -webkit-transform: none;
+        transform: none;
+        z-index: 99;
+        text-align: center;
+        top: auto;
+        left: auto;
+      }
+      
+      .category-block::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        background: #000;
+        opacity: 0.1;
+      }
+      
+      .category-block-title {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 99;
+        -webkit-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+        background: #fff;
+        color: #333;
+        padding: 0.5rem 1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        font-size: 0.8rem;
+        transition: all 0.3s;
+      }
+      
+      .category-block:hover, .category-block:focus {
+        text-decoration: none;
+      }
+      
+      .category-block:hover .category-block-title, .category-block:focus .category-block-title {
+        background: {{ productcolortexthover }};
+        color: #fff;
+      } 
+      
+      .lazy {
+        background-image: none;
+        background-color: #f8f9fa;
+    }

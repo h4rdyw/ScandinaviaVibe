@@ -110,9 +110,11 @@ if (myproductModal != null) {
   myproductModal.addEventListener('shown.bs.modal', function (event) {
     checkLocaleBtn();
     touchTrigger();
-    const element = document.querySelector('#modalItemID');
-    let changeEvent = new Event('change');
+    const element = document.querySelector('#modalItemID') || false;
+    if (element) {
+      let changeEvent = new Event('change');
     element.dispatchEvent(changeEvent);
+    }
   });
 }
 
@@ -758,8 +760,10 @@ function formatCurrency(amount) {
 }
 
 function varModalSelectChange(e, data) {
+  //in liquid
   //const json_product = {{ product | json }};
   //console.log(json_product);
+  
   //console.log(data);
 
   const value = e.target.value;

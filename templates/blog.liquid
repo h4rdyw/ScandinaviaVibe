@@ -35,9 +35,11 @@
         </div>       
       {% endfor %}
     </div>
-        
+
+   <div style="padding:4px;">  
   {% render 'pagination', paginate: paginate %}
   {% endpaginate %}
+  </div>     
 </div>
 <style scoped>      
     @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {

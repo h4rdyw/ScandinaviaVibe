@@ -1,0 +1,12 @@
+{% assign bodybgcolor = settings.body_bgcolor %}
+    <div class="card rounded-0 border-0 mb-4">
+      <div class="card-body p-0">
+        <a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-1.jpg)" href="#"><span class="category-block-title">Interior Design</span></a><a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-2.jpg)" href="#"><span class="category-block-title">Fashion</span></a><a class="category-block category-block-sm bg-center bg-cover mb-2" style="background: url(img/category-bg-3.jpg)" href="#"><span class="category-block-title">Tips &amp; Tricks</span></a>
+      </div>
+    </div>
+    {{ 'lp.css' | asset_url | stylesheet_tag }}   
+    <style>
+    .card {
+        background-color: {{ bodybgcolor }} !important;
+    }
+    </style>

@@ -6,6 +6,7 @@ assign mcard = settings.m_card
 assign scard = settings.s_card
 assign xscard = settings.xs_card
 assign xsoverride = settings.xsoverride_card
+assign url_continueshopping = settings.url_continueshopping_wishlist 
 -%}
 
 <section class="container py-5" id="wishlist">
@@ -22,7 +23,7 @@ assign xsoverride = settings.xsoverride_card
   </div>  
 </section>
 <div class="text-center pb-2">
-  <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
+  <a href="{{ url_continueshopping }}"  class="btn-reg" title="Continue shopping">Continue shopping</a>
 </div>
 
 {% render 'prd-modal' %}

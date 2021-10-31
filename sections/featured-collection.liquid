@@ -15,6 +15,7 @@ assign offset_products = section.settings.offset_products
 assign number_of_products = section.settings.number_of_products 
 assign randomize = section.settings.randomize 
 assign section_id = section.settings.section_id 
+assign page_handle = page.handle
 
 assign min = 0 
 assign max = offset_products 
@@ -24,6 +25,9 @@ assign random_number = "now" | date: "%S" | modulo: diff | plus: min
 assign limit_products = "limit: " | append: number_of_products 
 assign offset_products = "offset: " | append: random_number    
 -%}
+
+{% if section.settings.page_handle == page_handle %}
+    
 
 <section class="container py-4">
      <h2 class="text-center my-3">{{ section.settings.title }}</h2>
@@ -53,6 +57,7 @@ assign offset_products = "offset: " | append: random_number
 
  {% render 'prd-modal' %}
  
+{% endif %} 
  
 {% schema %}
 {
@@ -63,6 +68,11 @@ assign offset_products = "offset: " | append: random_number
         "type": "collection",
         "id": "featured_collection",
         "label": "Collection"
+    },
+    {
+        "type": "page",
+        "id": "page_handle",
+        "label": "Select a page"
     },
     {
         "type": "text",

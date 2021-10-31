@@ -4,35 +4,52 @@
     {% assign container_class = 'container-fluid' %}
 {% endif %}
 
+{% assign page_handle = page.handle %}
+
 <div class="{{ container_class }} py-5">
+    
     
 
     {% for block in section.blocks %}
-        {% case block.type %}
-            {% when 'page_title' %}
-                <h1 class="py-2">{{ page.title }}</h1>
 
-            {% when 'page_date' %}
-                {% if section.settings.show_published_date %}
-                    <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
-                {% endif %}
-            {% when 'page_content' %}
-                <div class="py-5">{{ page.content }}</div>               
-            {% else %}
-                
-        {% endcase %}
-        
-    {% endfor %}
+        {% if block.settings.page_handle == page_handle %}
+
+            {% case block.type %}
+                {% when 'page_title' %}
+                    <h1 class="py-2 text-center">{{ page.title }}</h1>
+
+                {% when 'page_date' %}
+                    {% if section.settings.show_published_date %}
+                        <small>{{ page.published_at | date: '%B %d, %Y' }}</small>
+                    {% endif %}
+                {% when 'page_content' %}
+                    <div class="py-5">{{ page.content }}</div>               
+                {% else %}              
+            {% endcase %}
+    {% endif %}
+
+   {% endfor %}
+
+
 </div>
+<style>
+/** pull-quote styles **/
+.left-pull { display: block; padding: 7px 11px; margin-left: 5px; width: 170px; float: left; margin-right: 10px; background: #555; color: #bcbcbc; font-weight: bold; line-height: 17px; font-size: 15px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
 
-
+.left-pull p { font-style: italic; color: #d5d5d5; }
+.left-pull .ref { font-size: 11px; }
+</style>
 
 {% schema %}
     {
         "name": "Page Settings",
         "settings": [
             {
-
+                "type": "page",
+                "id": "page_handle",
+                "label": "Select a page"
+            },
+            {              
             "type": "select",
             "id": "container",
             "label": "layout",
@@ -59,18 +76,36 @@
         "blocks": [
             {
                 "type": "page_title",
-                "name": "Title",
-                "limit": 1
+                "name": "Title",  
+                "settings": [ 
+                    {
+                    "type": "page",
+                    "id": "page_handle",
+                    "label": "Select a page"
+                    }
+                ]
             },
             {
                 "type": "page_date",
                 "name": "Date",
-                "limit": 1
+                "settings": [ 
+                    {
+                    "type": "page",
+                    "id": "page_handle",
+                    "label": "Select a page"
+                    }
+                ]
             },
             {
                 "type": "page_content",
                 "name": "Content",
-                "limit": 1
+                "settings": [ 
+                    {
+                    "type": "page",
+                    "id": "page_handle",
+                    "label": "Select a page"
+                    }
+                ]
             }
         ]
     }

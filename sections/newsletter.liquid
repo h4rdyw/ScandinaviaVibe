@@ -1,16 +1,23 @@
 
 {%- liquid
- assign show_newsletter = true 
- if section.settings.other_pages == true 
-   if template == 'index'
-     assign show_newsletter = false 
-    else 
-     assign show_newsletter = true 
-   endif 
+ assign page_handle = page.handle
+ assign shownewsletter = false  
+ assign show_newsletter = section.settings.show_newsletter 
+ if show_newsletter == true 
+    assign other_pages = section.settings.other_pages 
+   
+     if template == 'index' and other_pages == true 
+      assign shownewsletter = false
+     elsif section.settings.page_handle == page_handle  
+      assign shownewsletter = false
+     else 
+      assign shownewsletter = true
+      
+     endif 
  endif 
 -%}
 
-{% if show_newsletter == true %}
+{% if shownewsletter == true %}
   
 
 <div class="newsletter_section
@@ -139,70 +146,81 @@
 {% schema %}
 
 {
-"name": "Newsletter",
-"class": "newsletter-section",
-"settings": [
-{
-  "type": "checkbox",
-  "id": "other_pages",
-  "label": "Show on non-home page only. UnChecked = ALL Pages",
-  "default": false
- },
-{
-"type": "text",
-"id": "newsletter_title",
-"label": "Heading",
-"default": "Subscribe"
-},
-{
-"type": "richtext",
-"id": "newsletter_text",
-"label": "Subheading",
-"default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
-},
-{
-"type": "checkbox",
-"id": "display_first_name",
-"label": "Display first name"
-},
-{
-"type": "checkbox",
-"id": "display_last_name",
-"label": "Display last name"
-},
-{
-"type": "select",
-"id": "newsletter_section_text_align",
-"label": "Text alignment",
-"options": [
- {
-  "value": "left",
-  "label": "Left"
-},
-{
-  "value": "center",
-  "label": "Center"
-},
-{
-  "value": "right",
-  "label": "Right"
-}
-],
-"default": "center"
-},
-{
-"type": "image_picker",
-"id": "image",
-"label": "Upload banner background image",
-"info":"1600 x 300px recommended"
-}
-],
-"presets": [{
-"name": "Newsletter",
-"category": "Social",
-"settings": {
-}
-}]
-}
+  "name": "Newsletter",
+  "class": "newsletter-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Show Newsletter",
+      "default": false
+    },  
+    {
+      "type": "checkbox",
+      "id": "other_pages",
+      "label": "Show on non-home page only",
+      "default": false
+    },
+    {
+      "type": "page",
+      "id": "page_handle",
+      "label": "Do not show newsletter on this page"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Heading",
+      "default": "Subscribe"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_text",
+      "label": "Subheading",
+      "default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_first_name",
+      "label": "Display first name"
+    },
+    {
+      "type": "checkbox",
+      "id": "display_last_name",
+      "label": "Display last name"
+    },
+    {
+      "type": "select",
+      "id": "newsletter_section_text_align",
+      "label": "Text alignment",
+      "options": [
+      {
+        "value": "left",
+        "label": "Left"
+      },
+      {
+        "value": "center",
+        "label": "Center"
+      },
+      {
+        "value": "right",
+        "label": "Right"
+      }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Upload banner background image",
+      "info":"1600 x 300px recommended"
+    }
+    ],
+    "presets": [{
+    "name": "Newsletter",
+    "category": "Social",
+    "settings": {
+    }
+    }]
+  }
 
 {% endschema %}

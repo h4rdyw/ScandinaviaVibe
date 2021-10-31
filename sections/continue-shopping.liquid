@@ -1,0 +1,152 @@
+{% assign url_continueshopping = settings.url_continueshopping_cart %}
+{% assign page_handle = page.handle %}
+{% assign collection_handle = collection.handle %}
+{% assign template_handle = template.name %}
+{% for block in section.blocks %}
+
+    {%- liquid 
+    if block.settings.image
+      assign hero_url = block.settings.image | img_url: 'master'
+    else
+      assign hero_url = block.settings.hero_img_url 
+    endif 
+    assign section_id = block.settings.section_id 
+    assign divider_heading = block.settings.title 
+    assign divider_desc = block.settings.divider_description 
+    assign headingcolor = block.settings.heading_textcolor
+  
+    if block.settings.url_continueshopping_section != blank
+        assign url_continueshopping = block.settings.url_continueshopping_section
+    endif
+    -%} 
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.collection_handle == collection_handle  or template_handle == 'list-collections' %}
+   
+        {% if block.settings.use_divider == true %}
+            
+                <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
+                    <div class="container py-2">
+                    <div class="row px-1">
+                        <div class="col-lg-6 ms-auto">
+                        <h2 class="hero-heading" style="color: {{ headingcolor }};">{{ divider_heading }}</h2>
+                        <p class="text-muted" style="color: {{ headingcolor }};">{{ divider_desc | strip_html }}</p>
+                        {% if block.settings.button_link %}
+                        <a class="btn-reg" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
+                        {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    <style scoped>              
+                        .{{ section_id }}-bg-cover {
+                        background: url({{ hero_url }}) no-repeat center center;
+                        background-size: cover;                    
+                        }                              
+                    </style>      
+                </section>
+         {% else %}       
+            <div class="text-center">
+                <a href="{{ url_continueshopping }}"  class="btn-reg" title="Continue shopping">Continue shopping</a>
+            </div>
+        {% endif %}
+
+{% endif %} 
+{% endfor %}
+
+{% schema %}
+  {
+    "name": "Continue Shopping",
+    "settings": [
+      {
+      "type": "text",
+      "id": "title",
+      "label": "Common Title"                 
+      }
+    ],
+    "blocks": [
+      {
+      "type": "continue-shopping",
+      "name": "Continue Shopping",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        {
+          "type": "blog",
+          "id": "blog_handle",
+          "label": "Select a blog"
+        },
+        {
+          "type": "collection",
+          "id": "collection_handle",
+          "label": "Select a collection"
+        },
+        {
+            "type": "url",
+            "id": "url_continueshopping_section",
+            "label": "Redirect Url for Continue Shopping"
+        },
+        {
+            "type": "checkbox",
+            "id": "use_divider",
+            "label": "Use Divider Style",
+            "default": false
+        },     
+        {
+          "type": "text",
+          "id": "section_id",
+          "default": "continueshopping",
+          "label": "Section Unique Name or ID - Must use for multiple blocks"
+        },           
+        { 
+          "type": "image_picker", 
+          "id": "image", 
+          "label": "Hero Image"
+        },
+        { 
+          "type": "url", 
+          "id": "hero_img_url", 
+          "label": "Image URL" 
+        },
+        
+        { "type": "text", 
+          "id": "button_label", 
+          "default": "Button",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link", 
+        "label": "Button Link" 
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Continue Shopping",
+          "label": "Title"
+        },
+        {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
+        {
+          "type": "richtext",
+          "id": "divider_description",
+          "default": "<p>Continue shopping</p>",
+          "label": "Description"
+        }     
+        
+    ]
+  }
+],
+    
+    "presets": [
+    {
+        "category": "continue-shopping",
+        "name": "Continue Shopping"
+    }
+    ]
+}
+  {% endschema %}

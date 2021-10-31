@@ -1,0 +1,128 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% case request.page_type %}
+    
+    {% when 'page' %}
+      {% assign page_handle = page.handle %}    
+  
+    {% when 'blog' %}
+      {% assign blog_handle = blog.handle %}
+  
+    {% when 'article' %}
+      {% assign article_handle = article.handle %}  
+      {% if article_handle == article.handle %}
+        {% comment %} <!-- workaround --> {% endcomment %}
+        {% assign is_article = 'true' %} 
+      {% endif %} 
+  
+{% endcase %}
+    
+
+{% for block in section.blocks %} 
+{% if block.type ==  'block_quote' %}
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' %}
+        <blockquote class="bq2 bg-dark text-white p-4 p-lg-5 text-center mb-5">
+            <p class="h4 mb-4">{{ block.settings.description | strip_html }}</p>
+            <footer class="blockquote-footer">
+            <cite class="text-white" title="Source Title">{{ block.settings.title }}</cite>
+            </footer>
+        </blockquote>
+
+            {% comment %} <blockquote class="bq2 bg-dark text-white">
+            <span class="source bg-light text-dark">-GOB, "Arrested Development"</span>
+            <p>Well, I will tell you this, Michael. I don't have a son. But if I ever do, I'm either going to take him to the cabin in the woods, or I'm going to promise to take him and then not take him. But the one thing that I will never do is not tell him that I'm taking him to a cabin in the woods, and then not take him!</p>        
+            </blockquote>
+            <br> {% endcomment %}
+
+    {% endif%}
+{% endif %}  
+{% endfor %}   
+<style>
+
+    .bq2 { max-width: 40vw!important; overflow: hidden; border: 1px solid #dde5ed; background: #f8fafd; color: #758fa3; }
+    @media only screen and (max-width: 767px) {
+        .bq2 { min-width: 80vw!important; }
+    }
+    .bq2 .source { display: block; width: 100%; margin-bottom: 5px; font-weight: bold; font-size: 18px; text-shadow: 0px 1px 0px #f8fafb; padding: 6px 11px; background: #eaeff5; border-top: 1px solid #f4f7fa; border-bottom: 1px solid #dde5ed; }
+    
+    .bq2 p { line-height: 19px; margin-bottom: 10px; font-style: italic; padding-left: 15px; }
+    
+    
+.left-pull { display: block; padding: 7px 11px; margin-left: 5px; min-width: 400px !important; float: left; margin-right: 10px; background: #555; color: #bcbcbc; font-weight: bold; line-height: 17px; font-size: 15px; border-radius: 5px; -moz-border-radius: 5px; -webkit-border-radius: 5px; }
+
+.left-pull p { font-style: italic; color: #d5d5d5; }
+.left-pull .ref { font-size: 11px; }
+
+
+</style>
+ {% schema %} 
+{ 
+  "name": "Block Quote", 
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Common Title"
+      }
+    ],
+  "blocks": [
+    {
+      "type": "block_quote",
+      "name": "Block Quote",       
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },        
+        { "type": "image_picker", 
+          "id": "image_story", 
+          "label": "Background Image",
+          "info": "This block uses full size image container.Adjust your image size accordingly. Suggested size 1334x339"
+        },       
+        { "type": "text", 
+          "id": "title", 
+          "default": "Name",
+          "label": " Name/Source"
+        },
+        {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
+        { "type": "richtext", 
+          "id": "description", 
+          "default": "<p>Example paragraph</p>",
+          "label": "Description" 
+        },
+        {
+          "type": "color",
+          "id": "descr_textcolor",
+          "label": "Description Text Color",
+          "default": "#11171B"
+        },
+        {
+          "type":   "range",
+          "id":     "font_size_desc",
+          "min":    8,
+          "max":    36,
+          "step":   1,
+          "unit":   "px",
+          "label":  "Story Font size",
+          "default":   16
+        }
+      ]
+    }
+  ],
+    
+      "presets": [
+      {
+        "category": "Block Quote",
+        "name": "Block Quote"
+      }
+    ]
+}
+
+{% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

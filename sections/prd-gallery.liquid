@@ -2,11 +2,34 @@
 {% comment %}theme-check-disable{% endcomment %}
 {% assign cardwidth = settings.card_img_width_gallery %}
 {% assign cardheight = settings.card_img_height_gallery %}
-{% assign blog_handle = blog.handle %}
-{% assign page_handle = page.handle %}
-{% for block in section.blocks %}
 
-    {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.blog_handle == blog_handle %}
+{% case request.page_type %}
+    
+  {% when 'page' %}
+    {% assign page_handle = page.handle %}    
+
+  {% when 'blog' %}
+    {% assign blog_handle = blog.handle %}
+    
+  {% when 'article' %}
+    {% assign article_handle = article.handle %}     
+  {% endcase %}
+  
+
+{% for block in section.blocks %} 
+  {% if block.type == 'featured_gallery' %}       
+       {% comment %} <!-- check for specific article  first --> {% endcomment %}
+      {% if article_handle == block.settings.article_handle %}
+        {% assign is_article = 'true' %} 
+        {% comment %} <!-- if false , then check for designated blog  --> {% endcomment %}
+      {% elsif blog.handle == block.settings.blog_handle %}  
+        {% assign is_article = 'true' %}       
+      {% else %}
+        {% assign is_article = 'false' %}       
+      {% endif %} 
+      
+
+    {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.blog_handle == blog_handle or is_article == 'true' %}
         {% assign offset_products = block.settings.offset_products %}
         {% assign number_of_products = block.settings.number_of_products %}
         {% assign randomize = block.settings.randomize %}
@@ -55,35 +78,7 @@
                 
                     {% endfor %} 
 
-                    <div class="swiper-slide pb-5">
-
-                      <!--
-                      <div class="card border-0">
-                      <div class="product">
-
-                        <a href="javascript:;"><img class="card-img-top" src="{{ image | img_url : 'master' }}" width="200" height="200" loading="lazy" alt="{{ product.title }}"></a>
-                        <div class="cta shadow d-inline-block">
-                          <a class="product-btn" href="javascript:;" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}"><i class="fas fa-heart"></i></a>
-                          <a class="product-btn" href="javascript:;" data-bs-toggle="modal"><i class="fas fa-expand"></i></a>
-                          <a class="product-btn" href="cart.html"><i class="fas fa-dolly-flatbed"></i></a></div>
-                      </div>
-
-                      
-                      <div class="card-body d-flex flex-column flex-fill justify-content-end bg-none text-center pb-1">
-                        <p class="text-product-subtitle"><a class="text-product-link" href="{{ product.url }}">{{ product.title }}</a></p>    
-                        <p span class="text-line"></p>
-                        <div style="height:auto;">
-                        <p>{% if product.compare_at_price_max > 0 %}                                    
-                            {% render 'discount', product : product , finalsale : finalsale %}<svg class="tag-badge">{% render 'tag-badge' %} </svg></br>
-                          <del><span style="color: #AB0000;">{{ product.compare_at_price | money_without_trailing_zeros }}</span></del>
-                        
-                        {% endif %}
-
-                        {% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}</p>            
-                        {%- render 'button-wishlist', product: product -%}
-                        </div>
-                      </div>
-                    </div>  -->
+                    <div class="swiper-slide pb-5">                     
               
                     <div class="card d-flex flex-fill border-0">          
                       <div class="card-img-top">
@@ -157,32 +152,12 @@
                 </div>
               </div>
           </section>
+          
     {% endif %}
+  {% endif %}
 {% endfor %}
 
 {% render 'prd-modal' %}
-
-<script>
-   /*var featuredProducts = new Swiper("#featuredProducts", {
-        loop: true,
-        breakpoints: {
-            640: {
-                slidesPerView: 2,
-            },
-            768: {
-                slidesPerView: 4,
-            },
-            1024: {
-                slidesPerView: 5,
-            },
-        },
-        spaceBetween: 25,
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });*/    
-</script>
 
 {% schema %}
 {
@@ -208,6 +183,11 @@
           "type": "blog",
           "id": "blog_handle",
           "label": "Select a blog"
+        },
+        {
+          "type": "article",
+          "id": "article_handle",
+          "label": "Select an article"
         },
         {
           "type": "collection",

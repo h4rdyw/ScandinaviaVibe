@@ -1,9 +1,21 @@
 {% comment %}theme-check-disable{% endcomment %}
 
 {% assign page_handle = page.handle %}
+{% assign product_handle = product.handle %}
 {% assign story_handle = 0 %}
+
+{% if section.settings.container == 'container' %}
+  {% assign container_class = 'container' %}
+{% else %}			
+  {% assign container_class = 'container-fluid' %}
+{% endif %}
+
+{% assign remove_sidemargin = section.settings.remove_sidemargin %}
+{% if remove_sidemargin %}
+  {% assign sidemargin = 'mx-0' %}  
+{% endif %}
 {% for block in section.blocks %}
-{% if block.settings.page_handle == page_handle  or template == 'index' %}
+{% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.product_handle == product_handle %}
 
 
 {% if block.type == 'hero_story' %} 
@@ -11,76 +23,90 @@
 {% assign descfontsize = block.settings.font_size_desc %}
 {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
 {% assign story_handle = story_handle | plus : 1 %}
-
+{% assign vpheight = block.settings.height %}
+{% assign video_control = 'controls' %}
+{% if block.settings.video_autoplay == true %}
+{% assign video_autoplay = 'autoplay' %}
+{% endif %}
+{% if block.settings.video_loop %}
+{% assign video_loop = 'loop' %}
+{% assign video_control = '' %}
+{% endif %}
 
 {% if block.settings.image_story  %}
     {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
   {% else %}
      {% assign hero_img_url = block.settings.hero_story_img_url %}
 {% endif %}
-
+  <div class="{{ container_class }}{{ sidemargin }}">
   <div class="py-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex">
 
    <!-- VIDEO -->    
-    {% if block.settings.video_story_url %}
+    {% if block.settings.video_story_url or block.settings.video_link != blank %}
+        <!--/  Hero on The Left / -->
+        
 
-    <!--/  Hero on The Left / -->
-
-    {% if block.settings.placement < 2 %}
-        <div class="col d-flex flex-fill"> 
-            <div class="hero-1-container">
-              <div class="w-100 mx-auto">
-                 <div class="ratio ratio-16x9">
-                    {% comment %} <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe> {% endcomment %}
-                    <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+        {% if block.settings.placement < 2 %}
+            <div class="col d-flex flex-fill"> 
+                <div class="hero-1-container-{{ story_handle }}">
+                  <div class="w-100 mx-auto videoBackground-{{ story_handle }}">
+                      {% if block.settings.video_link != blank %}
+                        <div class="ratio ratio-16x9" {% if hero_img_url %} style="background-image: url('{{ hero_img_url }}');" {% endif %}>
+                            <video class="video-js" {{ video_control }} {{ video_autoplay }} {{ video_loop }} preload="none" muted playsinline
+                              poster="https:{{ block.settings.image_story | img_url: 'master' }}">
+                                <source src="{{ block.settings.video_link }}" type="video/mp4">
+                            </video>
+                            <div class="overlay" style="opacity: 0.{{ block.settings.video_overlay_opacity }}"></div>
+                          </div>
+                        {% else %}
+                        <div class="ratio ratio-16x9">
+                          <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+                        </div>                    
+                      {% endif %}  
+                  </div>          
+                  <div class="hero-1-stuff-{{ story_handle }}">
+                      {% if block.settings.title %}
+                        <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>
+                      {% endif %}  
+                      {% if block.settings.button_link %}
+                        <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
+                      {% endif %}                   
                   </div>
-              </div>          
-              <div class="hero-1-stuff-{{ story_handle }}">
-                  {% if block.settings.title %}
-                    <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>
-                  {% endif %}  
-                  {% if block.settings.button_link %}
-                    <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
-                  {% endif %}                   
+
+                </div>    
               </div>
-            </div>    
-           </div>
-           <div class="col px-4 d-flex align-content-stretch" style="font-size: {{ descfontsize }}px;">
-            <p>{{ block.settings.description }}</p>
-          </div>
-    
-        {% else %}
 
-        <!--/  Hero on The Right / -->
+              <div class="col px-4 d-flex align-content-stretch" style="font-size: {{ descfontsize }}px;">
+                <p>{{ block.settings.description }}</p>
+              </div>
+        
+            {% else %}
 
-          <div class="col px-4 d-flex flex-fill" style="font-size: {{ descfontsize }}px;">
-            <p>{{ block.settings.description }}</p>
-          </div>  
-          <div class="col d-flex flex-fill">        
-            <div class="hero-1-container">
-                <div class="w-100 mx-auto">
-                  <div class="ratio ratio-16x9">
-                    {% comment %} <iframe src="https://www.youtube.com/embed/{{ block.settings.video_story_url.id }}" allowfullscreen></iframe>               {% endcomment %}
-                    <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+            <!--/  Hero on The Right / -->
 
-                  </div>
-                </div>   
-                <div class="hero-1-stuff-{{ story_handle }}">
-                  {% if block.settings.title %}
-                    <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>  
-                  {% endif %}
-                  
-                  {% if block.settings.button_link %}
-                  <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
-                  {% endif %}            
-                </div>     
-            </div>    
-         </div>
-    {% endif %} 
+              <div class="col px-4 d-flex flex-fill" style="font-size: {{ descfontsize }}px;">
+                <p>{{ block.settings.description }}</p>
+              </div>  
+              <div class="col d-flex flex-fill">        
+                <div class="hero-1-container-{{ story_handle }}">
+                    <div class="w-100 mx-auto">
+                      <div class="ratio ratio-16x9">
+                        <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
 
-
-  
-
+                      </div>
+                    </div>   
+                    <div class="hero-1-stuff-{{ story_handle }}">
+                      {% if block.settings.title %}
+                        <h1 style="color: {{ headingcolor }};">{{ block.settings.title }}</h1>  
+                      {% endif %}
+                      
+                      {% if block.settings.button_link %}
+                      <a href="{{ block.settings.button_link }}" class="btn-reg">{{ block.settings.button_label }}</a>  
+                      {% endif %}            
+                    </div>     
+                </div>    
+            </div>
+        {% endif %}
   {% else %}
     
  <!--/ Non Video /-->
@@ -91,7 +117,7 @@
     
     {% if block.settings.placement < 2 %}
       <div class="col d-flex flex-fill">
-          <div class="hero-1-container">
+          <div class="hero-1-container-{{ story_handle }}">
               <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
               <div class="hero-1-stuff-{{ story_handle }}">
                 {% if block.settings.title %}                
@@ -114,7 +140,7 @@
       <p>{{ block.settings.description }}</p>
     </div>  
     <div class="col d-flex flex-fill">
-      <div class="hero-1-container">
+      <div class="hero-1-container-{{ story_handle }}">
           <div class="hero-1" style="background: url({{ hero_img_url }}) no-repeat center center;background-size: cover;height: 100%;width: 100%;padding: 40px;transition: transform 2s;"></div>
           <div class="hero-1-stuff-{{ story_handle }}">
             {% if block.settings.title %}
@@ -131,74 +157,267 @@
     
   {% endif %}
 
-  <!--story style-->
-{% assign storyhandle = ".hero-1-stuff-" | append : story_handle  %}
- <style scoped>
- {{ storyhandle }} {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  padding: 15px;
-  border-radius: 2px;
-}
-</style>
+      <!--story style-->
+    {% assign storyhandle = ".hero-1-stuff-" | append : story_handle  %}
+    <style scoped>
+    {{ storyhandle }} {
+      position: absolute;
+      top: 40px;
+      left: 40px;
+      padding: 15px;
+      border-radius: 2px;
+      z-index: 2;
+    }
 
-<!--story backdrop -->
-{% unless hidefilterbackdrop %}
-  <style scoped>      
-    @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-      {{ storyhandle }} {
-        -webkit-backdrop-filter: blur(10px);
-        background-color: rgba(255, 255, 255, 0.35); 
-        backdrop-filter: blur(10px);
+    .hero-1-container-{{ story_handle }} {        
+      height: auto;
+      {%if block.settings.video_link != blank %}
+      max-height: {{ vpheight }}vh;
+      {% else %}
+      min-height: {{ vpheight }}vh;
+      {% endif %}
+      
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+    }
+    </style>
+
+    <!--story backdrop -->
+    {% unless hidefilterbackdrop %}
+      <style scoped>      
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+          {{ storyhandle }} {
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.35); 
+            backdrop-filter: blur(10px);
+            border-radius: 2px;
+          }
+        }
+      
+        
+        /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+        @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+          {{ storyhandle }} {
+            background-color: rgba(255, 255, 255, .5);
+          }
+        }
+      </style> 
+    {% endunless %}
+
+      <style scoped> 
+      /* video bg*/
+      .videoBackground-{{ story_handle }} {
+        height: 100%;
+        /*max-height: {{ vpheight }}vh !important;*/
+        position: relative;
+      }
+      .videoBackground-{{ story_handle }} .fullscreen-video-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 100%;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+      .videoBackground-{{ story_handle }} .fullscreen-video-wrap .video-js {
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-height: 100%;
+        min-width: 100%;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .videoBackground-{{ story_handle }} .fullscreen-video-wrap video {
+        min-height: 100%;
+        min-width: 100%;
+        object-fit: cover;
+      }
+      .videoBackground-{{ story_handle }} .videoBox {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+        padding: 100px 20px 80px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        min-height: {{ vpheight }}vh !important;
+        position: relative;
+      }
+      .videoBackground-{{ story_handle }} .imageBox {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-direction: column;
+        padding: 100px 20px 80px;
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        position: relative;
+        min-height: {{ vpheight }}vh;
+        height: auto;
+      }
+      .videoBackground-{{ story_handle }} .videoBoxInfo, .videoBackground .imageBoxInfo {
+        z-index: 1;
+        text-align: center;
+      }
+      .videoBackground-{{ story_handle }} .overlay {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        background: #000;
+        z-index: 2;
+        pointer-events: none;
+      }
+      .videoBackground-{{ story_handle }} .videoBoxInfoBtn, .videoBackground .imageBoxInfoBtn {
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        user-select: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        display: inline-block;
+        width: auto;
+        text-decoration: none;
+        text-align: center;
+        vertical-align: middle;
+        cursor: pointer;
+        border: 1px solid transparent;
         border-radius: 2px;
+        padding: 8px 15px;
+        font-style: normal;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        white-space: normal;
+        font-size: 14px;
+        margin-top: 20px;
+        pointer-events: none;
       }
-    }
-  
-    
-    /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
-    @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-      {{ storyhandle }} {
-        background-color: rgba(255, 255, 255, .5);
+      .videoBackground-{{ story_handle }} .videoBoxInfoTitle, .videoBackground .imageBoxInfoTitle {
+        color: #FFF;
+        font-size: 30px;
+        line-height: 40px;
       }
-    }
-  </style>
- {% endunless %}
+      .videoBackground-{{ story_handle }} .videoBoxInfoDescription, .videoBackground .imageBoxInfoDescription {
+        max-width: 500px;
+        margin: 0 auto;
+      }
+      .videoBackground-{{ story_handle }} .videoBoxInfoDescription p, .videoBackground .imageBoxInfoDescription p {
+        font-size: 1.25rem;
+        line-height: 28px;
+      }
+      .videoBackground-{{ story_handle }} .placeholderNoblocks {
+        text-align: center;
+        max-width: 500px;
+        margin: 0 auto;
+      }
+        @media screen and (max-width: 767px) {
+        .main-content .videoBackground-{{ story_handle }} {
+          margin-top: -35px;
+        }
+        .videoBackground-{{ story_handle }} .fullscreen-video-wrap {
+          z-index: 1;
+        }
+        /*.videoBackground .videoBox {
+                min-height: 500px;
+                height: 100%;
+                position: relative;
+          padding: 0;
+            }*/
+        .videoBackground-{{ story_handle }} .fullscreen-video-wrap {
+          position: relative;
+          min-height: 300px;
+        }
+        .videoBackground-{{ story_handle }} .videoBoxInfo {
+          padding: 40px 20px;
+            background: #000;
+          width: 100%;
+        }
+        }
+    </style>
   
   </div>
-
+</div>
 {% endif %}  
 {% endif %} 
 
 
 {% endfor %}
 
+
 {% schema %} 
 { 
-  "name": "Zoomin Hero 1 - Story", 
+  "name": "Zoomin Hero - Story", 
   "class": "hero-section", 
   "settings": [
       {
         "type": "text",
         "id": "title",
         "label": "Common Title"
-      }
+      },
+      {
+        "type": "select",
+        "id": "container",
+        "label": "Layout",
+        "options": [
+          {
+            "value": "container",
+            "label": "Container"
+          },
+          {
+            "value": "container-fluid",
+            "label": "Container Fluid"
+          }
+        ],
+        "default": "container-fluid"
+        },
+        {
+          "type": "checkbox",
+          "id": "remove_sidemargin",
+          "label": "Remove Side Margin",
+          "default": true
+        }       
     ],
   "blocks": [
     {
       "type": "hero_story",
-      "name": "Zoomin Hero 1 - Story ",  
+      "name": "Zoomin Hero - Story ",  
       "settings": [ 
         {
           "type": "page",
           "id": "page_handle",
           "label": "Select a page"
         },
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Select a product"
+        },
         { "type": "number", 
           "id": "placement", 
           "default": 0,
-          "label": "Block Placement 0,1 Odd,2 Even"
+          "label": "Block Placement 0,1 Left,2 Right"
         },
+        {
+          "type": "range",
+          "id": "height",
+          "label": "View Port Height",
+          "default": 50,
+          "unit": "%",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "info": "For Inhouse Video Link : maximum height applies. Others : minimum height applies"
+        },       
         {
           "type": "checkbox",
           "id": "hide_filter_backdrop",
@@ -207,7 +426,8 @@
         },       
         { "type": "image_picker", 
           "id": "image_story", 
-          "label": "Hero Background Image"
+          "label": "Hero Background Image",
+          "info": "Display Priority: Video Link (inhouse) > External Video > Image. 'Image', ff exists ,  will be used as inhouse-video cover"
         },
         { "type": "url", 
           "id": "hero_story_img_url", 
@@ -258,7 +478,37 @@
           "id": "video_story_url",
           "accept": ["youtube","vimeo"],                    
           "label": "Video URL"
-        }
+        },
+        {
+          "type": "url",
+          "id": "video_link",
+          "label": {
+          "en": "Video link"
+          },
+          "info": "Inhouse Video"
+        },
+        {
+          "type":   "range",
+          "id":     "video_overlay_opacity",
+          "min":    0,
+          "max":    100,
+          "step":   5,
+          "unit":   "%",
+          "label":  "Video Overlay Opacity",
+          "default":   0      
+        },
+        {
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Inhouse Video Auto Play",
+          "default": true
+        },       
+        {
+          "type": "checkbox",
+          "id": "video_loop",
+          "label": "Inhouse Video Loop",
+          "default": true
+        }  
       ]
     }
   ],
@@ -266,7 +516,7 @@
       "presets": [
       {
         "category": "Hero",
-        "name": "Zoomin Hero 1 Story"
+        "name": "Zoomin Hero Story"
       }
     ]
 }
@@ -275,14 +525,15 @@
 {% comment %}theme-check-enable{% endcomment %}
 
 <style>
-    .hero-1-container {
+
+  {% comment %} .hero-1-container {        
         height: auto;
         min-height: 50vh;
         width: 100%;
         overflow: hidden;
         position: relative;
        /* margin-bottom: 20px;*/
-      }
+      } {% endcomment %}
       
       {% comment %} .hero-1 {
         background: url({{ hero_img_url }}) no-repeat center center;
@@ -302,10 +553,9 @@
         top: 40px;
         left: 40px;
         padding: 15px;
+        z-index: 2;
       }
        {% endcomment %}
-             
-</style>
+      </style>
 
-<!-- -->
-
+      

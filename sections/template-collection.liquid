@@ -88,59 +88,7 @@
   
   {% render 'prd-modal' %}
   
-  {% comment %} <div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000;">
-      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-          <div class="modal-content rounded-0">
-              <div class="modal-header" style="border-bottom: none;">
-                <h1 id="productInfoTitle" class="text-product-detail-title"></h1>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-              </div>
-              <div class="modal-body">
-                  <div class="row">
-                        <div class="col-12 col-md-6">
-                          <img class="img-fluid modal-img"  src="" id="productInfoImg" alt=""> 
-                          <div id="badge"></div>
-                        </div>         
-  
-                        <div class="col-12 col-md-6"> 
-                          <p id="productInfoPrice" class="text-header-title"></p>
-                          <p id="productInfoDescription" class="text-product-desc"></p>
-                        </div>
-                  </div>             
-              </div> 
-              <div class="modal-footer" style="border-top: none;">
-                <div class="col-12 col-md-6"></div>
-                <div class="col-12 col-md-6 px-2">
-                  <style scoped>
-                    .form-select {
-                        border-left: none;
-                        border-right: none;
-                        border-top: none;
-                    }
-                    input {
-                      border-left: none;
-                      border-right: none;
-                      border-top: none;
-                      border-bottom: 1px solid #ced4da;
-                  }
-                  
-                    </style>
-                  <form action="#" id="addToCartForm" class="row">
-                    <select name="id" id="modalItemID" class="form-select col-auto w-100">
-                    </select>
-                    <p></p> 
-                    <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
-                    <P></P>
-                    <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
-                    <p></p>
-                  </form>
-                </div>              
-              </div>
-          </div>
-      </div>
-  </div>
-   {% endcomment %}
-  
+    
   {% comment %} <script>  
   
     var collFilters = jQuery('.coll-filter');
@@ -167,7 +115,7 @@
     });
   </script> {% endcomment %}
 
-  <script>  
+  <script>  /*
     var collFilters2 = jQuery('#filter_by_type');
     collFilters2.change(function() {
       var newTags2 = [];
@@ -189,8 +137,39 @@
           window.location.href = '{{ collection.title | url_for_vendor }}';
           {% endif %}
         }
-    });
-  </script>
+    }); */
+  </script> 
+  <script>
+  var collFilters2 = document.getElementById('filter_by_type');
+  collFilters2.addEventListener('change', function(e) {
+    var newTags2 = [];         
+    if (e.target.value) newTags2.push(e.target.value);
+    //console.log(e.target.value);
+    //console.log(newTags2);
+ 
+
+  if (newTags2.length > 0) {
+    var query = newTags2.join('+');
+    var loc = '{{ 'product_type' | link_to_tag: 'product_type' }}';
+    //console.log(loc);
+    var loc1 = loc.match(/href="([^"]*)/)[1];
+    //console.log(loc1);
+    var href= loc1.replace('product_type', query);
+    //console.log(href);
+    window.location.href = href;
+  } else {
+    {% if collection.handle %}
+    window.location.href = '/collections/{{ collection.handle }}';
+    {% elsif collection.products.first.type == collection.title %}
+    window.location.href = '{{ collection.title | url_for_type }}';
+    {% elsif collection.products.first.vendor == collection.title %}
+    window.location.href = '{{ collection.title | url_for_vendor }}';
+    {% endif %}
+  }
+  
+  });
+</script>
+
   <!--<script>  
     var collFilters2 = document.getElementById('#filter_by_type');
     

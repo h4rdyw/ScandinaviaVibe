@@ -17,12 +17,49 @@
                     {% render 'pagination' , paginate: paginate %}
                     {% endpaginate %}  {% endcomment %}
                     {% comment %} <h1>{{ collection.title }}</h1> {% endcomment %}
+                    {% comment %} <div class="d-flex flex-row row row-cols-md-6 row-cols-sm-2">
+        <div class="col">
+          <div class="clearfix filter">
+            <p>Sort by :</p>
+            <select name="sorting" id="sort_by" class="form-select form-select-sm w-auto">
+              {% for option in collection.sort_options %}
+                <option value="{{ option.value }}"
+                {% if option.value == collection.sort_by %}
+                  selected="selected"
+                {% endif %}
+              >{{ option.name }}</option>
+              {% endfor %}
+            </select>
+          </div>  
+        </div>
+        
+        <div class="col">
+          <div class="clearfix filter">
+
+                <p>Browse type:</p>
+                <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
+                <option value="">All</option>
+                {% for product_type in collection.all_types %}
+                {% if current_tags contains product_type %}
+                <option value="{{ product_type | handle }}" selected>{{ product_type }}</option>
+                {% else %}
+                <option value="{{ product_type | handle }}">{{ product_type }}</option>
+                {% endif %}
+                {% endfor %}
+                </select>
+                 
+
+            
+          </div>   
+      
+        </div>
+  
+      </div> {% endcomment %}
                 {% endif %}
            {% endfor %}        
         {% endif%}
     {% endfor %}
 {% endif %}     
-
 <section class="container-fluid py-4">
     
     {% paginate paginate_data.products by 8 %}
@@ -204,57 +241,38 @@
      }
  {% endschema %}
   
+{% comment %} </script> 
+<script>
+var collFilters2 = document.getElementById('filter_by_type');
+collFilters2.addEventListener('change', function(e) {
+  var newTags2 = [];         
+  if (e.target.value) newTags2.push(e.target.value);
+  //console.log(e.target.value);
+  //console.log(newTags2);
 
+
+if (newTags2.length > 0) {
+  var query = newTags2.join('+');
+  var loc = '{{ 'product_type' | link_to_tag: 'product_type' }}';
+  //console.log(loc);
+  var loc1 = loc.match(/href="([^"]*)/)[1];
+  //console.log(loc1);
+  var href= loc1.replace('product_type', query);
+  //console.log(href);
+  window.location.href = href;
+} else {
+  {% if collection.handle %}
+  window.location.href = '/collections/{{ collection.handle }}';
+  {% elsif collection.products.first.type == collection.title %}
+  window.location.href = '{{ collection.title | url_for_type }}';
+  {% elsif collection.products.first.vendor == collection.title %}
+  window.location.href = '{{ collection.title | url_for_vendor }}';
+  {% endif %}
+}
+
+});
+</script> {% endcomment %}
   
-  {% comment %} <script>  
   
-    var collFilters = jQuery('.coll-filter');
-    collFilters.change(function() {
-    var newTags = [];
-    collFilters.each(function() { 
-    if (jQuery(this).val()) {
-    newTags.push(jQuery(this).val());
-    }
-    });
-    if (newTags.length) {
-    var query = newTags.join('+');
-    window.location.href = jQuery('{{ 'tag' | link_to_tag: 'tag' }}').attr('href').replace('tag', query);
-    } 
-    else {
-    {% if collection.handle %}
-    window.location.href = '/collections/{{ collection.handle }}';
-    {% elsif collection.products.first.type == collection.title %}
-    window.location.href = '{{ collection.title | url_for_type }}';
-    {% elsif collection.products.first.vendor == collection.title %}
-    window.location.href = '{{ collection.title | url_for_vendor }}';
-    {% endif %}
-    }
-    });
-  </script> {% endcomment %}
-  <script>  
-  
-    var collFilters2 = jQuery('#filter_by_type');
-    collFilters2.change(function() {
-    var newTags2 = [];
-    collFilters2.each(function() { 
-    if (jQuery(this).val()) {
-    newTags2.push(jQuery(this).val());
-    }
-    });
-    if (newTags2.length) {
-    var query = newTags2.join('+');
-    window.location.href = jQuery('{{ 'product_type' | link_to_tag: 'product_type' }}').attr('href').replace('product_type', query);
-    } 
-    else {
-    {% if paginate_data.handle %}
-    window.location.href = '/collections/{{ paginate_data.handle }}';
-    {% elsif paginate_data.products.first.type == paginate_data.title %}
-    window.location.href = '{{ paginate_data.title | url_for_type }}';
-    {% elsif paginate_data.products.first.vendor == paginate_data.title %}
-    window.location.href = '{{ paginate_data.title | url_for_vendor }}';
-    {% endif %}
-    }
-    });
-  </script>
   {% comment %}theme-check-enable{% endcomment %}
  

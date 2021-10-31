@@ -2,8 +2,8 @@
 
 {% assign image = block.settings.image | img_url: 'master' %}
 
-<div class="col d-flex flex-fill bg-dark border-0">         
-          <div class="card d-flex flex-fill bg-dark border-0">
+<div class="col d-flex flex-fill bg-none border-0">         
+          <div class="card d-flex flex-fill bg-none border-0">
            <div class="img-wrapper">
              <div id="catcard" class="card-img-top lazy"  {% if highlightbox == 'true' %} style="object-fit:cover;object-position:center top;filter: brightness(110%);" {% else %} style="object-fit:cover;object-position:center top;" {% endif %}>
                {% if image != blank %}  
@@ -22,12 +22,16 @@
                {% endif %}
              </div>
            </div>
-           
-           <div class="card-body bg-light flex-column align-items-end justify-content-end">
+           {% if block.settings.link %}
+
+           <div class="card-body bg-light flex-column align-items-end justify-content-end" style="min-height:0px;">
+              
                <p><a class="text-product-link" href="{{ block.settings.link }}">{{ block.settings.category_name }}</a></p>    
-               <p>{{ block.settings.category_story }}</p>
-               
-           </div>  
+               <p>{{ block.settings.category_story }}</p>    
+              
+           
+           </div>
+          {% endif %}
             <div>            
                 {% if specialbox == 'true' %}      
                      {% assign specialbox = 'false' %}              

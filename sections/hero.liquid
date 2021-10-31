@@ -5,9 +5,10 @@ assign section_id = section.settings.section_id
 assign hero_url = section.settings.image | img_url: 'master'
 assign top_margin = section.settings.top_margin
 assign bg_position = section.settings.bg_position
+assign vpheight = section.settings.height
 
-assign topmargin = "padding-top: "  | append : top_margin | append : "px ! important;" 
-assign bgposition = "background-position: "  | append : top_margin | append : "px ! important;" 
+assign topmargin = "padding-top: "  | append : top_margin | append : "px !important;" 
+assign bgposition = "background-position: "  | append : top_margin | append : "px !important;" 
 
 if section.settings.container == 'container' 
   assign container_class = 'container' 
@@ -40,7 +41,9 @@ endif
 <style scoped>              
 .{{ section_id }}-bg-cover {
    background: url({{ hero_url }}) no-repeat center {{ bg_position }};
-   background-size: cover;                    
+   background-size: cover;                 
+   height: auto;   
+   min-height: {{ vpheight }}vh;
  }                              
 </style>      
 {% if container_class == 'container' %}
@@ -76,6 +79,16 @@ endif
       "default": "container"
       },
       {
+        "type": "range",
+        "id": "height",
+        "label": "Hero View Port Height",
+        "default": 100,
+        "unit": "%",
+        "min": 40,
+        "max": 100,
+        "step": 1
+        },          
+      {
         "type": "text",
         "id": "section_id",
         "default": "hero",
@@ -84,7 +97,7 @@ endif
       {
         "type": "text",
         "id": "top_margin",
-        "default": "auto",
+        "default": "0",
         "label": "Top Margin"
       },                 
       { "type": "image_picker", 

@@ -1,0 +1,83 @@
+
+
+<section class="pb-5">
+    <div class="container p-5 bg-light">
+      <div class="row align-items-center">
+        <div class="col-lg-6 mb-4 mb-lg-0">           
+          <h3>{{ section.settings.newsletter_title }}</h3>
+          <p class="text-small text-muted mb-0">{{ section.settings.newsletter_text }}</p>
+        </div>
+        <div class="col-lg-6">
+          {% form 'customer' %}
+            {% if form.posted_successfully? %}
+              <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
+
+              <script>window.location.href = "/pages/thank-you-for-subscribing";</script>
+              
+            {% elsif form.errors %}
+               
+              {% for field in form.errors %}
+                <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>
+              {% endfor %}              
+
+            {% endif %}
+            <div class="input-group">
+              <input type="hidden" name="contact[tags]" value="prospect,newsletter" />
+              <input type="hidden" name="challenge" value="false" />
+              <input type="email" class="form-control rounded-0" name="contact[email]" required placeholder="{{ 'general.newsletter_form.placeholder' | t }}" aria-label="Enter your email address" aria-describedby="button-addon2" />
+              <input type='submit' class="btn-reg " id="button-addon2" value="{{ 'general.newsletter_form.submit' | t }}" />
+            </div>
+          {% endform %}
+        </div>
+      </div>
+    </div>
+  </section>
+ {% schema %} 
+
+ {
+  "name": "Newsletter-text",
+  "settings": [
+    {
+    "type": "select",
+    "id": "container",
+    "label": "layout",
+    "options": [
+        {
+         "value": "container",
+         "label": "Container"
+        },
+        {
+         "value": "container-fluid",
+         "label": "Container Fluid"
+        }
+        ],
+        "default": "container"
+    },
+    {
+        "type": "number",
+        "id": "height",
+        "label": "Block Height",
+        "default": 100      
+    }, 
+    {
+    "type": "text",
+    "id": "newsletter_title",
+    "label": "Heading",
+    "default": "Subscribe"
+    },
+    {
+    "type": "richtext",
+    "id": "newsletter_text",
+    "label": "Subheading",
+    "default": "<p>Sign up to get the latest on sales, new releases and more …</p>"
+    }
+    ],
+    "presets": [
+        {
+            "category": "newsletter-text",
+            "name": "Newsletter-Text"
+        }
+    ]
+}
+
+{% endschema %}

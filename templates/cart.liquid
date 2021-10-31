@@ -1,4 +1,5 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign url_continueshopping = settings.url_continueshopping_cart %}
 
 {% if cart.item_count > 0 %}
 
@@ -54,7 +55,7 @@
                   <h1 class="h4">Total :</h1>
                   <h5 class="h5">{{ cart.total_price | money }}</h5>
                   <div class="d-grid gap-2">
-                    <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
+                    <a href="{{ url_continueshopping }}"  class="btn-reg" title="Continue shopping">Continue shopping</a>
                     <button type="submit" class="btn-reg" name="update">Update</button>
                     <button type="submit" class="btn-reg" name="checkout">Checkout</button>              
                   </div>            
@@ -73,7 +74,7 @@
     <p class="text-cart-empty">Cart is empty</p>        
   </div>
   <div class="text-center">
-    <a href="/collections/all"  class="btn-reg" title="Continue shopping">Continue shopping</a>
+    <a href="{{ url_continueshopping }}"  class="btn-reg" title="Continue shopping">Continue shopping</a>
   </div>
   
 </div>

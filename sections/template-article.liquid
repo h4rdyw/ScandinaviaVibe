@@ -38,7 +38,7 @@
                 {% when 'video_url' %}        
                   {% if block.settings.video_url.id %}                
                   
-                    <div class="my-4">
+                    <div class="my-0">
                           <div class="ratio ratio-16x9">
                             <lite-youtube videoid="{{ block.settings.video_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
                           </div>
@@ -46,7 +46,7 @@
                   {% endif %}  
 
                 {% comment %} {% when 'featured_gallery' %}                     
-                   {% render 'prd-gallery' %}    {% endcomment %}
+                   {% render 'prd-gallery' %} {% endcomment %}
 
                 {% else %}
 
@@ -116,7 +116,7 @@
                
                     <div class="mb-4">
                         <a href="{{ item.url }}">
-                            <img src="{{ item.image | img_url: 'medium' }}" class="w-100">
+                            <img src="{{ item.image | img_url: 'master' }}" width="240" height="240" loading="lazy" class="w-100">
                         </a>     
                         <h2 class="h2">{{ item.title }}</h2>
         
@@ -128,12 +128,15 @@
                         <h3 class="h3">{{ item.title }}</h3>
                         <p>{{ item.description }}</p>
                       </div>
+                    
                       
                     {% else %}   
                     
+
                   {% endcase %}
                 
               {% endfor %}
+              {% render 'blogcat' %}
             </div>
         </div>
 
@@ -189,7 +192,7 @@
                     "id": "video_url",
                     "accept": ["youtube","vimeo"],                    
                     "label": "Video URL",
-                    "info": "Video will appear on all blog post with this template"
+                    "info": "Video will appear on all blog post with this blogpost template"
                 },
                 {
                     "type": "url",

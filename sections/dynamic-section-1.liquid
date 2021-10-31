@@ -50,7 +50,7 @@
 
 {% schema %}
   {
-    "name": "Dynamic Section 1",
+    "name": "Image/Text/Video Section",
     "class": "index-section",
     "settings": [
       {
@@ -62,7 +62,7 @@
     "blocks": [
       {
         "type": "text_block",
-        "name": "Page Management",        
+        "name": "Text Image Block",        
         "settings": [
           {
             "type": "text",
@@ -98,7 +98,7 @@
       },
       {
         "type": "video_url",
-        "name": "Video",       
+        "name": "Video Block",       
         "settings": [
             {
                 "type": "text",
@@ -131,6 +131,24 @@
 
         ]
     }
+    ],
+    "presets": [
+      {
+        "name": {
+          "en": "Image/Video Block"
+        },
+        "category": {
+          "en": "Main"
+        },
+        "blocks": [
+          {
+            "type": "text_block"
+          },
+          {
+            "type": "video_url"
+          }
+        ]
+      }
     ]
   }
 {% endschema %}

@@ -42,6 +42,21 @@
     ]
   },
   {
+    "name": "Default Links",
+    "settings": [
+      {
+        "type": "url",
+        "id": "url_continueshopping_wishlist",
+        "label": "Continue Shopping - Wishlist"
+      },
+      {
+        "type": "url",
+        "id": "url_continueshopping_cart",
+        "label": "Continue Shopping - Cart"
+      }
+    ]
+  },
+  {
     "name": "Typography",
     "settings": [
       {
@@ -148,92 +163,107 @@
         "type": "number",
         "id": "xxl_card",
         "label": "XXL Screen",
-        "default": 5
+        "default": 5,
+        "info": "Default = 5"
       },
       {
         "type": "number",
         "id": "xl_card",
         "label": "XL Screen",
-        "default": 4
+        "default": 4,
+        "info": "Default = 4"
       },
 
       {
         "type": "number",
         "id": "l_card",        
         "label": "Large Screen",
-        "default": 3
+        "default": 3,
+        "info": "Default = 3"
       },
       {
         "type": "number",
         "id": "m_card",        
         "label": "Medium Screen",
-        "default": 3        
+        "default": 3,
+        "info": "Default = 3"        
       },
       {
         "type": "number",
         "id": "s_card",        
         "label": "Small Screen",
-        "default": 2
+        "default": 2,
+        "info": "Default = 2"
       },
       {
         "type": "number",
         "id": "xs_card",        
         "label": "XS Screen",
-        "default": 1
+        "default": 1,
+        "info": "Default = 1"
       },
       {
         "type": "number",
         "id": "xsoverride_card",        
         "label": "Override XS, Default Smallest",
-        "default": 2
+        "default": 2,
+        "info": "Default = 2"
       },
       {
         "type": "number",
         "id": "card_img_width_coll",        
         "label": "Image Width - Collection",
-        "default": 640
+        "default": 640,
+        "info": "Default = 640"
       },
       {
         "type": "number",
         "id": "card_img_height_coll",        
         "label": "Image Height - Collection",
-        "default": 360
+        "default": 360,
+        "info": "Default = 360"
       },
       {
         "type": "number",
         "id": "card_img_width_frontpage",        
         "label": "Image Width - Featured/FrontPage",
-        "default": 640
+        "default": 640,
+        "info": "Default = 640"
       },
       {
         "type": "number",
         "id": "card_img_height_frontpage",        
         "label": "Image Height - Featured/FrontPage",
-        "default": 360
+        "default": 360,
+        "info": "Default = 360"
       },
       {
         "type": "number",
         "id": "card_img_width_horizontal",        
         "label": "Image Width - Horizontal Card",
-        "default": 150
+        "default": 150,
+        "info": "Default = 150"
       },
       {
         "type": "number",
         "id": "card_img_height_horizontal",        
         "label": "Image Height - Horizontal Card",
-        "default": 150
+        "default": 150,
+        "info": "Default = 150"
       },
       {
         "type": "number",
         "id": "card_img_width_gallery",        
         "label": "Image Width - Gallery",
-        "default": 240
+        "default": 240,
+        "info": "Default = 240"
       },
       {
         "type": "number",
         "id": "card_img_height_gallery",        
         "label": "Image Height - Gallery",
-        "default": 240
+        "default": 240,
+        "info": "Default = 240"
       }
     ]
   }

@@ -2,6 +2,10 @@
 
 {% assign current_product = product.selected_or_first_available_variant %} 
 {% assign product_image = current_product.featured_image | default: product.featured_image %}
+{% if section.settings.col_reverse == true %}
+  {% assign col_reverse = '-reverse' %}  
+{% endif %}
+
 
     {% for tag in product.tags %}
        {% if tag contains 'Special' %}
@@ -16,35 +20,33 @@
     {% endfor %}
      
 <section class="container py-5" id="product_details">
-  <p></p>
-    <div class="row flex-column-reverse flex-lg-row">
+  <p span></p>
+    <div class="row flex-column{{ col_reverse }} flex-lg-row">
         <div class="d-flex flex-fill flex-column col-lg-8 col-md-12 col-12">
             
               <div class="d-flex flex-fill swiper-container swiper-container-{{- product.id -}}">
                 <div class="swiper-wrapper flex-fill">
                   {% if product.images.size > 1  %}
                     {% assign imgnum = 'true' %}
-                  {% endif %}
-                  
-
+                  {% endif %}                
 
                   {% for image in product.images %}            
                     <div variant-img-id="{{ image.id }}" class="swiper-slide" variant-id="">
-                      <img src="{{ image.src | img_url : 'master' }}" alt="{{ image.alt | escape }}" width="480" height="480" loading="lazy"/>
+                      <img src="{{ image.src | img_url : 'master' }}" alt="{{ image.alt | escape }}" width="480px" height="480px" loading="lazy"/>
 
                       {% if imgnum == 'true' %}                       
                       
                       <div class="swiper-button-prev swiper-button-prev-{{- product.id -}}"></div>                     
                       <div class="swiper-button-next swiper-button-next-{{- product.id -}}"></div>
 
-                    {% endif %}
+                      {% endif %}
 
                     </div>          
                   {% endfor %}    
                 </div>
               </div>
               <p span class="text-line"></p>
-              <!--<div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'long' %}</p></div>-->
+              {% comment %} <!--<div class="text-product-desc"><p>{% render 'product-description' ,product:product, type: 'long' %}</p></div>--> {% endcomment %}
 
              <div class="w-100 mx-auto my-1">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -64,17 +66,26 @@
                   </div>
                   <div class="tab-pane fade" id="media" role="tabpanel" aria-labelledby="media-tab">
                     <div class="container px-0 mx-auto">
-                      <div class="d-flex g-3 row row-cols row-cols-xxl-2 row-cols-lg-2 row-cols-md-2 row-cols-1 align-items-center
-                        ">      
+                      <div class="d-flex g-3 row row-cols row-cols-xxl-2 row-cols-lg-2 row-cols-md-2 row-cols-1 align-items-center">
                       {% render 'product-video', product:product %}      
                       </div>
                     </div>        
                     </div>
-                  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><div class="text-product-desc">{% if section.settings.subtitle != blank %}       
+                  <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab"><div class="text-product-desc">
+                  {% if section.settings.subtitle != blank %}
                   <div class="text-header-title"><p>{{ section.settings.subtitle }}</p></div>
-                  <div><p>{{ section.settings.subinfo }}</p></div>                
-                  
-                  {% endif %}</div></div>
+                  {% endif %}
+                  {% if section.settings.subinfo != blank %} 
+                  <div><p>{{ section.settings.subinfo }}</p></div>    
+                  {% endif %}                  
+                  {% if section.settings.subinfo_img != blank %}                  
+                  <div><img src="{{ section.settings.subinfo_img | img_url : 'master' }}" alt="{{ image.alt | escape }}" width="360" height="360" loading="lazy"/></div> 
+                  {% endif %}    
+                  {% if section.settings.subinfo_url != blank %}                  
+                  <div><a href="{{ section.settings.subinfo_url }}" target="_blank">{{ section.settings.subinfo_url_title }}</a>
+                </div> 
+                  {% endif %}         
+                </div></div>
                 </div>
               </div>             
         </div>
@@ -171,9 +182,9 @@
                   <li class="list-inline-item">
                     <div class="border d-flex align-items-center justify-content-between p-1">
                       <div class="quantity py-0">
-                        <button class="dec-btn p-0" onclick="event.preventDefault();decrease(this)"><i class="fas fa-caret-left"></i></button>
+                        <button class="dec-btn p-0" onclick="event.preventDefault();decrease(this)" aria-label="Button Decrease Quantity"><i class="fas fa-caret-left"></i></button>
                         <input class="form-control border-0 shadow-0 p-0 quantity-result" type="text" name="quantity" id="Quantity" value="1" aria-label="Quantity" style="font-weight:600;" >
-                        <button class="inc-btn p-0" onclick="event.preventDefault();increase(this)"><i class="fas fa-caret-right"></i></button>
+                        <button class="inc-btn p-0" onclick="event.preventDefault();increase(this)" aria-label="Button Increase Quantity"><i class="fas fa-caret-right"></i></button>
                       </div>
                     </div>
                   </li>
@@ -194,17 +205,17 @@
       </div>
 </section>
 
-<!-- / element structure
+{% comment %} <!-- / element structure
 <div id="product_recomm" class="container">
     <section id="product_recommendation" class="row content-justify-center my-5">
         <div class="text-center"><h1>Also in store</h1></div>
         <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
     </section>
 </div> 
-/-->
+/--> {% endcomment %}
 
 {% render 'prd-modal' %}
-<!--
+{% comment %} <!--
 <div id="productInfoModal" class="modal modalfade" tabIndex="-1" aria-hidden="true" style="z-index:2001;">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
         <div class="modal-content rounded-0">
@@ -245,10 +256,60 @@
         </div>
     </div>
 </div>
--->
+--> {% endcomment %}
 {{ 'product.css' | asset_url | stylesheet_tag }}
 {% comment %} {{ 'application.css' | asset_url | stylesheet_tag }} {% endcomment %}
-
+{% schema %}
+{
+    "name": "product detail page",
+    "settings": [
+    {
+        "type": "checkbox",
+        "id": "dynamic_button_checkbox",
+        "label": "Enable Dynamic Buy Button",
+        "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "col_reverse",
+      "label": "Reverse Column on Small Screen",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_short_description",
+      "label": "Show Short Description",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sub Heading Info"      
+    },
+    {
+      "type": "richtext",
+      "id": "subinfo",
+      "label": "Additional Info"      
+    },
+    {
+      "type": "image_picker",
+      "id": "subinfo_img",
+      "label": "Additional Info"      
+    },
+    {
+      "type": "url",
+      "id": "subinfo_url",
+      "label": "Download Link"      
+    },
+    {
+      "type": "text",
+      "id": "subinfo_url_title",
+      "label": "Download Link Title",
+      "default": "Download The File"      
+    }
+  ]
+}
+{% endschema %}
 <style scoped>
   input {
     border-left: none !important;
@@ -295,12 +356,13 @@
 window.addEventListener('load', 
   function() { 
     checkLocaleBtn();         
-    const element = document.querySelector('#productSelect');
-    let changeEvent = new Event('change');
-    element.dispatchEvent(changeEvent);
+
+    const element = document.querySelector('#productSelect') || false;    
+    if (element) {
+      let changeEvent = new Event('change');    
+       element.dispatchEvent(changeEvent);
+    }
   }, false);       
-
-
 
 
 const json_product = {{ product | json }};
@@ -342,6 +404,7 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
     })
   });
    {% endcomment %}
+   
     //var productRecommendationBody = document.getElementById('product_recommendation_body');
     fetch('/recommendations/products.json?product_id={{ product.id }}')
     .then(resp => resp.json())
@@ -361,19 +424,19 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
         //console.log(products);
         if(products.length > 0) {
         
-            /* element 
+            {% comment %} /* element 
                 <div class="container">
                     <section id="product_recommendation" class="row content-justify-center my-5">
                         <div class="text-center"><h1>Also in store</h1></div>
                         <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
                     </section>
                 </div>
-            */
+            */ {% endcomment %}
 
             const htmlMarkup = `
                  <section id="product_recommendation" class="content-justify-center my-5">
                     <div class="text-center"><h1>Also in store</h1></div>
-                    <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-4 row-cols-lg-3 row-cols-md-2 row-cols-sm-2 row-cols-2 py-2" id="product_recommendation_body">
+                    <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body">
             `;
 
             html = htmlMarkup.trim();
@@ -578,37 +641,7 @@ function decrease(x) {
 }
 </script>
 
-{% schema %}
-{
-    "name": "product detail page",
-    "settings": [
-    {
-        "type": "checkbox",
-        "id": "dynamic_button_checkbox",
-        "label": "Enable Dynamic Buy Button",
-        "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "show_short_description",
-      "label": "Show Short Description",
-      "default": false
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Sub Heading Info"
-      
-    },
-    {
-      "type": "richtext",
-      "id": "subinfo",
-      "label": "Additional Info"
-      
-    }
-  ]
-}
-{% endschema %}
+
 
 
  

@@ -1,0 +1,372 @@
+{% comment %}theme-check-disable{% endcomment %}
+{% assign page_handle = page.handle %}
+{% assign story_handle = 0 %}
+{% assign colwidth = section.settings.layout %}
+
+{% for block in section.blocks %}
+{% if block.settings.page_handle == page_handle  or template == 'index' %}
+
+
+{% if block.type == 'col_article_block' %} 
+{% assign headingcolor = block.settings.heading_textcolor %}
+{% assign descfontsize = block.settings.font_size_desc %}
+{% assign headingcolor2 = block.settings.heading_textcolor2%}
+{% assign descfontsize2 = block.settings.font_size_desc2 %}
+{% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
+{% assign hidefilterbackdrop2 = block.settings.hide_filter_backdrop2 %}
+{% assign story_handle = story_handle | plus : 1 %}
+{% assign cardwidth = block.settings.card_img_width %}
+{% assign cardheight = block.settings.card_img_height %}
+{% assign cardwidth2 = block.settings.card_img_width2 %}
+{% assign cardheight2 = block.settings.card_img_height2 %}
+
+{% if block.settings.image_story  %}
+    {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
+  {% else %}
+     {% assign hero_img_url = block.settings.hero_story_img_url %}
+{% endif %}
+
+{% if block.settings.image_story2  %}
+  {% assign hero_img_url2 = block.settings.image_story2 | img_url: 'master' %} 
+{% else %}
+   {% assign hero_img_url2 = block.settings.hero_story_img_url2 %}
+{% endif %}
+
+{% case colwidth  %}
+    {% when 'fullwidth' %}
+        {% assign col_width = 'col-lg-12' %}
+    {% when '2column' %}
+        {% assign col_width = 'col-lg-6 col-sm-6' %}
+{% endcase %}           
+
+<section class="py-5">
+    <div class="container py-0">
+      <div class="row">
+        <div class="col-lg-12 mb-5 mb-lg-0">
+          <div class="row">            
+            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link }}"><img class="img-fluid" src="{{ hero_img_url }}" width="{{ cardwidth }}" height="{{ cardheight }}" alt="{{ block.settings.title }}"/></a>
+              <ul class="list-inline">
+                {% if block.settings.block_link_1 != blank %}
+                <li class="list-inline-item mr-2"><a class="category-link font-weight-normal" href="{{ block.settings.block_link_1 }}">{{ block.settings.block_label_1 }}</a></li>
+                {% endif %}
+
+                {% if block.settings.block_link_2 != blank %}
+                <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_2 }}">{{ block.settings.block_label_2 }}</a></li>
+                {% endif %}
+
+                {% if block.settings.block_link_3 != blank %}
+                <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_3 }}">{{ block.settings.block_label_3 }}</a></li>
+                {% endif %}
+              </ul>
+              <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title }}</a></h2>
+              <div class="text-muted" style="font-size: {{ descfontsize }}px !important;">{{ block.settings.description }}</div>
+              {% if block.settings.button_link != blank  %}
+                <a class="btn-reg" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
+              {% endif %}              
+            </div>  
+            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link2 }}"><img class="img-fluid" src="{{ hero_img_url2 }}" width="{{ cardwidth2 }}" height="{{ cardheight2 }}" alt="{{ block.settings.title2 }}"/></a>
+              <ul class="list-inline">
+                {% if block.settings.block_link_1_2 != blank %}
+                <li class="list-inline-item mr-2"><a class="category-link font-weight-normal" href="{{ block.settings.block_link_1_2 }}">{{ block.settings.block_label_1_2 }}</a></li>
+                {% endif %}
+                {% if block.settings.block_link_2_2 != blank %}
+                <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_2_2 }}">{{ block.settings.block_label_2_2 }}</a></li>
+                {% endif %}
+                {% if block.settings.block_link_3_2 != blank %}
+                <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_3_2 }}">{{ block.settings.block_label_3_2 }}</a></li>
+                {% endif %}
+              </ul>
+              <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title2 }}</a></h2>
+              <div class="text-muted" style="font-size: {{ descfontsize2 }}px !important;">{{ block.settings.description2 }}</div>
+              {% if block.settings.button_link2 != blank  %}
+                <a class="btn-reg" href="{{ block.settings.button_link2 }}">{{ block.settings.button_label2 }}</a>
+              {% endif %}              
+            </div>               
+          </div>
+        </div>  
+    </div> 
+</section>   
+{% endif %}
+{% endif %}
+{% endfor %}
+{% schema %} 
+{ 
+  "name": "Column Article Block", 
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Common Title"
+      },  
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "layout",
+        "options": [
+                  {
+                      "value": "fullwidth",
+                      "label": "Full Width"
+                  },
+                  {
+                      "value": "2column",
+                      "label": "2 Column"
+                  }
+              ],
+              "default": "2column"
+       }      
+    ],
+  "blocks": [
+    {
+      "type": "col_article_block",
+      "name": "Column Article Block",       
+      "settings": [ 
+        {
+          "type": "header",
+          "content": "Article 1"
+        },
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        {
+          "type": "checkbox",
+          "id": "hide_filter_backdrop",
+          "label": "Hide Back Drop",
+          "default": true
+        },
+
+        { "type": "image_picker", 
+          "id": "image_story", 
+          "label": "Image",
+          "info" : "This block uses fluid image container, adjust your image size accordingly"
+        },
+        { "type": "url", 
+          "id": "hero_story_img_url", 
+          "label": "Image URL" 
+        },
+        {
+            "type": "number",
+            "id": "card_img_width",        
+            "label": "Image Width",
+            "default": 640,
+            "info": "Default = 640"
+          },
+          {
+            "type": "number",
+            "id": "card_img_height",        
+            "label": "Image Height",
+            "default": 360,
+            "info": "Default = 360"
+          },
+        { "type": "text", 
+          "id": "title", 
+          "default": "Example Heading",
+          "label": "Heading Title"
+        },
+        {
+          "type": "color",
+          "id": "heading_textcolor",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },
+        { "type": "richtext", 
+          "id": "description", 
+          "default": "<p>Example paragraph</p>",
+          "label": "Description" 
+        },
+        {
+          "type": "color",
+          "id": "descr_textcolor",
+          "label": "Description Text Color",
+          "default": "#11171B"
+        },
+        {
+          "type":   "range",
+          "id":     "font_size_desc",
+          "min":    8,
+          "max":    36,
+          "step":   1,
+          "unit":   "px",
+          "label":  "Story Font size",
+          "default":   16
+        },
+        { "type": "text", 
+          "id": "button_label", 
+          "default": "Button",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link", 
+        "label": "Button Link" 
+        },
+        { "type": "video_url",
+          "id": "video_story_url",
+          "accept": ["youtube","vimeo"],                    
+          "label": "Video URL"
+        },
+        { "type": "text", 
+            "id": "block_label_1", 
+            "default": "Link",
+            "label": "Block Label 1" 
+          },
+          { "type": "url", 
+          "id": "block_link_1", 
+          "label": "Block Link 1" 
+          },
+          { "type": "text", 
+            "id": "block_label_2", 
+            "default": "Link",
+            "label": "Block Label 2" 
+          },
+          { "type": "url", 
+          "id": "block_link_2", 
+          "label": "Block Link 2" 
+          },
+          { "type": "text", 
+            "id": "block_label_3", 
+            "default": "Link",
+            "label": "Block Label 3" 
+          },
+          { "type": "url", 
+          "id": "block_link_3", 
+          "label": "Block Link 3" 
+          },
+
+          {
+          "type": "header",
+          "content": "Article 2"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide_filter_backdrop2",
+            "label": "Hide Back Drop",
+            "default": true
+          },
+  
+          { "type": "image_picker", 
+            "id": "image_story2", 
+            "label": "Image",
+            "info" : "This block uses fluid image container, adjust your image size accordingly"
+          },
+          { "type": "url", 
+            "id": "hero_story_img_url2", 
+            "label": "Image URL" 
+          },
+          {
+            "type": "number",
+            "id": "card_img_width2",        
+            "label": "Image Width",
+            "default": 640,
+            "info": "Default = 640"
+          },
+          {
+            "type": "number",
+            "id": "card_img_height2",        
+             "label": "Image Height",
+             "default": 360,
+             "info": "Default = 360"
+          },
+          { "type": "text", 
+            "id": "title2", 
+            "default": "Example Heading",
+            "label": "Heading Title"
+          },
+          {
+            "type": "color",
+            "id": "heading_textcolor2",
+            "label": "Heading Text Color",
+            "default": "#000"
+          },
+          { "type": "richtext", 
+            "id": "description2", 
+            "default": "<p>Example paragraph</p>",
+            "label": "Description" 
+          },
+          {
+            "type": "color",
+            "id": "descr_textcolor2",
+            "label": "Description Text Color",
+            "default": "#11171B"
+          },
+          {
+            "type":   "range",
+            "id":     "font_size_desc2",
+            "min":    8,
+            "max":    36,
+            "step":   1,
+            "unit":   "px",
+            "label":  "Story Font size",
+            "default":   16
+          },
+          { "type": "text", 
+            "id": "button_label2", 
+            "default": "Button",
+            "label": "Button Label" 
+          },
+          { 
+            "type": "url", 
+            "id": "button_link2", 
+            "label": "Button Link" 
+          },
+          { 
+            "type": "video_url",
+            "id": "video_story_url2",
+            "accept": ["youtube","vimeo"],                    
+            "label": "Video URL"
+          },
+          { 
+            "type": "text", 
+            "id": "block_label_1_2", 
+            "default": "Link",
+            "label": "Block Label 1" 
+          },
+          { 
+            "type": "url", 
+            "id": "block_link_1_2", 
+            "label": "Block Link 1" 
+          },
+          { 
+            "type": "text", 
+            "id": "block_label_2_2", 
+            "default": "Link",
+            "label": "Block Label 2" 
+          },
+          { 
+            "type": "url", 
+            "id": "block_link_2_2", 
+            "label": "Block Link 2" 
+          },
+          { 
+            "type": "text", 
+            "id": "block_label_3_2", 
+            "default": "Link",
+            "label": "Block Label 3" 
+          },
+          { 
+            "type": "url", 
+            "id": "block_link_3_2", 
+            "label": "Block Link 3" 
+          }  
+      ]
+    }
+  ],
+    
+      "presets": [
+      {
+        "category": "Column Article Block",
+        "name": "Column Article Block",
+        "blocks": [
+            {
+                "type": "col_article_block"
+            },
+            {
+                "type": "col_article_block"
+            }
+        ]
+      }
+    ]
+}
+
+{% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

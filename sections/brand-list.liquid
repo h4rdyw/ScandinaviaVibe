@@ -4,9 +4,15 @@
 {% assign collection_handle = collection.handle %}     
 {% assign template_handle = template.name %}
 {% assign collection_template_suffix = collection.template_suffix %}
+{% if section.settings.container == 'container' %}
+ {% assign container_class = 'container' %}
+{% else %}
+ {% assign container_class = 'container-fluid' %}
+{% endif %}
 
-<section class="container-fluid px-0 py-0 bg-none">  
-    <div class="container-fluid d-flex flex-wrap row-cols-xxl-4 row-cols-l-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
+
+<section class="{{ container_class }} px-0 py-0 bg-none">  
+    <div class="{{ container_class }} d-flex flex-wrap row-cols-xxl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-none">
         {% for block in section.blocks %}
                 {% if block.settings.page_handle == page_handle or template == 'index' or block.settings.collection_handle == collection_handle or template_handle == 'list-collections' or block.settings.blog_handle == blog_handle or collection_template_suffix != nil %}
 
@@ -35,7 +41,24 @@
                 "id": "title",
                 "label": "Heading",
                 "default": "Brand List"
-            }
+            },
+            {
+            
+                "type": "select",
+                "id": "container",
+                "label": "layout",
+                "options": [
+                {
+                 "value": "container",
+                 "label": "Container"
+                },
+                {
+                 "value": "container-fluid",
+                 "label": "Container Fluid"
+                }
+                ],
+                 "default": "container"
+             }
         ],
         "blocks": [
             {
@@ -86,7 +109,13 @@
                         "id": "link",
                         "label": "Brand Link",
                         "info": "Optional"
-                    }
+                    },
+                    {
+                        "type": "color",
+                        "id": "color_bg",
+                        "label": "Card Background Color",
+                        "default": "#f8f9fa"
+                      }
                 ]
             }
         ],

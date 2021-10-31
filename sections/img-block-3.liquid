@@ -1,0 +1,267 @@
+{% comment %}theme-check-disable{% endcomment %}
+
+{% comment %} {% assign productcolortexthover = settings.product_textcolor_hover %} {% endcomment %}
+
+{% case request.page_type %}
+    
+  {% when 'page' %}
+    {% assign page_handle = page.handle %}    
+
+  {% when 'blog' %}
+    {% assign blog_handle = blog.handle %}
+
+  {% when 'article' %}
+    {% assign article_handle = article.handle %}  
+    {% if article_handle == article.handle %}
+      {% comment %} <!-- workaround --> {% endcomment %}
+      {% assign is_article = 'true' %} 
+    {% endif %} 
+
+  {% endcase %}
+
+{% for block in section.blocks %}
+    {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.blog_handle == blog_handle or is_article == 'true' %}
+
+        {% assign block_img_url1 = block.settings.img_1 | img_url: 'master' %} 
+        {% assign block_img_url2 = block.settings.img_2 | img_url: 'master' %} 
+        {% assign block_img_url3 = block.settings.img_3 | img_url: 'master' %} 
+        
+        <section class="pb-0">
+            <div class="container pb-0">
+              <div class="row mb-4 pb-0">
+                  {% if block.settings.img_1 != blank %}
+                <div class="col-lg-4 mb-4 mb-lg-0"><a class="category-block bg-center bg-cover lazy" style="background: url({{ block_img_url1 }});" href="{{ block.settings.button_link1 }}"><span class="category-block-title">{{ block.settings.button_label1 }}</span></a></div>
+                  {% endif %}
+                  {% if block.settings.img_2 != blank %}
+                <div class="col-lg-4 mb-4 mb-lg-0"><a class="category-block bg-center bg-cover lazy" style="background: url({{ block_img_url2 }});" href="{{ block.settings.button_link2 }}"><span class="category-block-title">{{ block.settings.button_label2 }}</span></a></div>
+                  {% endif %}
+                  {% if block.settings.img_3 != blank %}
+                <div class="col-lg-4"><a class="category-block bg-center bg-cover lazy" style="background: url({{ block_img_url3 }});" href="{{ block.settings.button_link3 }}"><span class="category-block-title">{{ block.settings.button_label3 }}</span></a></div>
+                  {% endif %}
+              </div>
+        </section>     
+
+        {% comment %} <style>
+            .category-block {
+                padding-bottom: 60%;
+                display: block;
+                position: relative;
+              }
+              
+              .category-block::before {
+                content: '';
+                width: calc(100% - 1rem);
+                height: calc(100% - 1rem);
+                border: 1px solid #fff;
+                position: absolute;
+                top: 0.5rem;
+                left: 0.5rem;
+                z-index: 999;
+                display: block;
+              }
+              
+              .category-block-sm {
+                padding-bottom: 0;
+                padding: 1rem;
+              }
+              
+              .category-block-sm .category-block-title {
+                position: relative;
+                width: 100%;
+                display: block;
+                -webkit-transform: none;
+                transform: none;
+                z-index: 99;
+                text-align: center;
+                top: auto;
+                left: auto;
+              }
+              
+              .category-block::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                bottom: 0;
+                right: 0;
+                background: #000;
+                opacity: 0.1;
+              }
+              
+              .category-block-title {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                z-index: 99;
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                background: #fff;
+                color: #333;
+                padding: 0.5rem 1rem;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                font-size: 0.8rem;
+                transition: all 0.3s;
+              }
+              
+              .category-block:hover, .category-block:focus {
+                text-decoration: none;
+              }
+              
+              .category-block:hover .category-block-title, .category-block:focus .category-block-title {
+                background: {{ productcolortexthover }};
+                color: #fff;
+              } 
+              
+              .lazy {
+                background-image: none;
+                background-color: #f8f9fa;
+            }
+        </style> {% endcomment %}
+    {% endif %}
+{% endfor %}
+{{ 'lp.css' | asset_url | stylesheet_tag }}   
+
+{% schema %} 
+{ 
+  "name": "Image Block 3", 
+  "class": "img-block-section", 
+  "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Common Title"
+      }
+    ],
+  "blocks": [
+    {
+      "type": "image_block",
+      "name": "Image Block 3",  
+      "settings": [ 
+        {
+          "type": "page",
+          "id": "page_handle",
+          "label": "Select a page"
+        },
+        {
+          "type": "blog",
+          "id": "blog_handle",
+          "label": "Select a blog"
+        },
+        {
+          "type": "article",
+          "id": "article_handle",
+          "label": "Select an article"
+        },
+        {
+          "type": "collection",
+          "id": "featured_collection",
+          "label": "Collection"
+        },
+        {
+        "type": "header",
+        "content": "Image 1"
+        },
+        { "type": "image_picker", 
+          "id": "img_1", 
+          "label": "Background Image"
+        },        
+        { "type": "text", 
+          "id": "title1", 
+          "default": "Example Heading",
+          "label": "Heading Title"
+        },
+        {
+          "type": "color",
+          "id": "heading_textcolor1",
+          "label": "Heading Text Color",
+          "default": "#000"
+        },                
+        { "type": "text", 
+          "id": "button_label1", 
+          "default": "Label",
+          "label": "Button Label" 
+        },
+        { "type": "url", 
+        "id": "button_link1", 
+        "label": "Button Link" 
+        },
+        {
+        "type": "header",
+        "content": "Image 2"
+        },  
+        { 
+        "type": "image_picker", 
+         "id": "img_2", 
+         "label": "Background Image"
+        },        
+        { 
+        "type": "text", 
+        "id": "title2", 
+        "default": "Example Heading",
+        "label": "Heading Title"
+        },
+        {
+        "type": "color",
+        "id": "heading_textcolor2",
+        "label": "Heading Text Color",
+        "default": "#000"
+        },                
+        { 
+        "type": "text", 
+        "id": "button_label2", 
+        "default": "Label",
+        "label": "Button Label" 
+        },
+        { 
+        "type": "url", 
+        "id": "button_link2", 
+        "label": "Button Link" 
+        },
+        {
+        "type": "header",
+        "content": "Image 3"
+        },
+        {
+        "type": "image_picker", 
+        "id": "img_3", 
+        "label": "Hero Background Image"
+        },        
+        {
+        "type": "text", 
+        "id": "title3", 
+        "default": "Example Heading",
+        "label": "Heading Title"
+        },
+        {
+        "type": "color",
+        "id": "heading_textcolor3",
+        "label": "Heading Text Color",
+        "default": "#000"
+        },                
+        {
+        "type": "text", 
+        "id": "button_label3", 
+        "default": "Label",
+        "label": "Button Label" 
+        },
+        {
+        "type": "url", 
+        "id": "button_link3", 
+        "label": "Button Link" 
+        }          
+      ]
+    }
+  ],
+    
+      "presets": [
+      {
+        "category": "Image Block 3",
+        "name": "Image Block 3"
+      }
+    ]
+}
+
+{% endschema %}
+
+{% comment %}theme-check-enable{% endcomment %}

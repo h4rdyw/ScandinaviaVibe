@@ -1,9 +1,37 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% if section.settings.container == 'container' %}
+    {% assign container_class = 'container' %}
+{% else %]
+    {% assign container_class = 'container-fluid' %}
+{% endif %}
 
-<section class="container-fluid px-0 py-0 bg-none">
-    <div class="container-fluid d-flex flex-wrap row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
+{% case request.page_type %}
+    
+    {% when 'page' %}
+      {% assign page_handle = page.handle %}    
+  
+    {% when 'blog' %}
+      {% assign blog_handle = blog.handle %}
+  
+    {% when 'article' %}
+      {% assign article_handle = article.handle %}  
+      {% if article_handle == article.handle %}
+        {% comment %} <!-- workaround --> {% endcomment %}
+        {% assign is_article = 'true' %} 
+      {% endif %} 
+  
+{% endcase %}
+
+    
+
+<section class="{{ container_class }} px-0 py-0 bg-none">
+    <div class="{{ container_class }} d-flex flex-wrap row-cols-lg-4 row-cols-md-2 row-cols-sm-2 row-cols-2 m-0 px-0 py-10 bg-dark">
         {% for block in section.blocks %}
+            {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.blog_handle == blog_handle or is_article == 'true' %}
+
             {% render 'category-card', block: block  %}         
+
+            {% endif %}
    
        {% endfor %}
      </div>   
@@ -28,13 +56,45 @@
                 "id": "title",
                 "label": "Heading",
                 "default": "Category List"
-            }
+            },
+            {
+            
+                "type": "select",
+                "id": "container",
+                "label": "layout",
+                "options": [
+                {
+                 "value": "container",
+                 "label": "Container"
+                },
+                {
+                 "value": "container-fluid",
+                 "label": "Container Fluid"
+                }
+                ],
+                 "default": "container"
+             }
         ],
         "blocks": [
             {
                 "type": "category_list",
                 "name": "Category",
                 "settings": [
+                    {
+                        "type": "page",
+                        "id": "page_handle",
+                        "label": "Select a page"
+                    },
+                    {
+                        "type": "blog",
+                        "id": "blog_handle",
+                        "label": "Select a blog"
+                    },
+                    {
+                        "type": "collection",
+                        "id": "collection_handle",
+                        "label": "Select a collection"
+                    },
                     {
                         "type": "image_picker",
                         "id": "image",

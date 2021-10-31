@@ -55,15 +55,37 @@
                   <div class="col d-flex flex-column flex-fill px-1" style="{{ bgcolormain }}{{ bgmainopacity }}">
                       <!-- /left/ -->
 
-                      {% if block.settings.video_story_url %}
+                      {% if block.settings.video_story_url or block.settings.video_link != blank %}
 
                           <div class="col d-flex flex-fill" style="{{ bgcolormain }}{{ bgmainopacity }}">
                               <div class="hero-2-container">
-                                <div class="w-100 mx-0">
-                                    <div class="ratio ratio-16x9">
-                                        <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
-                                    </div>
-                                </div>          
+                                    {% if block.settings.video_link != blank %}
+                                      <div class="videoBackground">
+                                        <div class="videoBox" style="background-image: url('{{ block.settings.video_image | img_url: 'master' }}');">
+                                            <div class="fullscreen-video-wrap">
+                                              <video class="video-js" controls autoplay preload="none" muted playsinline
+                                                poster="https:{{ block.settings.video_image | img_url: 'master' }}">
+                                                  <source src="{{ block.settings.video_link }}" type="video/mp4">
+                                              </video>
+                                            </div>
+                                         </div> 
+                                         <div class="overlay" style="opacity: 0.{{ block.settings.video_overlay_opacity }}" style="pointer-events:none;"></div>
+                                          {% if block.settings.text_inside_box %}
+                                            <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }} position:absolute;bottom:10px;padding:2px;z-index: 2;pointer-events: none;" class="mx-4"><p>{{ block.settings.description }}</p></div>
+                                          {% endif %}   
+                                        </div>   
+                                      {% else %}
+
+                                          <div class="w-100 mx-0">
+                                              <div class="ratio ratio-16x9">
+                                                  <lite-youtube videoid="{{ block.settings.video_story_url.id }}" playlabel="Play: Keynote (Google I/O '18)"></lite-youtube>
+                                              </div>
+                                          </div>     
+                                          {% if block.settings.text_inside_box %}
+                                            <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}" class="mx-4"><p>{{ block.settings.description }}</p></div>
+                                          {% endif %} 
+                                    {% endif %}    
+
                                 <div class="hero-1-stuff">
                                     <h1 style="{{ titlecolormain }}position:sticky;top:10px;">{{ block.settings.title }}</h1>                                
                                     {% if block.settings.button_link != blank %}
@@ -71,9 +93,7 @@
                                     {% endif %}                   
                                 </div>
                                 
-                                {% if block.settings.text_inside_box %}
-                                  <div style="{{ bgcolormain }}{{ bgmainopacity }}{{ textcolormain }}" class="mx-4"><p>{{ block.settings.description }}</p></div>
-                                {% endif %}
+                                
                               </div>    
 
                               </div>
@@ -395,6 +415,253 @@
     
 {% endfor %}
 
+<style>
+
+
+  /* text inside box */
+    .hero-0-container {
+      height: auto;
+      min-height: {{ viewheight }}vh;
+      width: 100%;
+      overflow: hidden;
+      position: relative;
+      /*margin-bottom: 15px;*/
+    }
+
+    /* text outside box*/
+    .hero-1-container {
+        height: auto;
+        min-height: 50vh;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        /*margin-bottom: 20px;*/
+      }
+
+      /* video */
+    .hero-2-container {
+        height: auto;
+        min-height: {{ viewheight }}vh !important;
+        width: 100%;
+        overflow: hidden;
+        position: relative;
+        /*margin-bottom: 20px;*/
+      }
+      
+      
+      /*.hero-1 {
+        background: url({{ hero_img_url }}) no-repeat center center;
+        background-size: cover;
+        height: 100%;
+        width: 100%;
+        padding: 40px;
+        transition: transform 2s;
+      }*/
+
+      .hero-1:hover {
+        transform: scale(1.10);
+      }
+
+      #hero-1a:hover {
+        transform: scale(1.10);
+      }
+
+      #hero-1a.lazy {
+        background-image: none;
+        background-color: #f8f9fa;
+     }
+
+      #hero-1b:hover {
+        transform: scale(1);
+      }       
+
+     #hero-1b.lazy {
+      background-image: none;
+      background-color: #f8f9fa;
+   }
+      
+      .hero-1-stuff {
+        position: absolute;
+        top: {{ top_pos }}px;
+        left: {{ left_pos }}px;
+        z-index: 2;
+      } 
+        
+      @media only screen and (max-width: 575px) {
+        .hero-1-stuff {
+        position: absolute;
+        top: {{ top_pos_mobile }}px;
+        left: {{ left_pos_mobile }}px;
+        }
+      }
+
+      .hero-2-stuff {
+        position: relative;
+        opacity: 75%;
+        top: 0px;
+        left: 0px;
+      }           
+    
+      .customscrollbar {
+
+      }
+
+      .customscrollbar::-webkit-scrollbar {
+        width: 1px;
+        height: 1px;
+      }
+
+      .customscrollbar::-webkit-scrollbar-track {
+        background-color: #ededed;
+        border-radius: 100px;
+      }
+
+      .customscrollbar::-webkit-scrollbar-thumb {
+        border-radius: 100px;
+        border: 6px solid rgba(0, 0, 0, 0.18);
+        border-left: 0;
+        border-right: 0;
+        background-color: #ededed;
+      }
+    
+      {% comment %} body {
+        background: #fff!important;
+      } {% endcomment %}
+
+      @media only screen and (max-width: 767px) {
+        .hero-1 {
+          background-position: center top !important;
+        }
+      }
+
+      @media only screen and (max-width: 575px) {
+          .container {
+            max-width: 100% !important;                        
+          }  
+          .container-inner {
+            max-width: 100% !important;                        
+          }
+
+          .shopify-section-lookbook-1 {
+            max-width: 100% !important;                        
+          }          
+       }      
+       
+  
+  .videoBackground {
+    height: {{ viewheight }}vh !important;
+    position: relative;
+  }
+  .videoBackground .fullscreen-video-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .videoBackground .fullscreen-video-wrap .video-js {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    min-width: 100%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .videoBackground .fullscreen-video-wrap video {
+    min-height: 100%;
+    min-width: 100%;
+    object-fit: cover;
+  }
+  .videoBackground .videoBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    padding: 100px 20px 80px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: {{ viewheight }}vh !important;
+    position: relative;
+    z-index: 1;
+  }
+  .videoBackground .imageBox {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: column;
+    padding: 100px 20px 80px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    min-height: {{ viewheight }}vh;
+    height: auto;
+  }
+  .videoBackground .videoBoxInfo, .videoBackground .imageBoxInfo {
+    z-index: 1;
+    text-align: center;
+    pointer-events: none;
+  }
+  .videoBackground .overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: #000;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .videoBackground .videoBoxInfoBtn, .videoBackground .imageBoxInfoBtn {
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    display: inline-block;
+    width: auto;
+    text-decoration: none;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 2px;
+    padding: 8px 15px;
+    font-style: normal;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    white-space: normal;
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .videoBackground .videoBoxInfoTitle, .videoBackground .imageBoxInfoTitle {
+    color: #FFF;
+    font-size: 30px;
+    line-height: 40px;
+  }
+  .videoBackground .videoBoxInfoDescription, .videoBackground .imageBoxInfoDescription {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  .videoBackground .videoBoxInfoDescription p, .videoBackground .imageBoxInfoDescription p {
+    font-size: 1.25rem;
+    line-height: 28px;
+  }
+  .videoBackground .placeholderNoblocks {
+    text-align: center;
+    max-width: 500px;
+    margin: 0 auto;
+  }    
+</style>
 {% schema %} 
 { 
   "name": "Lookbok 1 Story", 
@@ -531,6 +798,21 @@
           "label": "Video URL"
         },
         {
+          "type": "url",
+          "id": "video_link",
+          "label": {
+          "en": "Video link"
+          },
+          "info": "Inhouse Video"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_image",
+          "label": {
+          "en": "Video cover image"
+          }
+        },
+        {
           "type": "color",
           "id": "color_bg_main",
           "label": "Description Background Color - Main",
@@ -545,6 +827,16 @@
           "unit":   "%",
           "label":  "Background Opacity",
           "default":   100      
+        },
+        {
+          "type":   "range",
+          "id":     "video_overlay_opacity",
+          "min":    0,
+          "max":    100,
+          "step":   5,
+          "unit":   "%",
+          "label":  "Video Overlay Opacity",
+          "default":   0      
         },
         {
           "type": "checkbox",
@@ -907,141 +1199,5 @@
 
 {% endschema %}
 
-<style>
-
-
-  /* text inside box */
-    .hero-0-container {
-      height: auto;
-      min-height: {{ viewheight }}vh;
-      width: 100%;
-      overflow: hidden;
-      position: relative;
-      /*margin-bottom: 15px;*/
-    }
-
-    /* text outside box*/
-    .hero-1-container {
-        height: auto;
-        min-height: 50vh;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        /*margin-bottom: 20px;*/
-      }
-
-      /* video */
-    .hero-2-container {
-        height: auto;
-        min-height: {{ vewheight }}vh;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        /*margin-bottom: 20px;*/
-      }
-      
-      
-      /*.hero-1 {
-        background: url({{ hero_img_url }}) no-repeat center center;
-        background-size: cover;
-        height: 100%;
-        width: 100%;
-        padding: 40px;
-        transition: transform 2s;
-      }*/
-
-      .hero-1:hover {
-        transform: scale(1.10);
-      }
-
-      #hero-1a:hover {
-        transform: scale(1.10);
-      }
-
-      #hero-1a.lazy {
-        background-image: none;
-        background-color: #f8f9fa;
-     }
-
-      #hero-1b:hover {
-        transform: scale(1);
-      }       
-
-     #hero-1b.lazy {
-      background-image: none;
-      background-color: #f8f9fa;
-   }
-      
-      .hero-1-stuff {
-        position: absolute;
-        top: {{ top_pos }}px;
-        left: {{ left_pos }}px;
-      } 
-        
-      @media only screen and (max-width: 575px) {
-        .hero-1-stuff {
-        position: absolute;
-        top: {{ top_pos_mobile }}px;
-        left: {{ left_pos_mobile }}px;
-        }
-      }
-
-      .hero-2-stuff {
-        position: relative;
-        opacity: 75%;
-        top: 0px;
-        left: 0px;
-      }           
-    
-      .customscrollbar {
-
-      }
-
-      .customscrollbar::-webkit-scrollbar {
-        width: 1px;
-        height: 1px;
-      }
-
-      .customscrollbar::-webkit-scrollbar-track {
-        background-color: #ededed;
-        border-radius: 100px;
-      }
-
-      .customscrollbar::-webkit-scrollbar-thumb {
-        border-radius: 100px;
-        border: 6px solid rgba(0, 0, 0, 0.18);
-        border-left: 0;
-        border-right: 0;
-        background-color: #ededed;
-      }
-    
-      {% comment %} body {
-        background: #fff!important;
-      } {% endcomment %}
-
-      @media only screen and (max-width: 767px) {
-        .hero-1 {
-          background-position: center top !important;
-        }
-      }
-
-      @media only screen and (max-width: 575px) {
-          .container {
-            max-width: 100% !important;                        
-          }  
-          .container-inner {
-            max-width: 100% !important;                        
-          }
-
-          .shopify-section-lookbook-1 {
-            max-width: 100% !important;                        
-          }
-
-          
-       }      
-       
-      
-
-</style>
 
 {% comment %}theme-check-enable{% endcomment %}
