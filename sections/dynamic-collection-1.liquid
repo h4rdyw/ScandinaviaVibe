@@ -115,6 +115,7 @@
 
                         {% for product in paginate_data.products %}
                             {% assign image = product.featured_media.preview_image %}
+                            {% assign producttag = product.metafields.badge.badge1 %}
                             {% for tag in product.tags %}
                                 {% if tag contains 'Special' %}
                                  {% assign specialbox = 'true' %}
@@ -133,7 +134,7 @@
                                     <div class="card-img-top">
                                         {% if image != blank %}  
                                         <div class="inner-img">
-                                            <a href="javascript:void(0);" id="productInfoAnchor-{{ page_handle }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                                            <a href="javascript:void(0);" id="productInfoAnchor-{{ page_handle }}-{{ product.id }}" product-handle="{{ product.handle }}" product-badge="{{ producttag }}"
                                                 product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
                                             ><img class="card-img-top" width="200" height="200" src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
                                             ></a>
@@ -173,6 +174,9 @@
                                                 {% assign awardbox = 'false' %}             
                                                 <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
                                                 
+                                            {% endif %} 
+                                            {% if producttag != blank %}
+                                                <span class="badge rounded-0 badge-text-topright">{{ producttag }}</span>              
                                             {% endif %} 
                                             
                                         </div>     

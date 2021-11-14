@@ -1,8 +1,14 @@
 {% comment %}theme-check-disable{% endcomment %}
 {% assign page_handle = page.handle %}
+{% assign product_handle = product.handle %}
+{% assign story_handle = 0 %}
+
+{%- if section.blocks.size > 0 -%}
 {% for block in section.blocks %}
-{% if block.settings.page_handle == page_handle  or template == 'index' %}
+{% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.product_handle == product_handle  %}
   {% if block.type == 'hero_block' %}
+  {% assign section_id = block.settings.section_id %}
+  {% assign story_handle = story_handle | plus : 1 %}
   {% assign hero_url = block.settings.hero_img_url %}
   {% assign slider_height = block.settings.height %}
   {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
@@ -10,7 +16,7 @@
   <!--/ use image or Image Url /-->
   {% if block.settings.image != blank %}
     {% assign hero_url = block.settings.image | img_url: 'master' %} 
-  {% else %}
+  {% elsif block.settings.hero_img_url != blank %}
      {% assign hero_url = block.settings.hero_img_url %}
   {% endif%}
 
@@ -26,7 +32,7 @@
   {% assign top_pos_mobile = block.settings.top_position_mobile %} 
 
 <section>
-    <div class="hero-container">
+    <div class="hero-container-{{ section_id }}-{{ story_handle }}">
       <div class="hero"></div> 
       <div id="hero" class="hero-stuff lazy">
           <h1 style="color: {{ block.settings.heading_textcolor }};">{{ block.settings.title }}</h1>
@@ -39,10 +45,40 @@
     <div class="container mx-auto">
       <div class="row text-center" style="color: {{ block.settings.descr_textcolor }};"><p>{{ block.settings.description }}</p></div>
     </div>
-  </section>        
+  </section>   
+  <style scoped>
+  .hero-container-{{ section_id }}-{{ story_handle }} {
+    height: {{ slider_height }}vh;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 1px;
+  }
+  
+  .hero-container-{{ section_id }}-{{ story_handle }} .hero {
+    background: url({{ hero_url }}) no-repeat center center;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+    padding: 40px;
+    transition: transform 2s;
+  }
+  
+  @media only screen and (max-width: 499px) {
+    .hero-container-{{ section_id }}-{{ story_handle }} .hero {
+      background: url({{ hero_url_mobile }}) no-repeat center center;
+      background-size: cover;
+      height: 100%;
+      width: 100%;
+      padding: 40px;
+      transition: transform 2s;
+    }
+  }
+</style>
   {% endif %}
 {% endif %} 
 {% endfor %}
+{%- endif -%}
 
 {% schema %} 
 { 
@@ -66,6 +102,11 @@
           "label": "Select a page"
         },
         {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Select a product"
+        },
+        {
         "type": "range",
         "id": "height",
         "label": "View Port Height",
@@ -74,7 +115,13 @@
         "min": 40,
         "max": 100,
         "step": 1
-        },                            
+        },
+        {
+          "type": "text",
+          "id": "section_id",
+          "default": "zoom",
+          "label": "Section Unique Name or ID - Must use for multiple blocks"
+        },                                       
         { 
           "type": "image_picker", 
           "id": "image_mobile", 
@@ -177,34 +224,7 @@
 {% comment %}theme-check-enable{% endcomment %}
 
 <style>
-    .hero-container {
-        height: {{ slider_height }}vh;
-        width: 100%;
-        overflow: hidden;
-        position: relative;
-        margin-bottom: 1px;
-      }
-      
-      .hero {
-        background: url({{ hero_url }}) no-repeat center center;
-        background-size: cover;
-        height: 100%;
-        width: 100%;
-        padding: 40px;
-        transition: transform 2s;
-      }
-      
-      @media only screen and (max-width: 499px) {
-        .hero {
-          background: url({{ hero_url_mobile }}) no-repeat center center;
-          background-size: cover;
-          height: 100%;
-          width: 100%;
-          padding: 40px;
-          transition: transform 2s;
-        }
-      }
-
+    
       .hero:hover {
         transform: scale(1.15);
       }     
@@ -257,7 +277,7 @@
 
 {% unless filterbackdropmobile %}
 <style scoped>
-  @media only screen and (max-width: 441px) {
+  @media only screen and (max-width: 767px) {
   @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
     .hero-stuff {
       background-color: rgba(255, 255, 255, 0.35); 

@@ -1,17 +1,8 @@
-{   
-        "sections": {
-          "main": {
-            "type": "product-template"
-            
-          },
-          "product-recommendations": {
-            "type": "product-recommendations",
-            "settings": {}
-          }
-        },
-        "order": [
-          "main",
-          "product-recommendations"
-        ]
-      
+{
+  "sections": {
+    "main": {
+      "type": "product-template"
+    }
+  },
+  "order": ["main"]
 }

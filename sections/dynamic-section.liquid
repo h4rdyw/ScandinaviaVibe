@@ -1,0 +1,75 @@
+
+{% comment %}theme-check-disable{% endcomment %}
+{% assign product_handle = product.handle %}
+
+{% if section.blocks.size > 0 %}
+	{% for block in section.blocks %}
+		{% if block.settings.product_handle == product_handle %}
+			<section class="container py-5" id="dynamicsection">
+			</section>
+            {% assign page_handle = block.settings.page_handle %}
+
+			{% case block.type %}
+				{% when 'page_content' %}
+				<script>
+					var grid = document.getElementById('dynamicsection') || false;
+					var pagehandle  = `{{ page_handle }}`;
+					var productTileTemplateUrl = `/pages/${pagehandle}`;
+					fetch(productTileTemplateUrl)
+					.then(response => response.text())
+						.then(data => { 
+							grid.innerHTML = data;
+						});
+				</script>
+			{% endcase %}	                                      
+		{% endif %}
+	{% endfor %}	
+{% endif %}
+
+{% schema %}
+    {
+        "name": "Dynamic Content",
+        "max_blocks": 1,
+	"blocks": [
+		{
+		"type": "page_content",
+		"name": "Page Content",
+		"settings": [
+			{
+				"type": "page",
+				"id": "page_handle",
+				"label": "Select a page to display"
+			},
+			{
+				"type": "product",
+				"id": "product_handle",
+				"label": "Select : 'static product' for specific, 'dynamic' for common display"
+			},
+			{
+				"type": "text",
+				"id": "section_id",
+				"default": "dynamiccontent",
+				"label": "Section Unique Name or ID - Must use for multiple blocks"
+			}         
+			
+		]
+		}
+	],
+	"presets": [
+		{
+			"name": {
+				"en": "Dynamic Content"
+			},
+			"category": {
+				"en": "Dynamic Content"
+			},
+			"blocks": [
+				{
+					"type": "page_content"
+				}
+			]
+		}
+	]
+}
+{% endschema %}
+{% comment %}theme-check-enable{% endcomment %}

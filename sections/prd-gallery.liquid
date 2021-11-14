@@ -37,7 +37,7 @@
         {% assign slide_navigation = block.settings.slide_navigation %}
         {% assign slide_autoplay = block.settings.slide_autoplay %}
         {% assign slide_delay = block.settings.delay %}
-
+        {% assign autoheight = block.settings.autoheight %}
         {% assign min = 0 %}
         {% assign max = offset_products %}
         {% assign diff = max | minus: min %}
@@ -63,6 +63,8 @@
                   <!-- Product-->
                   {% for product in collections[block.settings.featured_collection].products limit: number_of_products offset: random_number %}
                     {% assign image = product.featured_media.preview_image %}
+                    {% assign producttag = product.metafields.badge.badge1 %}
+
                     {% for tag in product.tags %}
                       {% if tag contains 'Special' %}
                       {% assign specialbox = 'true' %}
@@ -79,21 +81,35 @@
                     {% endfor %} 
 
                     <div class="swiper-slide pb-5">                     
-              
+                    <style scoped>
+                      .card-img-gallery {
+                        width: 100%;
+                      }                                           
+                      {% unless autoheight == false %}
+                        @media only screen and (max-width: 767px) {
+                          .card-img-gallery {
+                            width: 100%;
+                            height: auto;
+                           }                                    
+                        }  
+                      {% endunless %}
+                      
+                      </style>   
                     <div class="card d-flex flex-fill border-0">          
-                      <div class="card-img-top">
+                      <div class="card-img-top card-img-gallery">
                           <div class="img-wrapper">                
                               {% if image != blank %} 
                                   <div class="inner-img">
-                                    <a href="javascript: void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                                    <a href="javascript: void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" product-badge="{{ producttag }}"
                                         product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
-                                    ><img class="card-img-top" width="{{ cardwidth }}" height="{{ cardheight }}" src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
+                                    ><img class="card-img-gallery" width="{{ cardwidth }}" height="{{ cardheight }}" src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
                                     ></a>
                                     {% unless product.available %}                        
                                       <div class="text-hover">SOLD OUT</div>                             
                                       {% else %}
                                       <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>     
                                      {% endunless %}   
+                                  
                                   </div>
                               {% else %}     
                                 <div class="inner-img">        
@@ -132,7 +148,10 @@
                               {% if awardbox == 'true' %}     
                                   {% assign awardbox = 'false' %}                                                     
                                   <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                  
-                              {% endif %}                     
+                              {% endif %}   
+                              {% if producttag != blank %}
+                                <span class="badge rounded-0 badge-text-topright">{{ producttag }}</span>              
+                            {% endif %}                   
                           </div>  
                       </div>        
                     </div>            
@@ -228,6 +247,12 @@
           "label": "Randomize"
         },
         {
+          "type": "checkbox",
+          "id": "autoheight",
+          "default": false,
+          "label": "Auto Height on Small Screen"
+        },
+        {
           "type": "range",
           "id": "offset_products",
           "label": "Random Offset Max",
@@ -260,12 +285,19 @@
     
     "presets": [
     {
-        "category": "collection",
+        "category": "main",
         "name": "Product Gallery"
     }
     ]
 }
 {% endschema %}
+<style>
+ @media only screen and (max-width: 767px) {
+  .container {
+    max-width: 100%;
+   }                                    
+}  
+</style>
 {{ 'prdgallery.css' | asset_url | stylesheet_tag }} 
 {% comment %} {{ 'application.css' | asset_url | stylesheet_tag }}  {% endcomment %}
 {{ 'styles.css' | asset_url | stylesheet_tag }}  

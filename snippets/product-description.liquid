@@ -4,7 +4,7 @@ use render product-description , product; product, type: ['short' or 'long']
 {%- endcomment -%}
 
 {%- assign product_short_description =  product.description | truncatewords: 15, '...' -%}
-
+{%- assign product_xshort_description =  product.description | strip_html | truncatewords: 10, '...' -%}
 {%- assign product_descriptions = product.description | split: '$$$$$$' -%}
 {%- assign product_descriptions_length = product_descriptions.size -%}
 
@@ -24,9 +24,13 @@ use render product-description , product; product, type: ['short' or 'long']
 
   {{ product_short_description }}
 
-{%- else if type == 'long'  -%}    
+{%- elsif type == 'long'  -%}    
 
   {{ product_description }} 
+
+{%- elsif type == 'xshort'  -%}    
+
+  {{ product_xshort_description }}
 
 {%- endif -%}
 

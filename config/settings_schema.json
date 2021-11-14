@@ -47,24 +47,32 @@
       {
         "type": "url",
         "id": "url_continueshopping_wishlist",
-        "label": "Continue Shopping - Wishlist"
+        "label": "Continue Shopping - Wishlist",
+        "info": "Redirect link"
       },
       {
         "type": "url",
         "id": "url_continueshopping_cart",
-        "label": "Continue Shopping - Cart"
+        "label": "Continue Shopping - Cart",
+        "info": "Redirect link"
+      },
+      {
+        "type": "url",
+        "id": "url_newsubscriber",
+        "label": "Newsletter - New Subscriber",
+        "info": "Redirect new subscriber to this link"
+      },
+      {
+        "type": "url",
+        "id": "url_email_campaign",
+        "label": "Newsletter - Email Opt in",
+        "info": "Redirect new opt-in (free campaign) to this link"
       }
     ]
   },
   {
     "name": "Typography",
     "settings": [
-      {
-        "type": "color",
-        "id": "body_bgcolor",
-        "label": "Body Background Color",
-        "default": "#f8f9fa"
-      },
       {
         "type": "header",
         "content": "Heading Font"
@@ -102,6 +110,22 @@
         "default": "mono"
       },
       {
+        "type": "header",
+        "content": "Color"
+      },
+      {
+        "type": "color",
+        "id": "body_bgcolor",
+        "label": "Body Background Color",
+        "default": "#f8f9fa"
+      },
+      {
+        "type": "color",
+        "id": "body_textcolor_hover",
+        "label": "Body Text Color - Hover",
+        "default": "#005BEA"
+      },
+      {
         "type": "color",
         "id": "product_textcolor",
         "label": "Product Text Color",
@@ -110,13 +134,9 @@
       {
         "type": "color",
         "id": "product_textcolor_hover",
-        "label": "Product Text Color Hover",
+        "label": "Product Text Color - Hover",
         "default": "#4F8C7E"
-      },
-      {
-        "type": "header",
-        "content": "Button, Text"
-      },
+      },      
       {
         "type": "color",
         "id": "button_color",
@@ -125,15 +145,21 @@
       },
       {
         "type": "color",
-        "id": "body_textcolor_hover",
-        "label": "Body Text Color Hover",
-        "default": "#4F8C7E"
+        "id": "btn_textcolor_hover",
+        "label": "Button Text Color - Hover",
+        "default": "#FFFFFF"
       },
       {
         "type": "color",
         "id": "accordeon_header_textcolor",
         "label": "Accordeon Header Text Color",
-        "default": "#4F8C7E"
+        "default": "#005BEA"
+      },
+      {
+        "type": "color",
+        "id": "badge_color",
+        "label": "Badge Color",
+        "default": "#005BEA"
       },
       {
         "type": "header",
@@ -157,8 +183,12 @@
     ]
   },
   {
-    "name": "Product Card",
+    "name": "Product",
     "settings": [
+      {
+        "type": "header",
+        "content": "Number of Products per Row"
+      },
       {
         "type": "number",
         "id": "xxl_card",
@@ -208,6 +238,10 @@
         "label": "Override XS, Default Smallest",
         "default": 2,
         "info": "Default = 2"
+      },
+      {
+        "type": "header",
+        "content": "Product Card Image Size"
       },
       {
         "type": "number",
@@ -264,6 +298,17 @@
         "label": "Image Height - Gallery",
         "default": 240,
         "info": "Default = 240"
+      },
+      {
+        "type": "header",
+        "content": "Product Details"
+      },
+      {
+        "type": "number",
+        "id": "card_img_height_swiper",        
+        "label": "Image Height",
+        "default": 480,
+        "info": "Default = 480"
       }
     ]
   }

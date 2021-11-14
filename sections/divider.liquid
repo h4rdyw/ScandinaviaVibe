@@ -13,7 +13,11 @@
   assign divider_heading = block.settings.title 
   assign divider_desc = block.settings.divider_description 
   assign headingcolor = block.settings.heading_textcolor
-
+  assign desccolor = block.settings.desc_textcolor
+  assign hidefilterbackdrop = block.settings.hide_filter_backdrop
+  if block.settings.textmuted == true 
+    assign textmuted = 'text-grayscale'
+  endif 
   -%} 
 
  
@@ -23,9 +27,10 @@
  <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
     <div class="container py-2">
       <div class="row px-1">
-        <div class="col-lg-6 ms-auto">
+        <div class="col-lg-6 ms-auto {{ section_id }}-backdrop">
           <h2 class="hero-heading" style="color: {{ headingcolor }};">{{ divider_heading }}</h2>
-          <p class="text-muted" style="color: {{ headingcolor }};">{{ divider_desc | strip_html }}</p>
+
+          <div class="{{ textmuted }}" style="color: {{ desccolor }};">{{ divider_desc }}</div>
           {% if block.settings.button_link %}
           <a class="btn-reg" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
           {% endif %}
@@ -38,10 +43,34 @@
            background-size: cover;                    
         }                              
     </style>      
+    {% unless hidefilterbackdrop %}
+      <style scoped>      
+        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+          .{{ section_id }}-backdrop {
+            -webkit-backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.35); 
+            backdrop-filter: blur(10px);
+            border-radius: 2px;
+          }
+        }
+      
+        
+        /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+        @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+          .{{ section_id }}-backdrop  {
+            background-color: rgba(255, 255, 255, .5);
+          }
+        }
+      </style> 
+    {% endunless %}
   </section>
 {% endif %} 
 {% endfor %}
-
+<style>
+  .text-grayscale {
+    filter: grayscale(80%) !important;
+  }
+</style>
   {% schema %}
   {
     "name": "Divider",
@@ -115,12 +144,28 @@
           "id": "divider_description",
           "default": "<p>Featured description</p>",
           "label": "Description"
-        }     
-        
+        },
+        {
+          "type": "color",
+          "id": "desc_textcolor",
+          "label": "Description Text Color",
+          "default": "#000"
+        },
+        {          
+          "type": "checkbox",
+          "id": "textmuted",
+          "label": "Muted Desc Text - Grayscale ",
+          "default": true            
+        },      
+        {
+          "type": "checkbox",
+          "id": "hide_filter_backdrop",
+          "label": "Hide Back Drop",
+          "default": true
+        }        
     ]
   }
-],
-    
+],    
     "presets": [
     {
         "category": "divider",

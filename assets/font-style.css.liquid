@@ -13,8 +13,10 @@
     assign producttextcolor = settings.product_textcolor
     assign producttextcolorhover = settings.product_textcolor_hover
     assign buttoncolor = settings.button_color
+    assign btntextcolorhover = settings.btn_textcolor_hover
     assign bodytextcolorhover = settings.body_textcolor_hover
     assign accordeonheadercolor = settings.accordeon_header_textcolor    
+    assign badgecolor = settings.badge_color
 -%}
 {{ font_header | font_face: font_display: 'swap' }}
 {{ font_navbar | font_face: font_display: 'swap' }}
@@ -43,8 +45,8 @@ html {
   }
   
 body {
-    font-family: {{ font_body.family }}, {{ font_body.fallback_families }};
-    background-color: {{ bodybgcolor }};
+    font-family: {{ font_body.family }}, {{ font_body.fallback_families }} ;
+    background-color: {{ bodybgcolor }} !important;
     overscroll-behavior-y: contain;
     -webkit-font-smoothing: antialiased;  
     -webkit-overflow-scrolling: touch;
@@ -62,13 +64,13 @@ img {
     text-decoration: none;    
 }
 .text-product-link {
-    color: {{ producttextcolor }};
+    color: {{ producttextcolor }} !important;
     font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
     font-weight: 600;
     text-decoration: none;
 }
 .text-product-link:hover {
-    color: {{ producttextcolorhover }};
+    color: {{ producttextcolorhover }} !important;
     text-decoration: underline;
 }
 .text-product-title {
@@ -126,8 +128,8 @@ img {
 }
 
 .navbar-color {
-    background-color: {{ navbarbgcolor }};
-    opacity: {{ navbarbgopacity }}%;
+    background-color: {{ navbarbgcolor }} !important;
+    opacity: {{ navbarbgopacity }}% !important;
 }
 
 nav .navbar-nav li a {
@@ -136,28 +138,28 @@ nav .navbar-nav li a {
 }
 
 .navbar-light .navbar-brand {
-    color: {{ navbartextcolor }}!important;   
+    color: {{ navbartextcolor }} !important;   
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 .nav-link {
-    /* color: {{ navbartextcolor }}!important; */
+    /* color: {{ navbartextcolor }} !important; */
     font-family: {{ font_navbar.family }}, {{ font_navbar.fallback_families }} !important;
 }
 
 .nav-link-prd {
-  color: {{ navbartextcolor }}!important; 
+  color: {{ navbartextcolor }} !important; 
   font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }} !important;
 }
 
 .nav-link-prd.active {
-  color: {{ navbartextcolor }}!important; 
+  color: {{ navbartextcolor }} !important; 
   font-family: {{ font_productdescription.family }}, {{ font_productdescription.fallback_families }} !important;
   font-weight: 900;
 }
 
 body .navbar-light .navbar-toggler {
-  color:{{ navbartextcolor }}!important; 
-  border-color:{{ navbartextcolor }}!important; 
+  color:{{ navbartextcolor }} !important; 
+  border-color:{{ navbartextcolor }} !important; 
 }
 
 /* back arrow */
@@ -231,6 +233,40 @@ body .navbar-light .navbar-toggler {
   stroke: #000;
   transition: fill 0.3s ease;
 }
+.wishlist-badge-left {  
+	opacity: 1;  
+	width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	bottom: 1px;
+	left: 5px;
+  border:none;
+  background-color: transparent;
+	transition: 0.15s;
+  fill: transparent;
+  stroke: #000;
+  transition: fill 0.3s ease;
+}
+
+.wishlist-badge-right {  
+	opacity: 1;  
+	width: 32px;
+	height: 32px;
+  padding-left: 1px;
+  padding-right: 1px;
+	position: absolute;
+	bottom: 1px;
+	right: 5px;
+  border:none;
+  background-color: transparent;
+	transition: 0.15s;
+  fill: transparent;
+  stroke: #000;
+  transition: fill 0.3s ease;
+}
+
 .share-badge {  
 	opacity: 1;  
 	width: 32px;
@@ -311,9 +347,33 @@ body .navbar-light .navbar-toggler {
   }
   
   .inner-img:hover {
-      transform: scale(1.1);
+      transform: scale(1.1);      
   }
-    
+  .badge-text {
+    position: relative;
+    top: auto;
+    left: 1px;
+    transition: none;  
+    font-size: 1.25rem;
+    display: inline-block;  
+    background-color: {{ badgecolor }};
+  }
+  .badge-text-topright {
+    position: absolute;
+    top: 1px;
+    right: 1px;
+    transition: none;  
+    font-size: 1.25rem;
+    background-color: {{ badgecolor }};
+  }
+  .badge-text-bottomleft {
+    position: absolute;
+    left: 1px;
+    bottom: 1px;
+    transition: none;
+    font-size: 1.25rem;
+    background-color: {{ badgecolor }};  
+  }
   .text-hover {
     opacity: 0;
     font-family: {{ font_header.family }}, {{ font_header.fallback_families }};
@@ -353,7 +413,7 @@ a.btn {
   font-weight: 800;
   letter-spacing: 1.5px;
   padding: 11px 30px;
-  background-color: {{ navbarbgcolor }};
+  background-color: {{ navbarbgcolor }} !important;
   background-image: linear-gradient(to bottom,{{ navbarbgcolor }},#11171B);
   color: #fff;
   text-align: center;
@@ -365,11 +425,11 @@ a.btn {
     filter: brightness(120%);    
   }
   a.btn:focus {
-    outline: 3px solid {{ producttextcolorhover }};
+    outline: 3px solid {{ producttextcolorhover }} !important;
     outline-offset: 0;
   }
   a.btn:active {
-    outline: 3px solid {{ producttextcolorhover }};
+    outline: 3px solid {{ producttextcolorhover }} !important;
     outline-offset: 0;
   }  
 
@@ -380,7 +440,7 @@ a.btn {
     font-weight: 800;
     letter-spacing: 1.5px;
     padding: 11px 30px;
-    background-color: {{ buttoncolor }};
+    background-color: {{ buttoncolor }} !important;
     background-image: linear-gradient(to bottom,{{ buttoncolor }},#11171B);
     color: #fff;
     text-align: center;
@@ -397,7 +457,7 @@ a.btn {
     font-weight: 800;
     letter-spacing: 1.5px;
     padding: 11px 30px;
-    background-color: {{ buttoncolor }};
+    background-color: {{ buttoncolor }} !important;
     background-image: linear-gradient(to bottom,{{ buttoncolor }},#11171B);
     color: #fff;
     text-align: center;
@@ -455,7 +515,7 @@ a.btn {
     font-weight: 800;
     letter-spacing: 1.5px;
     padding: 11px 30px;
-    background-color: {{ buttoncolor }};
+    background-color: {{ buttoncolor }} !important;
     background-image: linear-gradient(to bottom,{{ buttoncolor }},#11171B);
     color: #fff;
     text-align: center;
@@ -470,10 +530,11 @@ a.btn {
   }
   
   a.btn-reg:hover {
-    color: white;
+    color: {{ btntextcolorhover }};
   }
+
   a {
-      text-decoration: none;
+      text-decoration: none !important;
       color: {{ producttextcolor }};
   }
 
@@ -519,17 +580,17 @@ a.btn {
 }
 
 .accordion-button {
-  color: {{ accordeonheadercolor }};
+  color: {{ accordeonheadercolor }} !important;
   font-weight: 500;
 }
 
 .accordion-button:focus {  
   border-color: transparent;
-  color:  {{ navbartextcolor }};
+  color:  {{ navbartextcolor }} !important;
   }
   
 .accordion-button:not(.collapsed) {
-  color: {{ accordeonheadercolor }};
+  color: {{ accordeonheadercolor }} !important;
   background-color: transparent;
   font-weight: 700;
 }
@@ -544,7 +605,7 @@ a.btn {
   overflow: hidden;
   position: relative;
   transition: all 0.4s ease 0s;
-  color: {{ producttextcolor }};
+  color: {{ producttextcolor }} !important;
 }
 .blog-excerpt {
   display: flex;

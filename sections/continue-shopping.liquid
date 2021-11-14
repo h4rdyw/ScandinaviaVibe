@@ -1,7 +1,9 @@
-{% assign url_continueshopping = settings.url_continueshopping_cart %}
-{% assign page_handle = page.handle %}
-{% assign collection_handle = collection.handle %}
-{% assign template_handle = template.name %}
+{%- liquid 
+ assign url_continueshopping = settings.url_continueshopping_cart
+ assign page_handle = page.handle
+ assign collection_handle = collection.handle
+ assign template_handle = template.name
+-%} 
 {% for block in section.blocks %}
 
     {%- liquid 

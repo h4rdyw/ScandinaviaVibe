@@ -26,7 +26,7 @@ assign limit_products = "limit: " | append: number_of_products
 assign offset_products = "offset: " | append: random_number    
 -%}
 
-{% if section.settings.page_handle == page_handle %}
+{% if section.settings.page_handle == page_handle or template == 'index' %}
     
 
 <section class="container py-4">

@@ -70,18 +70,21 @@ function touchTrigger() {
 }
 
 /* adjust annoucement bar position */
-var navBarCollapse = document.getElementById('navbarNav');
-navBarCollapse.addEventListener('hidden.bs.collapse', function () {
-  // do something...
-  //console.log("Collapsed");
-  adjustAnnouncementBar();
-});
+var navBarCollapse = document.getElementById('navbarNav') || false;
+if (navBarCollapse) {
+  navBarCollapse.addEventListener('hidden.bs.collapse', function () {
+    // do something...
+    //console.log("Collapsed");
+    adjustAnnouncementBar();
+  });
 
-navBarCollapse.addEventListener('shown.bs.collapse', function () {
-  // do something...
-  //console.log("Collapsed");
-  adjustAnnouncementBar();
-});
+
+  navBarCollapse.addEventListener('shown.bs.collapse', function () {
+    // do something...
+    //console.log("Collapsed");
+    adjustAnnouncementBar();
+  });
+}
 
 var myproductModal = document.getElementById('productInfoModal');
 if (myproductModal != null) {
@@ -113,29 +116,33 @@ if (myproductModal != null) {
     const element = document.querySelector('#modalItemID') || false;
     if (element) {
       let changeEvent = new Event('change');
-    element.dispatchEvent(changeEvent);
+      element.dispatchEvent(changeEvent);
     }
   });
 }
 
 function adjustAnnouncementBar() {
-  var headerEl = document.getElementById('navBar');
-  var headerHeight = headerEl.offsetHeight;
+  var headerEl = document.getElementById('navBar') || false;
+  var headerHeight = headerEl.offsetHeight || false;
   /*var headerBoxShadow = window.getComputedStyle(headerEl).boxShadow;*/
   /*var headerBoxShadowY = +headerBoxShadow.split("px")[2].trim();    ;*/
-  //console.log('HeaderHeight:'+headerHeight);
+ //console.log('HeaderHeight:' + headerHeight);
 
   /*var x = document.getElementsByTagName("BODY")[0];
       console.log(x);*/
-  if (document.getElementById('barPosition')) {
-    var elName = document.getElementById('barPosition');
-    /*console.log(elName.innerHTML);*/
-    elName.innerHTML = `body {
-          position:relative;
-          top: ${headerHeight}px !important;
-        }`;
-    /*var topElAfter = window.getComputedStyle(document.body).getPropertyValue('top');
-        console.log('After:'+topElAfter);*/
+
+  if (headerHeight) {
+  
+    if (document.getElementById('barPosition')) {
+      var elName = document.getElementById('barPosition');
+      /*console.log(elName.innerHTML);*/
+      elName.innerHTML = `body {
+            position:relative;
+            top: ${headerHeight}px !important;
+          }`;
+      /*var topElAfter = window.getComputedStyle(document.body).getPropertyValue('top');
+          console.log('After:'+topElAfter);*/
+    }
   }
 }
 
@@ -224,7 +231,7 @@ function checkLocaleBtn() {
   }
 }
 
-let mybutton = document.getElementById('btn-back-to-top');
+let mybutton = document.getElementById('btn-back-to-top') || false;
 
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function () {
@@ -236,13 +243,13 @@ function scrollFunction() {
     document.body.scrollTop > 1400 ||
     document.documentElement.scrollTop > 1400
   ) {
-    mybutton.style.display = 'block';
+    if (mybutton) mybutton.style.display = 'block';
   } else {
-    mybutton.style.display = 'none';
+    if (mybutton) mybutton.style.display = 'none';
   }
 }
 // When the user clicks on the button, scroll to the top of the document
-mybutton.addEventListener('click', backToTop);
+if (mybutton) mybutton.addEventListener('click', backToTop);
 
 function backToTop() {
   document.body.scrollTop = 0;
@@ -357,6 +364,15 @@ function getProductAnchors(prdId) {
               } else {
                 /* do nothing*/
               }
+              
+              let prd_badge = item.getAttribute('product-badge') || false;
+              let prd_badge_tag;
+
+              if (prd_badge) {              
+               prd_badge_tag = `<span>   </span><span class="badge rounded-0 badge-text">${prd_badge}</span>` 
+              } else {
+               prd_badge_tag ='';
+              }
 
               //let productFeaturedImg = data.featured_image.split('?');
               //if (productFeaturedImg.length > 0) {
@@ -370,7 +386,7 @@ function getProductAnchors(prdId) {
               //modalimg.style.backgroundSize = "100%";
 
               document.getElementById('productInfoTitle').innerHTML =
-                data.title + finalsaletag;
+                data.title + finalsaletag + prd_badge_tag;
 
               let from = '';
               if (data.price_varies) from = 'from ';
@@ -496,10 +512,10 @@ function getProductAnchors(prdId) {
         });
       });
     } else {
-      console.log('Zero length productInfoAnchors');
+      //console.log('Zero length productInfoAnchors');
     }
   } else {
-    console.log(`No ProductInfoAnchor ${prdId}`);
+    //console.log(`No ProductInfoAnchor ${prdId}`);
   }
 }
 
@@ -556,6 +572,63 @@ if (modalAddToCartForm != null) {
       })
       .then(() => {
         // productModal.hide();
+      })
+      .finally(function () {
+        update_cart();
+      });
+  });
+}
+
+// for ADD TO CART in Prd Templ
+const fmAddToCart = document.querySelector('#addToCartFormTmpl');
+
+if (fmAddToCart != null) {
+  //   const myModalEl = document.querySelector('#productInfoModal')
+  //   if (myModalEl != null ) {
+  //     // Returns a Bootstrap modal instance
+  //   var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl)
+  //   }
+
+  //console.log(modalAddToCartForm);
+  fmAddToCart.addEventListener('submit', function (e) {
+    e.preventDefault();
+    console.log('ITEM ID ' + document.getElementById('productSelect').value);
+    console.log('Value ' + document.getElementById('fmItemQuantity').value);
+    let formOrderData = {
+      items: [
+        {
+          id: document.getElementById('productSelect').value,
+          quantity: document.getElementById('fmItemQuantity').value,
+        },
+      ],
+    };
+    //console.log(formData);
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formOrderData),
+    })
+      .then(fmresp => fmresp.json())
+      .then(function (fmdata) {
+        //console.log(data);
+
+        if (fmdata.status == 422) {
+          console.log('Cannot Add this Product : ' + fmdata.description);
+          throw AddtoCartErr();
+        } else {
+          //console.log(data);
+          //AddtoCartSuccess(data.items[0].product_title);
+          bumpCart();
+        }
+      })
+      .catch(err => {
+        console.log('Error:' + err);
+        AddtoCartErr();
+      })
+      .then(() => {
       })
       .finally(function () {
         update_cart();
@@ -658,33 +731,39 @@ function update_cart() {
     .then(resp => resp.json())
     .then(data => {
       //console.log(data);
-      document.getElementById('numberOfCartItems').innerHTML = data.item_count;
+      var numberofItems = document.getElementById('numberOfCartItems') || false;
 
-      var numberofItems = document.getElementById('numberOfCartItems');
-      if (data.item_count > 0) {
-        numberofItems.classList.remove('bg-light');
-        numberofItems.classList.add('bg-danger');
-        numberofItems.classList.remove('d-none');
-      } else {
-        numberofItems.classList.add('bg-light');
-        numberofItems.classList.remove('bg-danger');
-        numberofItems.classList.add('d-none');
+      if (numberofItems) {
+        numberofItems.innerHTML = data.item_count;
+
+        if (data.item_count > 0) {
+          numberofItems.classList.remove('bg-light');
+          numberofItems.classList.add('bg-danger');
+          numberofItems.classList.remove('d-none');
+        } else {
+          numberofItems.classList.add('bg-light');
+          numberofItems.classList.remove('bg-danger');
+          numberofItems.classList.add('d-none');
+        }
       }
     })
     .catch(err => console.log(err));
 }
 
 //
-var predictiveSearchInput = document.getElementById('searchInputField');
+var predictiveSearchInput = document.getElementById('searchInputField') || false;
 var timer;
-var offcanvasSearch = document.getElementById('offcanvasSearchResult');
-var bsOffcanvas = new bootstrap.Offcanvas(offcanvasSearch);
+var offcanvasSearch = document.getElementById('offcanvasSearchResult') || false;
 
-offcanvasSearchResult.addEventListener('hidden.bs.offcanvas', function () {
-  predictiveSearchInput.value = ``;
-});
+if (offcanvasSearch) {
+  var bsOffcanvas = new bootstrap.Offcanvas(offcanvasSearch);
 
-if (predictiveSearchInput != null) {
+  offcanvasSearchResult.addEventListener('hidden.bs.offcanvas', function () {
+    predictiveSearchInput.value = ``;
+  });
+}
+
+if (predictiveSearchInput) {
   predictiveSearchInput.addEventListener('input', function (e) {
     //console.log(predictiveSearchInput.value);
 
@@ -763,7 +842,7 @@ function varModalSelectChange(e, data) {
   //in liquid
   //const json_product = {{ product | json }};
   //console.log(json_product);
-  
+
   //console.log(data);
 
   const value = e.target.value;
@@ -986,3 +1065,4 @@ function enableDocumentScrolling() {
     window.scrollTo(0, scrollPosition);
   }
 }
+

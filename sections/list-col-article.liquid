@@ -19,6 +19,9 @@
 {% assign cardheight = block.settings.card_img_height %}
 {% assign cardwidth2 = block.settings.card_img_width2 %}
 {% assign cardheight2 = block.settings.card_img_height2 %}
+{% if block.settings.textmuted == true %}
+  {% assign textmuted = 'text-grayscale' %}
+{% endif %}
 
 {% if block.settings.image_story  %}
     {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
@@ -59,7 +62,7 @@
                 {% endif %}
               </ul>
               <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title }}</a></h2>
-              <div class="text-muted" style="font-size: {{ descfontsize }}px !important;">{{ block.settings.description }}</div>
+              <div class="text-grayscale" style="font-size: {{ descfontsize }}px !important;">{{ block.settings.description }}</div>
               {% if block.settings.button_link != blank  %}
                 <a class="btn-reg" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
               {% endif %}              
@@ -77,7 +80,7 @@
                 {% endif %}
               </ul>
               <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title2 }}</a></h2>
-              <div class="text-muted" style="font-size: {{ descfontsize2 }}px !important;">{{ block.settings.description2 }}</div>
+              <div class="text-grayscale" style="font-size: {{ descfontsize2 }}px !important;">{{ block.settings.description2 }}</div>
               {% if block.settings.button_link2 != blank  %}
                 <a class="btn-reg" href="{{ block.settings.button_link2 }}">{{ block.settings.button_label2 }}</a>
               {% endif %}              
@@ -89,6 +92,11 @@
 {% endif %}
 {% endif %}
 {% endfor %}
+<style>
+  .text-grayscale {
+    filter: grayscale(80%) !important;
+  }
+  </style>
 {% schema %} 
 { 
   "name": "Column Article Block", 
@@ -180,6 +188,12 @@
           "id": "descr_textcolor",
           "label": "Description Text Color",
           "default": "#11171B"
+        },
+        {          
+          "type": "checkbox",
+          "id": "textmuted",
+          "label": "Muted Text - Grayscale ",
+          "default": true            
         },
         {
           "type":   "range",

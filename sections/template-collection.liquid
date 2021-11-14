@@ -88,7 +88,13 @@
   
   {% render 'prd-modal' %}
   
-    
+  <style>
+  @media only screen and (max-width: 767px) {
+    .container {
+      max-width: 100%;
+    }
+  }
+  </style>  
   {% comment %} <script>  
   
     var collFilters = jQuery('.coll-filter');

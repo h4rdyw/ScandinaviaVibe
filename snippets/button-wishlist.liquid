@@ -7,8 +7,13 @@
   Parameters:
     - product: <Shopify product> (required)
 {% endcomment %}
+{% assign wishlistpos = wishlistpos %}
+{% if wishlistpos == blank %}
+  {% assign wishlistpos = 'left' %}
+{% endif %}  
+
 {%- if product.handle != blank -%}
-  <button type="button" aria-label="Add to wishlist" class="wishlist-badge" button-wishlist data-product-handle="{{ product.handle }}">
+  <button type="button" aria-label="Add to wishlist" class="wishlist-badge-{{ wishlistpos }}" button-wishlist data-product-handle="{{ product.handle }}">
     <style scoped>
       .icon {
         height: 30px;

@@ -1,4 +1,5 @@
 {%- liquid
+    
     if section.settings.container == 'container' 
         assign container_class = 'container' 
     else 
@@ -9,7 +10,8 @@
  -%}
 
 {%- if section.blocks.size > 0 -%}
-    
+
+  
 
     {% for block in section.blocks %}
 

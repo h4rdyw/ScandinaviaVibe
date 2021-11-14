@@ -1,0 +1,25 @@
+{
+  "layout": "nolayout",
+  "sections": {
+    "main": {
+      "type": "template-page-nolayout",
+      "settings": {
+        "type": "page",
+        "id": "page_handle",
+        "label": "Select a page"
+      },
+      "blocks": {
+        "title": {
+          "type": "page_title"
+        },
+        "date": {
+          "type": "page_date"
+        },
+        "content": {
+          "type": "page_content"
+        }
+      }
+    }
+  },
+  "order": ["main"]
+}

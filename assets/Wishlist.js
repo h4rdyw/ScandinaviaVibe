@@ -78,7 +78,7 @@ var setupGrid = function (grid) {
     });
     document.dispatchEvent(event);
 
-    // Create a custom event and dispatch to setup PopUp Modal
+    // Create a custom event and dispatch PopUp Modal for Wishlist items
     let myEvent = new CustomEvent('dispatchPrdWishlist', {
       bubbles: true,
       cancelable: true,
@@ -104,6 +104,7 @@ var setupButtons = function (buttons) {
 
     if (wishlistContains(productHandle)) {
       button.classList.add(BUTTON_ACTIVE_CLASS);
+      //console.log("add active");
     }
 
     button.addEventListener('click', function () {
@@ -120,13 +121,16 @@ var initGrid = function () {
   } else {
     var wishlist = getWishlist();
 
-    
     //wishlist button in header
-    var buttoncart = document.querySelector('#button-wishlist-cart');
+    var buttoncart = document.querySelector('#button-wishlist-cart') || false;
     if (wishlist.length > 0) {
-      buttoncart.classList.add(BUTTON_ACTIVE_CLASS);
+      if (buttoncart) {
+        buttoncart.classList.add(BUTTON_ACTIVE_CLASS);
+      }
     } else {
-      buttoncart.classList.remove(BUTTON_ACTIVE_CLASS);
+      if (buttoncart) {
+        buttoncart.classList.remove(BUTTON_ACTIVE_CLASS);
+      }
     }
   }
 };
@@ -139,6 +143,7 @@ var initButtons = function () {
     detail: { wishlist: getWishlist() },
   });
   document.dispatchEvent(event);
+  //console.log("done init btn");
 };
 
 var getWishlist = function () {
@@ -161,6 +166,7 @@ var setWishlist = function (array) {
 };
 
 var updateWishlist = function (handle) {
+  //console.log(handle);
   var wishlist = getWishlist();
   var indexInWishlist = wishlist.indexOf(handle);
   if (indexInWishlist === -1) wishlist.push(handle);

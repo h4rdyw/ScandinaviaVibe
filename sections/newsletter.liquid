@@ -1,5 +1,6 @@
 
 {%- liquid
+assign urlredirect = settings.url_newsubscriber
  assign page_handle = page.handle
  assign shownewsletter = false  
  assign show_newsletter = section.settings.show_newsletter 
@@ -52,6 +53,7 @@
             {% form 'customer' %}
               {% if form.posted_successfully? %}
                 <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
+                <script>window.location.href = "{{ urlredirect }}";</script>
               {% elsif form.errors %}
                 {% for field in form.errors %}
                   <p><em>{{ field }} - {{ form.errors.messages[field] }}</em></p>

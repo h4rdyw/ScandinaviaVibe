@@ -21,13 +21,14 @@
 {% if block.type ==  'block_quote' %}
 
     {% if block.settings.page_handle == page_handle  or template == 'index' %}
+      <section>
         <blockquote class="bq2 bg-dark text-white p-4 p-lg-5 text-center mb-5">
             <p class="h4 mb-4">{{ block.settings.description | strip_html }}</p>
             <footer class="blockquote-footer">
             <cite class="text-white" title="Source Title">{{ block.settings.title }}</cite>
             </footer>
         </blockquote>
-
+      </section>
             {% comment %} <blockquote class="bq2 bg-dark text-white">
             <span class="source bg-light text-dark">-GOB, "Arrested Development"</span>
             <p>Well, I will tell you this, Michael. I don't have a son. But if I ever do, I'm either going to take him to the cabin in the woods, or I'm going to promise to take him and then not take him. But the one thing that I will never do is not tell him that I'm taking him to a cabin in the woods, and then not take him!</p>        
@@ -37,7 +38,7 @@
     {% endif%}
 {% endif %}  
 {% endfor %}   
-<style>
+<style scoped>
 
     .bq2 { max-width: 40vw!important; overflow: hidden; border: 1px solid #dde5ed; background: #f8fafd; color: #758fa3; }
     @media only screen and (max-width: 767px) {

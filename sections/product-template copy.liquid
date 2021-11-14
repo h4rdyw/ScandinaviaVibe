@@ -586,9 +586,9 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
           console.log(mybadgelist);
           if (mybadgelist)  {
             var badgelist_ = mybadgelist.split(LOCAL_STORAGE_BADGE_DELIMITER);
-            //console.log(badgelist_);
+            console.log(badgelist_);
           } else {
-            //console.log("NOT FOUND IN LOCALSTORAGE");
+            console.log("NOT FOUND IN LOCALSTORAGE");
           }
             /* element 
                 <div class="container">
@@ -680,9 +680,9 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
               card += `<div><svg class="award-badge" ${iconstyle}>{% render 'award-badge' %}</svg></div>`; 
             }
             
-            var badgeidx = PrdbadgeList.findIndex(elem => elem.id == item.id)
+            //var badgeidx = PrdbadgeList.findIndex(elem => elem.id == item.id)
             //var prd_badge = PrdbadgeList[badgeidx][badge];
-            console.log(badgeidx);
+            //console.log(badgeidx);
 
             //card += `<span class="badge rounded-0 badge-text-topright">${prdBadge}</span>`;                     
                      
@@ -850,7 +850,7 @@ function getCurrPrdMeta() {
   {% assign add_handle = item | last %}
   var object = {}
   object.name = "{{ item | last }}"
-  object.price = "{{ all_products[add_handle].price | money_without_currency }}"
+  object.price = {{ all_products[add_handle].price | money_without_currency }}
   object.title = "{{ all_products[add_handle].title }}"
   object.image = "{{ all_products[add_handle].featured_image | img_url }}"
   object.id = "{{ all_products[add_handle].id }}"
@@ -997,6 +997,7 @@ function getMeta(prd) {
               return prdbadge;
             });
   }
+
   
   
   function findIndexOfNestedArray(nestedArray, searchArray) {
@@ -1006,8 +1007,8 @@ function getMeta(prd) {
     })
   }
 
-/* get product recommendations*/
-async function getRecomms() {
+  /* get product recommendations*/
+  async function getRecomms() {
   var PrdbadgeList2 = [];
   var prdCopy;
   var prdArr=[];
@@ -1017,10 +1018,9 @@ async function getRecomms() {
       
         var arrProducts = Array.from(products);        
         
-        //console.log(arrProducts);
+        console.log(arrProducts);
         let promises = arrProducts.map((prd) => {
-        //console.log(prd);
-
+          //console.log(prd);
         let  prdID = `gid://shopify/Product/${prd.id}`;
               const query2 = `query SpecificProduct($id: ID!) {
                 node(id: $id) {
@@ -1041,7 +1041,7 @@ async function getRecomms() {
                   query: query2,
                   variables: { id: prdID }
               };
-        return fetch(`https://${shopUrl}/api/graphql.json`, 
+          return fetch(`https://${shopUrl}/api/graphql.json`, 
             { method: 'POST', 
                 headers: { 'Content-Type': 'application/json', 
                           "Access-Control-Origin": "*", 
@@ -1055,9 +1055,9 @@ async function getRecomms() {
 
                   //add product to product array and add key badge
                   prdArr.push(prd);
-                  //console.log('Product : '+prd.id);
+                  console.log('Product : '+prd.id);
                   prdCopy.badge = products_badge.data.node.badge ? products_badge.data.node.badge.value : '';
-                  //console.log(prdCopy);
+                  console.log(prdCopy);
 
                   let Node =  products_badge.data.node;                               
                    //console.log(Node)
@@ -1071,14 +1071,15 @@ async function getRecomms() {
                 .then(() => { });
         console.log(promises);        
             
-    })
-    .then( () => {     
+        })
+        .then( () => {     
        
-        //console.log(PrdbadgeList2);
-        //console.log(prdCopy);
-        //console.log(prdArr);
+        console.log(PrdbadgeList2);
+        console.log(prdCopy);
+        console.log(prdArr);
 
         if(prdArr.length > 0) {
+
           
             /* element 
                 <div class="container">
@@ -1101,7 +1102,7 @@ async function getRecomms() {
             
             prdArr.forEach(function(item,index) {
     
-            //console.log(item);
+            console.log(item);
 
             document.addEventListener( 'dispatchPrd', function ( event ) {
               //console.log(`registering productInfoAnchor ${el.id}`);
@@ -1136,7 +1137,7 @@ async function getRecomms() {
     
             if(item.images.length > 0) {
                 card += `<div class="inner-img">`;
-                card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}"  product-badge="${item.badge}" 
+                card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
                         product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
                 
                 if (item.available) {                
@@ -1172,7 +1173,12 @@ async function getRecomms() {
             if (item.tags.includes('Award')) {
               card += `<div><svg class="award-badge" ${iconstyle}>{% render 'award-badge' %}</svg></div>`; 
             }
-          
+
+            
+            var badgeidx = PrdbadgeList.findIndex(elem => elem.id == item.id)
+            //var prd_badge = PrdbadgeList[badgeidx][badge];
+            console.log(badgeidx);
+
             card += `<span class="badge rounded-0 badge-text-topright">${item.badge}</span>`;                     
                      
             card += `</div></div></div></div>`;
@@ -1188,18 +1194,23 @@ async function getRecomms() {
         //insert element after "product_details"
         const reference = document.getElementById("product_details");        
         reference.after(productRecomm);
+        //document.body.appendChild(productRecomm);
+
     
         var wishlistSnippet =  document.createElement('div');   
         wishlistSnippet.className = 'snippet-wishlist';
     
         wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
-            
-        wishlistSnippet.innerHTML = wishlistcard;
+    
+        
+         wishlistSnippet.innerHTML = wishlistcard;
     
         const referenceTitle = document.getElementById("qty-part");        
         referenceTitle.after(wishlistSnippet);
         
-        // Create a custom event and dispatch to setup PopUp Modal         
+        // Create a custom event and dispatch to setup PopUp Modal 
+
+        
         let myEvent = new CustomEvent('dispatchPrd', {
             bubbles: true,
             cancelable: true
@@ -1217,10 +1228,10 @@ async function getRecomms() {
         clearTimeout(); 
         document.dispatchEvent(myEventMeta); 
 
-      }   
+        }   
         
-    })
-}
+      })
+    }
   
 
 </script>

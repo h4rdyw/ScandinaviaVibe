@@ -22,18 +22,27 @@
     {% if tag contains 'Final Sale' %}
       {% assign finalsale = 'true' %}
      {% endif %}
-  {% endfor %}              
+  {% endfor %}        
+  {% assign producttag = product.metafields.badge.badge1 %}
+      
 {% assign image = product.featured_media.preview_image %}
 <div class="col d-flex my-2 bg-none">
     <div class="img-wrapper d-flex">
     <div class="card bg-light d-flex flex-fill border-1 border-secondary rounded-0">
       <div class="row">
         <div class="col-auto ms-0 bg-none"> 
+           
             <div class="inner-img" style="min-width:{{ cardwidth }}px;">
-                <a href="javascript:;" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                <a href="javascript:;" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" product-badge="{{ producttag }}"
                     product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}">      
                 <img src="{{ image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" class="card-img-top flex-fill" width="{{ cardwidth }}" height="{{ cardheight }}" style="max-height:{{ cardheight }}px;max-width:{{ cardwidth }}px;object-fit:cover;"></a>
-                <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>
+                <div class="text-hover">
+                  {% unless product.available %}                        
+                        <div class="text-hover">SOLD OUT</div>                             
+                        {% else %}
+                        <div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div>     
+                    {% endunless %}
+                </div>
             </div>
         </div>
         <div class="col me-1 bg-none" style="z-index:990;">
@@ -67,10 +76,23 @@
                 {% if awardbox == 'true' %}     
                     {% assign awardbox = 'false' %}                                                     
                     <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                  
-                {% endif %}                     
+                {% endif %}     
+                {% if producttag != blank %}
+                  <span class="badge rounded-0 badge-text-bottomleft">{{ producttag }}</span>              
+                {% endif %}                 
             </div>  
           </div>
-        <div>{%- render 'button-wishlist', product: product -%}</div>
+        <div>{%- render 'button-wishlist', product: product , wishlistpos: 'right' -%}<style scoped>
+          .wishlist-badge {  
+              left: auto;
+              right: 5px !important;
+          }
+          @media only screen and (max-width: 992px) {
+              .container {
+                max-width: 100% !important;
+              }
+            }
+      </style></div>
 
         </div>
       </div>
@@ -78,15 +100,5 @@
     </div>
   </div>
 
-<style>
-    .wishlist-badge {  
-        left: auto;
-        right: 5px !important;
-    }
-    @media only screen and (max-width: 992px) {
-        .container {
-          max-width: 100% !important;
-        }
-      }
-</style>
+
   {% comment %}theme-check-disable{% endcomment %}

@@ -51,6 +51,7 @@
     <p></p>
     <div class="container-fluid d-flex flex-wrap row-cols-xxl-5 row-cols-xl-4 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 row-cols-1 m-0 px-0 py-10 bg-dark">
         {% for product in collection.products %}
+          {% assign producttag = product.metafields.badge.badge1 %} 
           {% assign image = product.featured_media.preview_image %}
 
               {% for tag in product.tags %}
@@ -81,7 +82,7 @@
 
                         {% if image != blank %}  
                           <div class="inner-img">
-                            <a href="javascript:void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" 
+                            <a href="javascript:void(0);" id="productInfoAnchor-{{ section_id }}-{{ product.id }}" product-handle="{{ product.handle }}" product-badge="{{ producttag }}"
                               product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
                             ><img class="card-img-top" width="640" height="360" src="{{  image | img_url:'master' }}" loading="lazy" alt="{{ product.title| escape }}"  
                             ></a>
@@ -125,7 +126,10 @@
                     {% if awardbox == 'true' %}    
                       {% assign awardbox = 'false' %}                                              
                       <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>  
-                    {% endif %}            
+                    {% endif %}       
+                    {% if producttag != blank %}
+                        <span class="badge rounded-0 bg-primary badge-text-topright">{{ producttag }}</span>              
+                    {% endif %}        
                 </div>
             </div>
           </div>
@@ -178,7 +182,7 @@
 -->
 {% style %}
 .text-product-link {
-  color: #D4D4D4;
+  color: #fff !important;
   font-family: {{ font_producttitle.family }}, {{ font_producttitle.fallback_families }};
   text-decoration: none;
 }

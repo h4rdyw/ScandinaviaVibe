@@ -1,0 +1,50 @@
+{% comment %}theme-check-disable{% endcomment %}
+<!DOCTYPE html>
+    <html lang="en">
+      <head>
+        <title>{{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}{% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />    
+        {% if page_description %}
+          <meta name="description" content="{{ page_description | escape }} {% if template contains 'collection' %}{% if current_page > 1 %}Page no. {{ current_page }}{% endif %}{% endif %}" />
+        {% endif %}
+        <link rel="canonical" href="{{ canonical_url }}" />  
+        <link rel="alternate" href="{{ canonical_url | replace: shop.domain, 'scandinaviavibe.myshopify.com' }}" hreflang="en" />
+        <link rel="alternate" href="{{ canonical_url | replace: shop.domain, 'scandinaviavibe.myshopify.com' }}" hreflang="en-us" />    
+        <link rel="alternate" href="{{ canonical_url | replace: shop.domain, 'scandinaviavibe.myshopify.co.uk' }}" hreflang="en-gb" />
+        <link rel="alternate" href="{{ canonical_url | replace: shop.domain, 'scandinaviavibe.myshopify.com' }}" hreflang="x-default" />
+    
+        {% comment %} <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" /> {% endcomment %}
+        <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+        <!-- <script src="https://unpkg.com/vue@3.0.5"></script> -->
+        <script src="{{ 'Wishlist.js' | asset_url }}"></script> 
+    
+        <meta
+          name="viewport"
+          content="width=device-width,initial-scale=1,shrink-to-fit=no"
+        />
+    
+        {% comment %} {{ content_for_header }}{% endcomment %}
+    
+        {% comment %} <!--{{ 'bootstrap.min.css' | asset_url | stylesheet_tag }}--> {% endcomment %}
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+        {{ 'application.css.scss' | asset_url | stylesheet_tag }}
+        {{ 'font-style.css' | asset_url | stylesheet_tag }}   
+      </head>
+      <body>
+       
+        <main id="main" role="main">
+          {{ content_for_layout }}
+        </main>
+          
+        {{ 'bootstrap.min.js' | asset_url | script_tag }}
+        {{ 'application.js' | asset_url  | script_tag }}
+        {{ 'lite-yt-embed.js' | asset_url | append: '&enable_js_minification=1' | script_tag }}
+        {{ 'lite-yt-embed.css' | asset_url | stylesheet_tag }}    
+        {{ 'application.css' | asset_url | stylesheet_tag }}   
+         
+      </body>
+    </html>
+    {% comment %}theme-check-enable{% endcomment %}
+    

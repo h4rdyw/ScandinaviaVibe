@@ -14,30 +14,31 @@
 {% if remove_sidemargin %}
   {% assign sidemargin = 'mx-0' %}  
 {% endif %}
+
 {% for block in section.blocks %}
 {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.product_handle == product_handle %}
 
 
 {% if block.type == 'hero_story' %} 
-{% assign headingcolor = block.settings.heading_textcolor %}
-{% assign descfontsize = block.settings.font_size_desc %}
-{% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
-{% assign story_handle = story_handle | plus : 1 %}
-{% assign vpheight = block.settings.height %}
-{% assign video_control = 'controls' %}
-{% if block.settings.video_autoplay == true %}
-{% assign video_autoplay = 'autoplay' %}
-{% endif %}
-{% if block.settings.video_loop %}
-{% assign video_loop = 'loop' %}
-{% assign video_control = '' %}
-{% endif %}
+  {% assign headingcolor = block.settings.heading_textcolor %}
+  {% assign descfontsize = block.settings.font_size_desc %}
+  {% assign hidefilterbackdrop = block.settings.hide_filter_backdrop %}
+  {% assign story_handle = story_handle | plus : 1 %}
+  {% assign vpheight = block.settings.height %}
+  {% assign video_control = 'controls' %}
+    {% if block.settings.video_autoplay == true %}
+      {% assign video_autoplay = 'autoplay' %}
+    {% endif %}
+    {% if block.settings.video_loop %}
+      {% assign video_loop = 'loop' %}
+      {% assign video_control = '' %}
+    {% endif %}
 
-{% if block.settings.image_story  %}
-    {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
-  {% else %}
-     {% assign hero_img_url = block.settings.hero_story_img_url %}
-{% endif %}
+  {% if block.settings.image_story  %}
+      {% assign hero_img_url = block.settings.image_story | img_url: 'master' %} 
+    {% else %}
+      {% assign hero_img_url = block.settings.hero_story_img_url %}
+  {% endif %}
   <div class="{{ container_class }}{{ sidemargin }}">
   <div class="py-5 row row-cols-lg-2 row-cols-md-2 row-cols-sm-2 row-cols-1 d-flex">
 

@@ -1,5 +1,5 @@
 
-
+{% assign urlredirect = settings.url_newsubscriber %}
 <section class="pb-5">
     <div class="container p-5 bg-light">
       <div class="row align-items-center">
@@ -12,7 +12,7 @@
             {% if form.posted_successfully? %}
               <p><em>{{ 'general.newsletter_form.success_text' | t }}</em></p>
 
-              <script>window.location.href = "/pages/thank-you-for-subscribing";</script>
+              <script>window.location.href = "{{ urlredirect }}";</script>
               
             {% elsif form.errors %}
                
