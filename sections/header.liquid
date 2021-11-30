@@ -17,25 +17,28 @@
     <a class="navbar-brand" href="{{ routes.root_url }}">{{ shop.name }}</a>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
-        {% for link in linklists.main-menu.links %} {% assign child_list_handle
-        = link.title | handleize %} {% if linklists[child_list_handle].links !=
-        blank %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
-        </li>
-        [{% for childlink in linklists[child_list_handle].links %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ childlink.url }}">{{
-            childlink.title | escape
-          }}</a>
-        </li>
-        {% endfor %}] {% else %}
-        <li class="nav-item">
-          <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
-        </li>
-        {% endif %} {% endfor %}
-        <li class="nav-item">
-         
+        
+        {% for link in linklists.main-menu.links %} 
+            {% assign child_list_handle = link.title | handleize %} 
+              {% if linklists[child_list_handle].links != blank %}
+                <li class="nav-item dropdown hover">
+                    <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="{{ link.url }}">{{ link.title }}</a>
+                    <ul class="dropdown-menu animate fade-down"> 
+                    {% for childlink in linklists[child_list_handle].links %}
+                         
+                            <li><a class="dropdown-item" href="{{ childlink.url }}">{{ childlink.title | escape }}</a></li>
+                    {% endfor %} 
+                  </ul>
+
+                </li>
+
+              {% else %}
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endif %} 
+        {% endfor %}
+        <li class="nav-item">         
         </li>
       </ul>
 
@@ -61,16 +64,17 @@
       
       <div class="pe-2 py-2">
       
-      <!-- <form action="{{ routes.search_url }}" method="GET" role="search"> -->
+      {% comment %} <!-- <form action="{{ routes.search_url }}" method="GET" role="search"> --> {% endcomment %}
         <form action="javascript:void(0);" method="GET" role="search">
        <input style="font-size:0.9rem;" type="text" placeholder="quick search .." name="q" value="{{ search.terms | escape }}" id="searchInputField"> 
        </form>
       </div>
 
     </div>
+    {% assign activeLocale = request.locale.iso_code %}
     <div class="px-0">
     <div style="display:inline-block;">
-      <a href="/pages/wishlist" id="button-wishlist-cart" aria-label="Wishlist"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
+      <a href="{% if activeLocale == 'en' %}/pages/wishlist {% else %} {{ shop.url }}/{{ activeLocale }}/pages/wishlist {% endif %}" id="button-wishlist-cart" aria-label="Wishlist"><svg class="heart-badge" alt="wishlist cart">{% render 'heart-badge' %}</svg></a> 
     </div>  
       <div id="cart-icon" style="display:inline-block;">
       {% comment %} <a href="{{ routes.cart_url }}"><img src="{{ 'cart24.png' | asset_img_url: 'master'}}" width="24" height="24" alt="shopping cart"><span id="numberOfCartItems" class="d-none badge rounded-pill" style="opacity:1;margin-left:-5px;">0</span></a> {% endcomment %}
@@ -92,7 +96,7 @@
 
 <style>
   .navbar{
-    /*   z-index should be above .close-navbar-toggler */
+    {% comment %} /*   z-index should be above .close-navbar-toggler */ {% endcomment %}
       z-index:2;
     }
     .close-navbar-toggler{

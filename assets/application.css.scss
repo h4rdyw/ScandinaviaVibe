@@ -209,15 +209,15 @@
 }
 
 .modal-img {
-  width: 640px;
-  height: 360px;
+  width: 480px;
+  height: 480px;
   object-fit: cover;
 }
 
 @media only screen and (min-width: 992px) {
   .modal-img {
-    width: 640px;
-    height: 360px;
+    width: 480px;
+    height: 480px;
     object-fit: cover;
   }
 }

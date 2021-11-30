@@ -13,16 +13,15 @@
 {% assign producthandle = section.settings.product_handle %}
 {% assign showprdrecomm = true %}
 {% if product.handle == producthandle %}
-  {% if prdrecomm == true %}
-    {% assign showprdrecomm = true %}
-  {% else %}
-    {% assign showprdrecomm = false %}
-  {% endif %}
+    {% if prdrecomm == true %}
+      {% assign showprdrecomm = true %}
+    {% else %}
+      {% assign showprdrecomm = false %}
+    {% endif %}
 {% else %}
      {% if section.settings.product_handle != blank %}
-      {% else %}
-        
-    {% assign showprdrecomm = section.settings.show_prd_recomm %}   
+      {% else %}        
+        {% assign showprdrecomm = section.settings.show_prd_recomm %}   
      {% endif %}
 {% endif %} 
 
@@ -41,6 +40,7 @@
     
 
 <section class="container py-5" id="product_details">
+  {% include 'breadcrumbs' %}
   <p span></p>
     <div class="row flex-column{{ col_reverse }} flex-lg-row">
         <div class="d-flex flex-column col-lg-8 col-md-12 col-12">
@@ -187,7 +187,7 @@
                                   {% assign desc = variant.title | append : ' ' | append : pricenew %}
                                 {% endif %}
                           {% assign availability = availability_count | plus: 1 %}
-                                <option value="{{ variant.id }}">{{ desc }}</option>
+                                <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} value="{{ variant.id }}">{{ desc }}</option>
                             {% else %}
                                 <option value="{{ variant.id }}" disabled="disabled"> {{ variant.title }}</option>
                             {% endif %}                       
@@ -272,7 +272,6 @@
 
 {% render 'prd-modal' %}
 
-{% comment %} {{ 'application.css' | asset_url | stylesheet_tag }} {% endcomment %}
 {% schema %}
 {
     "name": "Product Details",
@@ -284,6 +283,10 @@
         "default": false
     },
     {
+      "type": "header",
+      "content": "Product Recommendations"
+    },
+    {
       "type": "checkbox",
       "id": "show_prd_recomm",
       "label": "Show Product Recommendations",
@@ -292,8 +295,16 @@
     {
       "type": "product",
       "id": "product_handle",
-      "label": "Select a product"
+      "label": "Set NONE If recomm = F & recomm section is NOT set"
     },
+    {
+      "type": "checkbox",
+      "id": "init_wishlist",
+      "label": "Wishlist Button/Icon",
+      "info": "Use when no recommendation section is set",
+      "default": false
+    },
+    
     {
       "type": "checkbox",
       "id": "col_reverse",
@@ -501,7 +512,8 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
     }    
   })
 
-  {% comment %} swiper.on('slideChange', function () {
+  {% comment %} 
+  swiper.on('slideChange', function () {
     let slideIndex = this.activeIndex 
     console.log("Index : " + slideIndex);     
     let attributeName = document.querySelectorAll(`[data-swiper-slide-index='${slideIndex}']`);     
@@ -522,240 +534,40 @@ const swiper = new Swiper(".swiper-container-{{- product.id -}}", {
   {% endcomment %}
   
   {% if showprdrecomm == true %}
+  
     getRecomms();
-    {% else %}
+  
+  {% else %}
 
-    var wishlistSnippet =  document.createElement('div');   
-        wishlistSnippet.className = 'snippet-wishlist';
+      var wishlistSnippet =  document.createElement('div');   
+      wishlistSnippet.className = 'snippet-wishlist';
     
-        wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
+      wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
          
-        wishlistSnippet.innerHTML = wishlistcard;
+      wishlistSnippet.innerHTML = wishlistcard;
     
-        const referenceForWishlist = document.getElementById("qty-part");        
-        referenceForWishlist.after(wishlistSnippet);
+      const referenceForWishlist = document.getElementById("qty-part");        
+      referenceForWishlist.after(wishlistSnippet);
         
-        //later when related prd ready ->
-        {% if showprdrecomm == false and product.handle == blank  %}
-          //console.log('showprdrecomm '+ {{showprdrecomm}} );
-          //console.log('initbuttons');
-          initButtons();        
-        {% endif %}
+      // when related prd ready      
+          
+      //console.log('showprdrecomm '+ {{showprdrecomm}} );
+      //console.log('initbuttons');
+      {% unless section.settings.product_handle %}
+
+          initButtons();      
+
+      {% elsif section.settings.init_wishlist %}
+
+          initButtons();      
+
+      {% endunless %}
+
+        
+
   {% endif %}
 
-{% comment %}     
-//old script
-  {% if showprdrecomm == true %}
 
-    //var productRecommendationBody = document.getElementById('product_recommendation_body');
-    fetch(`/recommendations/products.json?product_id={{ product.id }}`)
-    .then(resp => resp.json())
-    .then(({ products }) =>{        
-        var arrProducts = Array.from(products);
-        //console.log(arrProducts);
-        //add eventlistener, later to be dispatched when new element build (product recommendation) completed
-        arrProducts.forEach( function (el) {
-            //console.log(el);
-            document.addEventListener( 'dispatchPrd', function ( event ) {
-                //console.log(`registering productInfoAnchor ${el.id}`);
-                getProductAnchors(`productInfoAnchor-${el.id}`);
-              });           
-                                           
-              apiCall(el.id)
-              .then( prdb => {
-              console.log("data is: " + prdb);      
-
-              PrdbadgeList.push({id: el.id,badge: prdb});              
-              updateBadgelist(`${el.id}-${prdb}`);                           
-              })
-              .catch(function(err) {
-                // An error occurred
-                console.log(err);
-              });
-
-              
-            
-        })
-               
-        console.log(PrdbadgeList);
-
-        //console.log(products);
-        if(products.length > 0) {
-
-          mybadgelist=localStorage.getItem(LOCAL_STORAGE_BADGE_KEY) || false;
-          console.log(mybadgelist);
-          if (mybadgelist)  {
-            var badgelist_ = mybadgelist.split(LOCAL_STORAGE_BADGE_DELIMITER);
-            //console.log(badgelist_);
-          } else {
-            //console.log("NOT FOUND IN LOCALSTORAGE");
-          }
-            /* element 
-                <div class="container">
-                    <section id="product_recommendation" class="row content-justify-center my-5">
-                        <div class="text-center"><h1>Also in store</h1></div>
-                        <div class="row d-flex g-3 row-cols-lg-6 row-cols-md-4 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body"></div>
-                    </section>
-                </div>
-            */
-    
-            const htmlMarkup = `
-                 <section id="product_recommendation" class="content-justify-center my-5">
-                    <div class="text-center"><h1>Also in store</h1></div>
-                    <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body">
-            `;
-    
-            html = htmlMarkup.trim();
-            var productRecomm = document.createElement('div');
-            productRecomm.className = 'container';
-            
-            products.forEach(function(item,index) {
-    
-            console.log(item);
-
-            arrProducts[item] = `productInfoAnchor-${item.id}`;       
-                        
-            if (+item.compare_at_price > 0 && +item.compare_at_price > +item.price ) { 
-              const itemsavings = (((+item.compare_at_price-item.price)/item.compare_at_price) * 100).toFixed(0);
-              //console.log("Item Saving :" + itemsavings);
-    
-              var savingspct=`${itemsavings}%`;  
-            } else {
-              var savingspct=``;  
-            }
-    
-            let prdPrice = formatCcy((+item.price / 100));                   
-            let prdPriceMin = formatCcy((+item.price_min / 100));                   
-            let prdComparePrice = formatCcy((+item.compare_at_price_max / 100));                   
-            let from = '';
-            let finalsaletag = '';
-    
-            if (item.price_varies) from = `from `;
-    
-            if (item.tags.includes('Final Sale')) finalsaletag = 'FINAL SALE*'; 
-    
-            var card, iconstyle;
-    
-            card = `<div class="col d-flex">`;
-            card += `<div class="img-wrapper d-flex">`;
-            card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
-    
-            if(item.images.length > 0) {
-                card += `<div class="inner-img">`;
-                card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}" 
-                        product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
-                
-                if (item.available) {                
-                card += `<div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div></div>`    
-                } else {
-                card += `<div class="text-hover">SOLD OUT</div></div>`;
-                }
-    
-    
-            }          
-            card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-1">`;
-            card += `<p class="text-product-title"><a class="text-product-link" href="${item.url}">${item.title}</a></p>`;
-            card += `<p span class="text-line"></p>`;
-    
-            if (item.compare_at_price_max > 0 ) { 
-    
-              card += `<p>${finalsaletag} ${savingspct}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
-                <del><span style="color: #AB0000;">${prdComparePrice}</span></del> ${from} ${prdPrice}</p>`;
-                   
-            } else {
-              card += `<p>${from} ${prdPriceMin}</p>`;     
-            }
-            
-            card += `<button type="button" aria-label="Add to wishlist" class="wishlist-badgeleft" button-wishlist btn-from-template data-product-handle="${item.handle}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;
-    
-            if (item.tags.includes('Special')) {
-              card += `<div><svg class="star-badge">{% render 'star-badge' %}</svg></div>`; 
-              iconstyle = ``;
-    
-            } else {
-              iconstyle = `style="transform: translateX(-35px);"`;
-            }
-    
-            if (item.tags.includes('Award')) {
-              card += `<div><svg class="award-badge" ${iconstyle}>{% render 'award-badge' %}</svg></div>`; 
-            }
-            
-            var badgeidx = PrdbadgeList.findIndex(elem => elem.id == item.id)
-            //var prd_badge = PrdbadgeList[badgeidx][badge];
-            console.log(badgeidx);
-
-            //card += `<span class="badge rounded-0 badge-text-topright">${prdBadge}</span>`;                     
-                     
-            card += `</div></div></div></div>`;
-            
-            html += card;                           
-    
-        });
-        
-        html += `</div></section>`;
-    
-        productRecomm.innerHTML = html;  
-         
-        //insert element after "product_details"
-        const reference = document.getElementById("product_details");        
-        reference.after(productRecomm);
-        //document.body.appendChild(productRecomm);
-
-    
-        var wishlistSnippet =  document.createElement('div');   
-        wishlistSnippet.className = 'snippet-wishlist';
-    
-        wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
-    
-        
-         wishlistSnippet.innerHTML = wishlistcard;
-    
-        const referenceTitle = document.getElementById("qty-part");        
-        referenceTitle.after(wishlistSnippet);
-        
-        // Create a custom event and dispatch to setup PopUp Modal 
-
-        
-        let myEvent = new CustomEvent('dispatchPrd', {
-            bubbles: true,
-            cancelable: true
-            });
-    
-        let myEventMeta = new CustomEvent('dispatchMeta', {
-              bubbles: true,
-              cancelable: true
-              });
-
-        setTimeout(()=>{
-            document.dispatchEvent(myEvent);     
-            initButtons();       
-          },2)    
-        clearTimeout(); 
-        document.dispatchEvent(myEventMeta); 
-
-        }     
-    });
-
-    {% else %}
-
-    var wishlistSnippet =  document.createElement('div');   
-        wishlistSnippet.className = 'snippet-wishlist';
-    
-        wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
-         
-        wishlistSnippet.innerHTML = wishlistcard;
-    
-        const referenceForWishlist = document.getElementById("qty-part");        
-        referenceForWishlist.after(wishlistSnippet);
-        
-        //later when related prd ready ->
-        {% if showprdrecomm == false and product.handle == blank  %}
-          //console.log('showprdrecomm '+ {{showprdrecomm}} );
-          //console.log('initbuttons');
-          initButtons();        
-        {% endif %}
-      
-  {% endif %} {% endcomment %}
 
 /* Listen to Related Prd*/
 document.addEventListener( 'dispatchRelatedPrd', function ( event ) {
@@ -997,8 +809,7 @@ function getMeta(prd) {
               return prdbadge;
             });
   }
-  
-  
+    
   function findIndexOfNestedArray(nestedArray, searchArray) {
     return searchArray.findIndex(item => {
       return item.length === nestedArray.length
@@ -1021,51 +832,52 @@ async function getRecomms() {
         let promises = arrProducts.map((prd) => {
         //console.log(prd);
 
-        let  prdID = `gid://shopify/Product/${prd.id}`;
-              const query2 = `query SpecificProduct($id: ID!) {
-                node(id: $id) {
-                    id
-                    ... on Product {
-                        title
-                        description
+            let  prdID = `gid://shopify/Product/${prd.id}`;
+                  const query2 = `query SpecificProduct($id: ID!) {
+                    node(id: $id) {
                         id
-                        handle
-                        badge: metafield(namespace: "badge", key: "badge1"){
-                            value
-                        }                 
-                    }
-                  }
-                }`;
+                        ... on Product {
+                            title
+                            description
+                            id
+                            handle
+                            badge: metafield(namespace: "badge", key: "badge1"){
+                                value
+                            }                 
+                        }
+                      }
+                    }`;
 
-              const params = {
+            const params = {
                   query: query2,
                   variables: { id: prdID }
               };
-        return fetch(`https://${shopUrl}/api/graphql.json`, 
-            { method: 'POST', 
-                headers: { 'Content-Type': 'application/json', 
-                          "Access-Control-Origin": "*", 
-                          'X-Shopify-Storefront-Access-Token': "9270c774b25bf530d8570de613a325ca" 
-                        },
-                "body": JSON.stringify(params) })
-                .then(response => response.json())
-                .then(function(products_badge) {
-                  //console.log(products_badge);
-                  prdCopy = prd;
 
-                  //add product to product array and add key badge
-                  prdArr.push(prd);
-                  //console.log('Product : '+prd.id);
-                  prdCopy.badge = products_badge.data.node.badge ? products_badge.data.node.badge.value : '';
-                  //console.log(prdCopy);
+            return fetch(`https://${shopUrl}/api/graphql.json`, 
+                { method: 'POST', 
+                    headers: { 'Content-Type': 'application/json', 
+                              "Access-Control-Origin": "*", 
+                              'X-Shopify-Storefront-Access-Token': "9270c774b25bf530d8570de613a325ca" 
+                            },
+                    "body": JSON.stringify(params) })
+                    .then(response => response.json())
+                    .then(function(products_badge) {
+                      //console.log(products_badge);
+                      prdCopy = prd;
 
-                  let Node =  products_badge.data.node;                               
-                   //console.log(Node)
-                  //let prdbadge = Node.badge ? Node.badge.value : false;
-                  let prdbadge = Node.badge ? Node.badge.value : '';
-                  //console.log(prdbadge);    
-                  PrdbadgeList2.push({id: prd.id,badge: prdbadge});              
-                })                
+                      //add product to product array and add key badge
+                      prdArr.push(prd);
+                      //console.log('Product : '+prd.id);
+                      prdCopy.badge = products_badge.data.node.badge ? products_badge.data.node.badge.value : '';
+                      //console.log(prdCopy);
+
+                      let Node =  products_badge.data.node;                               
+                      //console.log(Node)
+                      //let prdbadge = Node.badge ? Node.badge.value : false;
+                      let prdbadge = Node.badge ? Node.badge.value : '';
+                      //console.log(prdbadge);    
+                      PrdbadgeList2.push({id: prd.id,badge: prdbadge});              
+                    })                
         })
         return Promise.all(promises)
                 .then(() => { });
@@ -1091,7 +903,7 @@ async function getRecomms() {
     
             const htmlMarkup = `
                  <section id="product_recommendation" class="content-justify-center my-5">
-                    <div class="text-center"><h1>Also in store</h1></div>
+                    <div class="text-center"><h1>You'll love this too</h1></div>
                     <div class="d-flex flex-wrap g-3 row row-cols row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-3 row-cols-2 py-2" id="product_recommendation_body">
             `;
     
@@ -1101,130 +913,137 @@ async function getRecomms() {
             
             prdArr.forEach(function(item,index) {
     
-            //console.log(item);
+              //console.log(item);
+              let productUrl;
+              let substrings = item.url.split('products');
+              //console.log(substrings);
+              let local = Shopify.locale;
+              if (local == 'en') {
+                productUrl = item.url
+              } else {
+                productUrl = `https://${shopUrl}${substrings[0]}${local}/products/${substrings[1]}`;
+              }
+              
 
-            document.addEventListener( 'dispatchPrd', function ( event ) {
-              //console.log(`registering productInfoAnchor ${el.id}`);
-              getProductAnchors(`productInfoAnchor-${item.id}`);
-            });           
-
-            
-            if (+item.compare_at_price > 0 && +item.compare_at_price > +item.price ) { 
-              const itemsavings = (((+item.compare_at_price-item.price)/item.compare_at_price) * 100).toFixed(0);
-              //console.log("Item Saving :" + itemsavings);
-    
-              var savingspct=`${itemsavings}%`;  
-            } else {
-              var savingspct=``;  
-            }
-    
-            let prdPrice = formatCcy((+item.price / 100));                   
-            let prdPriceMin = formatCcy((+item.price_min / 100));                   
-            let prdComparePrice = formatCcy((+item.compare_at_price_max / 100));                   
-            let from = '';
-            let finalsaletag = '';
-    
-            if (item.price_varies) from = `from `;
-    
-            if (item.tags.includes('Final Sale')) finalsaletag = 'FINAL SALE*'; 
-    
-            var card, iconstyle;
-    
-            card = `<div class="col d-flex">`;
-            card += `<div class="img-wrapper d-flex">`;
-            card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
-    
-            if(item.images.length > 0) {
-                card += `<div class="inner-img">`;
-                card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}"  product-badge="${item.badge}" 
-                        product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
+              document.addEventListener( 'dispatchPrd', function ( event ) {
+                //console.log(`registering productInfoAnchor ${el.id}`);
+                getProductAnchors(`productInfoAnchor-${item.id}`);
+              });         
+              
+              if (+item.compare_at_price > 0 && +item.compare_at_price > +item.price ) { 
+                const itemsavings = (((+item.compare_at_price-item.price)/item.compare_at_price) * 100).toFixed(0);
+                //console.log("Item Saving :" + itemsavings);
+      
+                var savingspct=`${itemsavings}%`;  
+              } else {
+                var savingspct=``;  
+              }
+      
+              let prdPrice = formatCcy((+item.price / 100));                   
+              let prdPriceMin = formatCcy((+item.price_min / 100));                   
+              let prdComparePrice = formatCcy((+item.compare_at_price_max / 100));                   
+              let from = '';
+              let finalsaletag = '';
+      
+              if (item.price_varies) from = `from `;
+      
+              if (item.tags.includes('Final Sale')) finalsaletag = 'FINAL SALE*'; 
+      
+              var card, iconstyle;
+      
+              card = `<div class="col d-flex">`;
+              card += `<div class="img-wrapper d-flex">`;
+              card += `<div class="card d-flex flex-fill border-0 shadow-sm">`;
+      
+              if(item.images.length > 0) {
+                  card += `<div class="inner-img">`;
+                  card += `<a href="javascript:;"   id="productInfoAnchor-${item.id}" product-handle="${item.handle}"  product-badge="${item.badge}" 
+                          product-price="${from} ${prdPrice}"><img class="card-img-top" width="240" height="240" src="${item.images[0]}" loading="lazy" alt="${item.title}"></a>`;
+                  
+                  if (item.available) {                
+                  card += `<div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div></div>`    
+                  } else {
+                  card += `<div class="text-hover">SOLD OUT</div></div>`;
+                  }       
+              }          
+              card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-1">`;
+              card += `<p class="text-product-title"><a class="text-product-link" href="${productUrl}">${item.title}</a></p>`;
+              card += `<p span class="text-line"></p>`;
+      
+              if (item.compare_at_price_max > 0 ) { 
+      
+                card += `<p>${finalsaletag} ${savingspct}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
+                  <del><span style="color: #AB0000;">${prdComparePrice}</span></del> ${from} ${prdPrice}</p>`;
+      
                 
-                if (item.available) {                
-                card += `<div class="text-hover"><svg class="heart-badge" alt="quick shop">{% render 'icon-bag' %}</svg></br>QUICK SHOP</div></div>`    
-                } else {
-                card += `<div class="text-hover">SOLD OUT</div></div>`;
-                }       
-            }          
-            card += `<div class="card-body d-flex flex-column justify-content-end text-center bg-light pb-1">`;
-            card += `<p class="text-product-title"><a class="text-product-link" href="${item.url}">${item.title}</a></p>`;
-            card += `<p span class="text-line"></p>`;
-    
-            if (item.compare_at_price_max > 0 ) { 
-    
-              card += `<p>${finalsaletag} ${savingspct}<svg class="tag-badge">{% render 'tag-badge' %} </svg>
-                <del><span style="color: #AB0000;">${prdComparePrice}</span></del> ${from} ${prdPrice}</p>`;
-    
-               
-            } else {
-              card += `<p>${from} ${prdPriceMin}</p>`;     
-            }
+              } else {
+                card += `<p>${from} ${prdPriceMin}</p>`;     
+              }
+              
+              card += `<button type="button" aria-label="Add to wishlist" class="wishlist-badgeleft" button-wishlist btn-from-template data-product-handle="${item.handle}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;
+      
+              if (item.tags.includes('Special')) {
+                card += `<div><svg class="star-badge">{% render 'star-badge' %}</svg></div>`; 
+                iconstyle = ``;
+      
+              } else {
+                iconstyle = `style="transform: translateX(-35px);"`;
+              }
+      
+              if (item.tags.includes('Award')) {
+                card += `<div><svg class="award-badge" ${iconstyle}>{% render 'award-badge' %}</svg></div>`; 
+              }
             
-            card += `<button type="button" aria-label="Add to wishlist" class="wishlist-badgeleft" button-wishlist btn-from-template data-product-handle="${item.handle}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;
-    
-            if (item.tags.includes('Special')) {
-              card += `<div><svg class="star-badge">{% render 'star-badge' %}</svg></div>`; 
-              iconstyle = ``;
-    
-            } else {
-              iconstyle = `style="transform: translateX(-35px);"`;
-            }
-    
-            if (item.tags.includes('Award')) {
-              card += `<div><svg class="award-badge" ${iconstyle}>{% render 'award-badge' %}</svg></div>`; 
-            }
-          
-            card += `<span class="badge rounded-0 badge-text-topright">${item.badge}</span>`;                     
-                     
-            card += `</div></div></div></div>`;
-            
-            html += card;                           
-    
-        });
-        
-        html += `</div></section>`;
-    
-        productRecomm.innerHTML = html;  
-         
-        //insert element after "product_details"
-        const reference = document.getElementById("product_details");        
-        reference.after(productRecomm);
-    
-        var wishlistSnippet =  document.createElement('div');   
-        wishlistSnippet.className = 'snippet-wishlist';
-    
-        wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
-            
-        wishlistSnippet.innerHTML = wishlistcard;
-    
-        const referenceTitle = document.getElementById("qty-part");        
-        referenceTitle.after(wishlistSnippet);
-        
-        // Create a custom event and dispatch to setup PopUp Modal         
-        let myEvent = new CustomEvent('dispatchPrd', {
-            bubbles: true,
-            cancelable: true
+              card += `<span class="badge rounded-0 badge-text-topright">${item.badge}</span>`;                     
+                      
+              card += `</div></div></div></div>`;
+              
+              html += card;                           
+      
             });
-    
-        let myEventMeta = new CustomEvent('dispatchMeta', {
+        
+          html += `</div></section>`;
+      
+          productRecomm.innerHTML = html;  
+          
+          //insert element after "product_details"
+          const reference = document.getElementById("product_details");        
+          reference.after(productRecomm);
+      
+          var wishlistSnippet =  document.createElement('div');   
+          wishlistSnippet.className = 'snippet-wishlist';
+      
+          wishlistcard = `<button type="button" aria-label="Add to wishlist" class="wishlist-badge" style="left:0;bottom:0;" button-wishlist data-product-handle="{{product.handle}}"><svg class="icon">{% render 'heart-badge' %}</svg></button>`;     
+              
+          wishlistSnippet.innerHTML = wishlistcard;
+      
+          const referenceTitle = document.getElementById("qty-part");        
+          referenceTitle.after(wishlistSnippet);
+          
+          // Create a custom event and dispatch to setup PopUp Modal         
+          let myEvent = new CustomEvent('dispatchPrd', {
               bubbles: true,
               cancelable: true
               });
+      
+          let myEventMeta = new CustomEvent('dispatchMeta', {
+                bubbles: true,
+                cancelable: true
+                });
 
-        setTimeout(()=>{
-            document.dispatchEvent(myEvent);     
-            initButtons();       
-          },2)    
-        clearTimeout(); 
-        document.dispatchEvent(myEventMeta); 
+          setTimeout(()=>{
+              document.dispatchEvent(myEvent);     
+              initButtons();       
+            },2)    
+          clearTimeout(); 
+          document.dispatchEvent(myEventMeta); 
 
-      }   
+        }   
         
     })
-}
-  
+}  
 
 </script>
-
 
 {{ 'product.css' | asset_url | stylesheet_tag }}
 

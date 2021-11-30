@@ -1,70 +1,72 @@
- {% assign page_handle = page.handle %}
- {% assign collection_handle = collection.handle %}
- {% assign template_handle = template.name %}
+{%- liquid 
+ assign page_handle = page.handle
+ assign collection_handle = collection.handle
+ assign template_handle = template.name
+ assign product_handle = product.handle
+ -%} 
  {% for block in section.blocks %}
 
-  {%- liquid 
-  if block.settings.image
-    assign hero_url = block.settings.image | img_url: 'master'
-  else
-    assign hero_url = block.settings.hero_img_url 
-  endif 
-  assign section_id = block.settings.section_id 
-  assign divider_heading = block.settings.title 
-  assign divider_desc = block.settings.divider_description 
-  assign headingcolor = block.settings.heading_textcolor
-  assign desccolor = block.settings.desc_textcolor
-  assign hidefilterbackdrop = block.settings.hide_filter_backdrop
-  if block.settings.textmuted == true 
-    assign textmuted = 'text-grayscale'
-  endif 
-  -%} 
+    {%- liquid 
+    if block.settings.image
+      assign hero_url = block.settings.image | img_url: 'master'
+    else
+      assign hero_url = block.settings.hero_img_url 
+    endif 
+    assign section_id = block.settings.section_id 
+    assign divider_heading = block.settings.title 
+    assign divider_desc = block.settings.divider_description 
+    assign headingcolor = block.settings.heading_textcolor
+    assign desccolor = block.settings.desc_textcolor
+    assign hidefilterbackdrop = block.settings.hide_filter_backdrop
+    if block.settings.textmuted == true 
+      assign textmuted = 'text-grayscale'
+    endif 
+    -%} 
 
  
  
-{% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.collection_handle == collection_handle  or template_handle == 'list-collections' %}
+  {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.collection_handle == collection_handle or block.settings.product_handle == product_handle or template_handle == 'list-collections' %}
 
- <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
-    <div class="container py-2">
-      <div class="row px-1">
-        <div class="col-lg-6 ms-auto {{ section_id }}-backdrop">
-          <h2 class="hero-heading" style="color: {{ headingcolor }};">{{ divider_heading }}</h2>
+  <section class="py-5 bg-center {{ section_id }}-bg-cover"> 
+      <div class="container py-2">
+        <div class="row px-1">
+          <div class="col-lg-6 ms-auto {{ section_id }}-backdrop">
+            <h2 class="hero-heading" style="color: {{ headingcolor }};">{{ divider_heading }}</h2>
 
-          <div class="{{ textmuted }}" style="color: {{ desccolor }};">{{ divider_desc }}</div>
-          {% if block.settings.button_link %}
-          <a class="btn-reg" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
-          {% endif %}
+            <div class="{{ textmuted }}" style="color: {{ desccolor }};">{{ divider_desc }}</div>
+            {% if block.settings.button_link %}
+            <a class="btn-reg" href="{{ block.settings.button_link }}"><i class="fas fa-shopping-bag-mr-2"></i>{{ block.settings.button_label }}</a>
+            {% endif %}
+          </div>
         </div>
       </div>
-    </div>
-    <style scoped>              
-        .{{ section_id }}-bg-cover {
-           background: url({{ hero_url }}) no-repeat center center;
-           background-size: cover;                    
-        }                              
-    </style>      
-    {% unless hidefilterbackdrop %}
-      <style scoped>      
-        @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-          .{{ section_id }}-backdrop {
-            -webkit-backdrop-filter: blur(10px);
-            background-color: rgba(255, 255, 255, 0.35); 
-            backdrop-filter: blur(10px);
-            border-radius: 2px;
+      <style scoped>              
+          .{{ section_id }}-bg-cover {
+            background: url({{ hero_url }}) no-repeat center center;
+            background-size: cover;                    
+          }                              
+      </style>      
+      {% unless hidefilterbackdrop %}
+        <style scoped>      
+          @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+            .{{ section_id }}-backdrop {
+              -webkit-backdrop-filter: blur(10px);
+              background-color: rgba(255, 255, 255, 0.35); 
+              backdrop-filter: blur(10px);
+              border-radius: 2px;
+            }
           }
-        }
-      
-        
-        /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
-        @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
-          .{{ section_id }}-backdrop  {
-            background-color: rgba(255, 255, 255, .5);
+                  
+          /* slightly transparent fallback for Firefox (not supporting backdrop-filter) */
+          @supports not ((-webkit-backdrop-filter: none) or (backdrop-filter: none)) {
+            .{{ section_id }}-backdrop  {
+              background-color: rgba(255, 255, 255, .5);
+            }
           }
-        }
-      </style> 
-    {% endunless %}
-  </section>
-{% endif %} 
+        </style> 
+      {% endunless %}
+    </section>
+  {% endif %} 
 {% endfor %}
 <style>
   .text-grayscale {
@@ -100,6 +102,11 @@
           "type": "collection",
           "id": "collection_handle",
           "label": "Select a collection"
+        },
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Select a product"
         },
         {
           "type": "text",

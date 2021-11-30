@@ -17,8 +17,8 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
     <!-- <script src="https://unpkg.com/vue@3.0.5"></script> -->
+    <script src="{{ 'menukit.js' | asset_url }}"></script>
     <script src="{{ 'Wishlist.js' | asset_url }}"></script> 
-
     <meta
       name="viewport"
       content="width=device-width,initial-scale=1,shrink-to-fit=no"
@@ -44,12 +44,12 @@
     {% section 'footer-section' %}
     {% section 'translation' %}
     {{ 'bootstrap.min.js' | asset_url | script_tag }}
-    {{ 'application.js' | asset_url  | script_tag }}
+    {{ 'application.js' | asset_url  | append: '&enable_js_minification=1' | script_tag }}
     {{ 'lite-yt-embed.js' | asset_url | append: '&enable_js_minification=1' | script_tag }}
-    {{ 'lite-yt-embed.css' | asset_url | stylesheet_tag }}    
+    {{ 'lite-yt-embed.css' | asset_url | stylesheet_tag }} 
+    {{ 'menukit.css' | asset_url | stylesheet_tag }}   
     {{ 'application.css' | asset_url | stylesheet_tag }}
-    {% render 'cookie-banner' %}    
-     
+    {% render 'cookie-banner' %}         
   </body>
 </html>
 {% comment %}theme-check-enable{% endcomment %}

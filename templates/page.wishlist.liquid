@@ -12,7 +12,7 @@ assign url_continueshopping = settings.url_continueshopping_wishlist
 <section class="container py-5" id="wishlist">
   <h1 class="text-center py-2">{{ page.title }}</h1>
   <div class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2" grid-wishlist>
-  <!-- <div class="grid" grid-wishlist> -->
+  {% comment %} <!-- <div class="grid" grid-wishlist> --> {% endcomment %}
     <div class="wishlist-spinner">
       <div class="spinner-border" role="status">
       </div>      
@@ -27,45 +27,6 @@ assign url_continueshopping = settings.url_continueshopping_wishlist
 </div>
 
 {% render 'prd-modal' %}
-<!--
-<div class="modal modalfade" id="productInfoModal" tabIndex="-1" aria-hidden="true" style="z-index:2000">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
-      <div class="modal-content rounded-0">
-          <div class="modal-header" style="border-bottom: none;">
-            <h1 id="productInfoTitle" class="text-product-title"></h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="close"></button>
-          </div>
-          <div class="modal-body">
-              <div class="row">
-                    <div class="col-12 col-md-6">
-                      <img class="img-fluid" style="max-height:50vh;height:480px;width:480px;" width="480" height="480" src="" id="productInfoImg" alt="" loading="lazy"> 
-                      <div id="badge"></div>
-                    </div>         
-
-                    <div class="col-12 col-md-6"> 
-                      <p id="productInfoPrice" class="text-header-title"></p>
-                      <p id="productInfoDescription" class="text-product-desc"></p>
-                    </div>
-              </div>             
-          </div> 
-          <div class="modal-footer" style="border-top: none;">
-            <div class="col-12 col-md-6"></div>
-            <div class="col-12 col-md-6 px-2">
-              <form action="#" id="addToCartForm" class="row">
-                <select name="id" id="modalItemID" class="form-select col-auto">
-                </select>
-                <p></p> 
-                <input type="number" name="quantity" value="1" id="modalItemQuantity" min="1" max="9999" class="col-auto w-100">
-                <P></P>
-                <button type="submit" id="btnAddToCart" class="btn-add-to-cart col-auto w-100">Add to Cart</button>
-                <p></p>
-              </form>
-            </div>              
-          </div>
-      </div>
-  </div>
-</div>
--->
 
 <style>
 .form-select {

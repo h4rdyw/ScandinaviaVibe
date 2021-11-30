@@ -36,7 +36,10 @@
           <div class="clearfix filter">
 
             {% case collection.handle %}
-              {% when "collection" , "all" , "sale" , "featured" %}
+              {% when "featured" %}
+
+                {% else %}
+
                 <p>Browse type:</p>
                 <select name="filter_type" id="filter_by_type"  class="form-select form-select-sm w-auto">
                 <option value="">All</option>
@@ -48,9 +51,8 @@
                 {% endif %}
                 {% endfor %}
                 </select>
-              {% when "featured" %}
                  
-              {% else %}
+
 
             {% endcase %}
             
@@ -78,7 +80,7 @@
     </div> {% endcomment %}
   
     <div class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2">                                      
-        {% render 'prd-card' for collection.products as product , section_id : section_id , cardwitdh : cardwidth , cardheight : cardheight %}       
+        {% render 'prd-card' for collection.products as product , section_id : section_id , cardwidth : cardwidth , cardheight : cardheight %}       
     </div>
   
     {% render 'pagination' , paginate: paginate %}

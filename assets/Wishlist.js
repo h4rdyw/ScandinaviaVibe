@@ -2,7 +2,7 @@ var LOCAL_STORAGE_WISHLIST_KEY = 'shopify-wishlist';
 var LOCAL_STORAGE_DELIMITER = ',';
 var BUTTON_ACTIVE_CLASS = 'active';
 var GRID_LOADED_CLASS = 'loaded';
-
+var DEFAULT_LANG = 'en';
 var selectors = {
   button: '[button-wishlist]',
   grid: '[grid-wishlist]',
@@ -62,7 +62,14 @@ var setupGrid = function (grid) {
         });
       });
 
-    var productTileTemplateUrl = '/products/' + handle + '?view=wishlist';
+    var productTileTemplateUrl;
+    var shoplocal = Shopify.locale;
+    if(shoplocal == DEFAULT_LANG){
+      productTileTemplateUrl = '/products/' + handle + '?view=wishlist';
+    }else{
+      productTileTemplateUrl = '/'+shoplocal+'/products/' + handle + '?view=wishlist';
+    }
+    
     return fetch(productTileTemplateUrl).then(function (res) {
       return res.text();
     });
@@ -88,7 +95,7 @@ var setupGrid = function (grid) {
       const body = document.body;
       document.dispatchEvent(myEvent);
     }, 2);
-
+    
     clearTimeout();
   });
 };

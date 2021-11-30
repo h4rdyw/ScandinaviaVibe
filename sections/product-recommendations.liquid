@@ -1,45 +1,20 @@
 
 {% comment %}theme-check-disable{% endcomment %}
 <script src="{{ 'getprdrecomm.js' | asset_url }}"></script> 
+
 {% assign page_handle = page.handle %}
 {% assign product_handle = product.handle %}
 {% assign collection_handle = collection.handle %}
-
 {% if section.blocks.size > 0 %}
+
 	{% for block in section.blocks %}
 		{% if block.settings.page_handle == page_handle  or block.settings.product_handle == product_handle or block.settings.collection_handle == collection_handle %}
 
-		<section class="container py-5" id="prd_recomm">
-			{% comment %} <style scoped>	  
-				.icon {
-				height: 30px;
-				width: 30px;
-				fill: transparent !important;
-				stroke: #11171B !important;
-				transition: fill 0.3s ease;
-				}
-			
-				.active .icon {
-				fill: #F652A0 !important;
-				stroke: transparent !important;
-				}
-			
-				.snippet-wishlist {
-				position: relative;
-				padding-top: 10px;
-				padding-bottom: 10px;
-				}  
-			
-				.wishlist-badge {  
-				left: 0;
-				}  
-			</style> {% endcomment %}
+		<section class="container py-5" id="prd_recomm">			
 		</section>
 		<script>
 			
-			getRecommsPrd({{ product.id }});
-
-		
+			getRecommsPrd({{ product.id }});		
 
 			{% comment %} var wishlistSnippet =  document.createElement('div');   
 			wishlistSnippet.className = 'snippet-wishlist';

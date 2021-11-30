@@ -1,0 +1,37 @@
+{% comment %}theme-check-disable{% endcomment %}
+{%- comment -%}
+use render product-description , product; product, type: ['short' | 'long' | 'xshort']
+{%- endcomment -%}
+
+{%- assign product_short_description =  prd_description | truncatewords: 15, '...' -%}
+{%- assign product_xshort_description =  prd_description | strip_html | truncatewords: 10, '...' -%}
+{%- assign product_descriptions = prd_description | split: '$$$$$$' -%}
+{%- assign product_descriptions_length = product_descriptions.size -%}
+
+{% if product_descriptions_length > 1 %}
+
+  {%- assign product_short_description = product_descriptions[0] -%}
+  {%- assign product_description = product_descriptions[1] -%}
+
+{%- else -%}  
+  
+  {% comment %} {%- assign product_short_description = product_short_description -%}    {% endcomment %}
+  {%- assign product_description = product_descriptions[0] -%}
+
+{%- endif -%} 
+
+{%- if type == 'short' -%}
+
+  {{ product_short_description }}
+
+{%- elsif type == 'long'  -%}    
+
+  {{ product_description }} 
+
+{%- elsif type == 'xshort'  -%}    
+
+  {{ product_xshort_description }}
+
+{%- endif -%}
+
+{% comment %}theme-check-enable{% endcomment %}

@@ -1,8 +1,10 @@
 {% comment %}theme-check-disable{% endcomment %}
 <!--for wishlisht tiles-->
+
 {% layout none %}
 {% assign cardwidth = settings.card_img_width_coll %}
 {% assign cardheight = settings.card_img_height_coll %}
+{% assign producttag = product.metafields.badge.badge1 %}
 
    {% for tag in product.tags %}
       {% if tag contains 'Special' %}
@@ -19,7 +21,7 @@
     {% endfor %}              
     
     {% assign image = product.featured_media.preview_image %}  
-    
+       
     <div class="col d-flex">
     <div class="img-wrapper d-flex">
 
@@ -27,7 +29,7 @@
             <div class="card-img-top">
                 {% if image != blank %} 
                     <div class="inner-img">
-                    <a href="javascript:;" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" 
+                    <a href="javascript:;" id="productInfoAnchor-{{ product.id }}" product-handle="{{ product.handle }}" product-badge="{{ producttag }}"
                         product-price="{% if product.price_varies %} from {{ product.price_min | money_without_trailing_zeros }} {% else %} {{ product.price | money_without_trailing_zeros }} {% endif %}"
                     ><img class="card-img-top" width="{{ cardwidth }}" height="{{ cardheight }}" src="{{  image | img_url : 'master' }}" loading="lazy" alt="{{ product.title }}" 
                     ></a>
@@ -74,7 +76,9 @@
                         <svg class="award-badge" {{ iconstyle }}>{% render 'award-badge' %}</svg>                  
                     {% endif %} 
 
-                    
+                    {% if producttag != blank %}
+                        <span class="badge rounded-0 badge-text-topright">{{ producttag }}</span>              
+                    {% endif %}       
                 </div>  
             </div>        
           </div>

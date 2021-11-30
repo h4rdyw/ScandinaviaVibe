@@ -1,5 +1,13 @@
 
-{% assign urlredirect = settings.url_newsubscriber %}
+{%- liquid 
+  assign page_handle = page.handle
+  assign collection_handle = collection.handle
+  assign template_handle = template.name
+  assign product_handle = product.handle
+  assign urlredirect = section.settings.url_newsubscriber
+-%} 
+
+{% if section.settings.page_handle == page_handle  or template == 'index' or section.settings.collection_handle == collection_handle or section.settings.product_handle == product_handle or template_handle == 'list-collections' %}
 <section class="pb-5">
     <div class="container p-5 bg-light">
       <div class="row align-items-center">
@@ -32,7 +40,9 @@
       </div>
     </div>
   </section>
- {% schema %} 
+{% endif %}
+
+{% schema %} 
 
  {
   "name": "Newsletter-text",
@@ -52,6 +62,21 @@
         }
         ],
         "default": "container"
+    },
+    {
+      "type": "page",
+      "id": "page_handle",
+      "label": "Select a page"
+    },    
+    {
+      "type": "collection",
+      "id": "collection_handle",
+      "label": "Select a collection"
+    },
+    {
+      "type": "product",
+      "id": "product_handle",
+      "label": "Select a product"
     },
     {
         "type": "number",

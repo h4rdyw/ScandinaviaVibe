@@ -1,6 +1,18 @@
   <!-- Hero slider-->
 {% comment %}theme-check-disable{% endcomment %}
-{% assign page_handle = page.handle %}
+{% case request.page_type %}
+    
+  {% when 'page' %}
+    {% assign page_handle = page.handle %}    
+
+  {% when 'collection' %}
+    {% assign collection_handle = collection.handle %}
+    
+  {% when 'product' %}
+    {% assign product_handle = product.handle %}     
+    
+{% endcase %}
+
 {% assign colortexthover = section.settings.color_text_hover %}
 
 {% for block in section.blocks %}
@@ -25,7 +37,13 @@
     {% assign slider_height = block.settings.height %}
   {% endif %}
 
-  {% if block.settings.page_handle == page_handle  or template == 'index' %}
+  {% for collection in product.collections %}    
+      {% if collection.handle == block.settings.collection_handle %}
+        {% assign collection_handle = collection.handle %}
+      {% endif %}
+  {% endfor %}    
+
+  {% if block.settings.page_handle == page_handle  or template == 'index' or block.settings.collection_handle == collection_handle or block.settings.product_handle == product_handle %}
 
   <section class="container-fluid mx-0 px-0 py-0">      
   {% if slider_height  %}
@@ -117,7 +135,7 @@
                       </div>
                     </div>
                     </div>    
-                    <a class="btn-reg text" href="{{ block.settings.button_link }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label }}</a>
+                   {% if block.settings.button_link != blank %} <a class="btn-reg text" href="{{ block.settings.button_link }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label }}</a>{% endif %}
                   </div>
                 </div>
               </div>
@@ -196,7 +214,7 @@
                       </div>
                     </div>
                   </div>
-                    <a class="btn-reg text" href="{{ block.settings.button_link2 }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label2 }}</a>
+                  {% if block.settings.button_link2 != blank %} <a class="btn-reg text" href="{{ block.settings.button_link2 }}" data-swiper-parallax="-600"> <i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label2 }}</a>{% endif %}
                   </div>
                 </div>
               </div>
@@ -278,7 +296,7 @@
                       </div>
                     </div>
                   </div>
-                    <a class="btn-reg text" href="{{ block.settings.button_link3 }}" data-swiper-parallax="-600"><i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label3 }}</a></div>
+                  {% if block.settings.button_link3 != blank %}<a class="btn-reg text" href="{{ block.settings.button_link3 }}" data-swiper-parallax="-600"><i class="fas fa-shopping-bag me-2"></i>{{ block.settings.button_label3 }}</a></div>{% endif %}
                 </div>
               </div>
             </div>         
@@ -295,48 +313,7 @@
 
 {{ 'application.css' | asset_url | stylesheet_tag }}  
 
-<script>
-  /*
-    var sliderID = document.querySelectorAll('.heroswiper-gallery');
-    console.log(sliderID);
 
-    var firstSlide = Math.floor(Math.random() * 3)
-
-    sliderID.forEach( (el) => {
-      var uniqID = el.getAttribute("unique-id");
-      var swiperName = el.id;
-      var slideEffect = el.attributes['effect'].value;
-      var slideSpeed = el.attributes['speed'].value;
-      var slideDelay = el.attributes['delay'].value;      
-
-      var $swiperName = new Swiper( `#${swiperName}`, {
-              parallax: true,
-              speed: +slideSpeed,
-              effect: slideEffect,
-              initialSlide: firstSlide,
-              autoplay: {
-                  delay: +slideDelay,
-                  disableOnInteraction: true,
-              },
-              pagination: {
-                  el: `.swiper-pagination-${uniqID}`,
-                  type: "custom",
-                  renderCustom: function (swiper, current, total) {
-                      return (
-                          ' <span class="h2">' +
-                          ("0" + current).slice(-2) +
-                          "</span> " +
-                          ' <span class="swiper-divider">/</span> ' +
-                          ' <span class="text-muted">' +
-                          ("0" + total).slice(-2)
-                      );
-                      +"</span> ";
-                  },
-              },
-          });
-    })
-    */
-</script>
 {% schema %}
     
 { 
@@ -364,6 +341,16 @@
             "type": "page",
             "id": "page_handle",
             "label": "Select a page"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "Select a collection"
+          },
+          {
+            "type": "product",
+            "id": "product_handle",
+            "label": "Select a product"
           },
           {
             "type": "text",

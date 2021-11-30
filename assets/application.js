@@ -1,4 +1,5 @@
 'use strict';
+var DefaultLang = 'en';
 
 window.addEventListener('resize', adjustAnnouncementBar);
 
@@ -78,7 +79,6 @@ if (navBarCollapse) {
     adjustAnnouncementBar();
   });
 
-
   navBarCollapse.addEventListener('shown.bs.collapse', function () {
     // do something...
     //console.log("Collapsed");
@@ -126,13 +126,12 @@ function adjustAnnouncementBar() {
   var headerHeight = headerEl.offsetHeight || false;
   /*var headerBoxShadow = window.getComputedStyle(headerEl).boxShadow;*/
   /*var headerBoxShadowY = +headerBoxShadow.split("px")[2].trim();    ;*/
- //console.log('HeaderHeight:' + headerHeight);
+  //console.log('HeaderHeight:' + headerHeight);
 
   /*var x = document.getElementsByTagName("BODY")[0];
       console.log(x);*/
 
   if (headerHeight) {
-  
     if (document.getElementById('barPosition')) {
       var elName = document.getElementById('barPosition');
       /*console.log(elName.innerHTML);*/
@@ -280,6 +279,12 @@ if (myModalEl != null) {
   var productModal = bootstrap.Modal.getOrCreateInstance(myModalEl);
 }
 
+function truncate(str, max = 10) {
+  const array = str.trim().split(' ');
+  const ellipsis = array.length > max ? '...' : '';
+
+  return array.slice(0, max).join(' ') + ellipsis;
+}
 // Product POP UP MODAL
 function getProductAnchors(prdId) {
   //console.log(prdId);
@@ -289,6 +294,7 @@ function getProductAnchors(prdId) {
     document.getElementById('productInfoModal'),
     {}
   );   */
+
   const prdID = document.getElementById(`${prdId}`);
   if (prdID != null) {
     //console.log(`Found ${prdId}`);
@@ -327,12 +333,12 @@ function getProductAnchors(prdId) {
               }
 
               let productDescArr = data.description.split('$$$$$$');
-
-              // if (productDescArr.length > 1) {
-              //   var productDesc = productDescArr[1];
-              // } else {
-              let productDesc = productDescArr[0];
-              // }
+              let productDesc;
+              if (productDescArr.length > 1) {
+                productDesc = productDescArr[0];
+              } else {
+                productDesc = truncate(productDescArr[0], 20);
+              }
               let prdBadge = ``;
               let finalsaletag = '';
 
@@ -364,14 +370,15 @@ function getProductAnchors(prdId) {
               } else {
                 /* do nothing*/
               }
-              
+
+              let prd_variant = item.getAttribute('variant') || false;
               let prd_badge = item.getAttribute('product-badge') || false;
               let prd_badge_tag;
 
-              if (prd_badge) {              
-               prd_badge_tag = `<span>   </span><span class="badge rounded-0 badge-text">${prd_badge}</span>` 
+              if (prd_badge) {
+                prd_badge_tag = `<span>   </span><span class="badge rounded-0 badge-text">${prd_badge}</span>`;
               } else {
-               prd_badge_tag ='';
+                prd_badge_tag = '';
               }
 
               //let productFeaturedImg = data.featured_image.split('?');
@@ -425,8 +432,8 @@ function getProductAnchors(prdId) {
               //   e.remove();
               // });
 
-              const variants = data.variants;
-              const variantSelect = document.getElementById('modalItemID');
+              let variants = data.variants;
+              let variantSelect = document.getElementById('modalItemID');
 
               variantSelect.innerHTML = '';
 
@@ -434,6 +441,7 @@ function getProductAnchors(prdId) {
 
               variants.forEach(function (variant, index) {
                 //console.log(variant);
+                //console.log(prd_variant);
                 var varPrice = formatCurrency1(variant.price / 100);
                 var varOldPrice = formatCurrency1(
                   variant.compare_at_price / 100
@@ -454,22 +462,33 @@ function getProductAnchors(prdId) {
                     var itemDesc = variant.title + ' : ' + varPrice;
                   }
 
+                  let optionItem = new Option(itemDesc, variant.id);
+
                   if (
                     variants.length == 1 &&
                     variants[0].title == 'Default Title'
                   ) {
                     //console.log('Only variant');
+
                     variantSelect.options[variantSelect.options.length] =
-                      new Option(itemDesc, variant.id);
-                    variantSelect.options[variantSelect.options.length] =
-                      new Option(itemDesc, variant.id).setAttribute(
-                        'selected',
-                        'selected'
-                      );
+                      optionItem;
+                    optionItem.selected = true;
                     variantSelect.style.display = 'none';
                   } else {
-                    variantSelect.options[variantSelect.options.length] =
-                      new Option(itemDesc, variant.id);
+                    //console.log(prd_variant.toString());
+                    //console.log(variant.id.toString());
+                    if (prd_variant.toString() === variant.id.toString()) {
+                      console.log('Match');
+
+                      variantSelect.options[variantSelect.options.length] =
+                        optionItem;
+
+                      optionItem.selected = true;
+                      //optionItem.setAttribute('selected', 'selected');
+                    } else {
+                      variantSelect.options[variantSelect.options.length] =
+                        new Option(itemDesc, variant.id);
+                    }
                   }
                 } else {
                   variantSelect.options[variantSelect.options.length] =
@@ -628,8 +647,7 @@ if (fmAddToCart != null) {
         console.log('Error:' + err);
         AddtoCartErr();
       })
-      .then(() => {
-      })
+      .then(() => {})
       .finally(function () {
         update_cart();
       });
@@ -751,7 +769,8 @@ function update_cart() {
 }
 
 //
-var predictiveSearchInput = document.getElementById('searchInputField') || false;
+var predictiveSearchInput =
+  document.getElementById('searchInputField') || false;
 var timer;
 var offcanvasSearch = document.getElementById('offcanvasSearchResult') || false;
 
@@ -1065,4 +1084,3 @@ function enableDocumentScrolling() {
     window.scrollTo(0, scrollPosition);
   }
 }
-
