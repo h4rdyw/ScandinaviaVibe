@@ -1,4 +1,5 @@
 {% comment %}theme-check-disable{% endcomment %}
+{% assign bodybgcolor = settings.body_bgcolor %}
 {% assign xxlcard = settings.xxl_card %}
 {% assign xlcard = settings.xl_card %}
 {% assign lcard = settings.l_card %}
@@ -91,6 +92,9 @@
   {% render 'prd-modal' %}
   
   <style>
+    .form-select{
+      background-color: {{ bodybgcolor}};
+    }
   @media only screen and (max-width: 767px) {
     .container {
       max-width: 100%;

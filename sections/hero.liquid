@@ -15,18 +15,36 @@ if section.settings.container == 'container'
 else 
   assign container_class = 'container-fluid' 
 endif
+
+case request.page_type
+    
+   when 'page' 
+    assign page_handle = page.handle
+
+   when 'blog'
+    assign blog_handle = blog.handle
+
+   when 'collection'
+    assign collection_handle = collection.handle
+    
+   when 'product' 
+    assign product_handle = product.handle
+    
+endcase
+
 -%}
+{% if section.settings.page_handle == page_handle  or template == 'index' or section.settings.blog_handle == blog_handle  or section.settings.collection_handle == collection_handle or section.settings.product_handle == product_handle %}
 
 <section class="inner-hero-section" style="{{ topmargin }}">
   <div class="{{ container_class }} {{ section_id }}-bg-cover">
-    <!-- >
+    {% comment %} <!-- >
     {% if section.settings.image != blank %}
       <img src="{{ section.settings.image | img_url: 'master' }}" alt="{{ section.settings.image.alt }}" loading="lazy">
     {% else %}
       {% capture current %}{% cycle 1,2 %}{% endcapture %}
       {{ 'lifestyle-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
     {% endif %}
-  -->
+  --> {% endcomment %}
     <div class="container py-5">
       <div class="row">
         <div class="col-lg-6 col-md-8 mx-aut0 py-5">
@@ -55,7 +73,7 @@ endif
     }
   </style>     
 {% endif %}
-
+{% endif %}
 {% schema %} 
 { 
   "name": "Hero", 
@@ -124,6 +142,26 @@ endif
         ],
         "default": "center"
       },                 
+      {
+        "type": "page",
+        "id": "page_handle",
+        "label": "Select a page"
+      },
+      {
+        "type": "blog",
+        "id": "blog_handle",
+        "label": "Select a blog"
+      },
+      {
+        "type": "collection",
+        "id": "collection_handle",
+        "label": "Select a collection"
+      },
+      {
+        "type": "product",
+        "id": "product_handle",
+        "label": "Select a product"
+      },
       { "type": "text", 
         "id": "title", 
         "default": "Example Heading",

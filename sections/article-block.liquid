@@ -44,7 +44,7 @@
                     {% if hero_img_url != blank %}
                         
                     <div class="col-lg-12">
-                      <div style="max-height: {{ vpheight }}vh !important;"><img class="img-fluid w-100" src="{{ hero_img_url }}" alt="{{ block.settings.title }}"></div>
+                      <div style="max-height: {{ vpheight }}vh !important;"><img class="img-fluid w-100" src="{{ hero_img_url }}" alt="{{ block.settings.title }}" loading="lazy"></div>
                     </div>
                     {% endif %}
 
@@ -68,7 +68,7 @@
                       </ul>
 
                       <div class="{{ section_id }}-backdrop">
-                      <h1 class="mb-4" style="color: {{ headingcolor }} !important;"> <a href="{{ block.settings.button_link }}" style="color: {{ headingcolor }};">{{ block.settings.title }}</a></h1>
+                      <h1 class="h1 mb-4" style="color: {{ headingcolor }} !important;"> <a href="{{ block.settings.button_link }}" style="color: {{ headingcolor }};">{{ block.settings.title }}</a></h1>
 
                       <div class="{{ textmuted }}" style="font-size: {{ descfontsize }}px;color: {{ block.settings.descr_textcolor }};">{{ block.settings.description }}</div>
                       {% if block.settings.button_link != blank  %}
@@ -90,7 +90,7 @@
         <div class="{{ container_class }} px-0 pnb-4">       
             {% if block.settings.imgblock != blank %}                    
             <div class="col-lg-12">
-              <div style="max-height: {{ vpheight }}vh !important;"><img class="img-fluid w-100" src="{{ block.settings.imgblock | img_url: 'master' }}" alt="{{ block.settings.title }}"></div>
+              <div style="max-height: {{ vpheight }}vh !important;"><img class="img-fluid w-100" src="{{ block.settings.imgblock | img_url: 'master' }}" alt="{{ block.settings.title }}" loading="lazy"></div>
             </div>
             {% endif %}
           </div>      

@@ -44,6 +44,14 @@
             {% assign bgmainopacity = "opacity : " | append: block.settings.bg_main_opacity| append: '%;' %}
             {% assign img1effect = block.settings.img1_effet %}
 
+            {% assign video_control = 'controls' %}
+            {% if block.settings.video_autoplay == true %}
+              {% assign video_autoplay = 'autoplay' %}
+            {% endif %}
+            {% if block.settings.video_loop %}
+              {% assign video_loop = 'loop' %}
+              {% assign video_control = '' %}
+            {% endif %}
             {% comment %} opening tag omitted here, declared in the page.lookbok.liquid {% endcomment %}
             {% comment %} <div class="container-fluid border-0 shadow-lg border-0 m-0">                 
             {% endcomment %}
@@ -63,7 +71,7 @@
                                       <div class="videoBackground">
                                         <div class="videoBox" style="background-image: url('{{ block.settings.video_image | img_url: 'master' }}');">
                                             <div class="fullscreen-video-wrap">
-                                              <video class="video-js" controls autoplay preload="none" muted playsinline
+                                              <video class="video-js"  {{ video_control }} {{ video_autoplay }} {{ video_loop }} preload="none" muted playsinline
                                                 poster="https:{{ block.settings.video_image | img_url: 'master' }}">
                                                   <source src="{{ block.settings.video_link }}" type="video/mp4">
                                               </video>
@@ -838,6 +846,18 @@
           "label":  "Video Overlay Opacity",
           "default":   0      
         },
+        {
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Inhouse Video Auto Play",
+          "default": true
+        },       
+        {
+          "type": "checkbox",
+          "id": "video_loop",
+          "label": "Inhouse Video Loop",
+          "default": true
+        },  
         {
           "type": "checkbox",
           "id": "show_background_color_main",

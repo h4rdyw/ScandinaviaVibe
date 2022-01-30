@@ -47,7 +47,7 @@
       <div class="row">
         <div class="col-lg-12 mb-5 mb-lg-0">
           <div class="row">            
-            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link }}"><img class="img-fluid" src="{{ hero_img_url }}" width="{{ cardwidth }}" height="{{ cardheight }}" alt="{{ block.settings.title }}"/></a>
+            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link }}"><img class="img-fluid" src="{{ hero_img_url }}" width="{{ cardwidth }}" height="{{ cardheight }}" alt="{{ block.settings.title }}" loading="lazy"/></a>
               <ul class="list-inline">
                 {% if block.settings.block_link_1 != blank %}
                 <li class="list-inline-item mr-2"><a class="category-link font-weight-normal" href="{{ block.settings.block_link_1 }}">{{ block.settings.block_label_1 }}</a></li>
@@ -61,13 +61,13 @@
                 <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_3 }}">{{ block.settings.block_label_3 }}</a></li>
                 {% endif %}
               </ul>
-              <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title }}</a></h2>
+              <h1 class="h1 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title }}</a></h1>
               <div class="text-grayscale" style="font-size: {{ descfontsize }}px !important;">{{ block.settings.description }}</div>
               {% if block.settings.button_link != blank  %}
                 <a class="btn-reg" href="{{ block.settings.button_link }}">{{ block.settings.button_label }}</a>
               {% endif %}              
             </div>  
-            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link2 }}"><img class="img-fluid" src="{{ hero_img_url2 }}" width="{{ cardwidth2 }}" height="{{ cardheight2 }}" alt="{{ block.settings.title2 }}"/></a>
+            <div class="{{ col_width }} mb-5"><a class="d-block post-trending mb-4" href="{{ block.settings.button_link2 }}"><img class="img-fluid" src="{{ hero_img_url2 }}" width="{{ cardwidth2 }}" height="{{ cardheight2 }}" alt="{{ block.settings.title2 }}" loading="lazy"/></a>
               <ul class="list-inline">
                 {% if block.settings.block_link_1_2 != blank %}
                 <li class="list-inline-item mr-2"><a class="category-link font-weight-normal" href="{{ block.settings.block_link_1_2 }}">{{ block.settings.block_label_1_2 }}</a></li>
@@ -79,7 +79,7 @@
                 <li class="list-inline-item mx-2"><a class="text-uppercase meta-link font-weight-normal" href="{{ block.settings.block_link_3_2 }}">{{ block.settings.block_label_3_2 }}</a></li>
                 {% endif %}
               </ul>
-              <h2 class="h3 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title2 }}</a></h2>
+              <h1 class="h1 mb-4"> <a class="d-block reset-anchor" href="{{ block.settings.button_link }}">{{ block.settings.title2 }}</a></h1>
               <div class="text-grayscale" style="font-size: {{ descfontsize2 }}px !important;">{{ block.settings.description2 }}</div>
               {% if block.settings.button_link2 != blank  %}
                 <a class="btn-reg" href="{{ block.settings.button_link2 }}">{{ block.settings.button_label2 }}</a>
