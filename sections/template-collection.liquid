@@ -80,7 +80,7 @@
       </div>         
     </div> {% endcomment %}
   
-    <div class="row d-flex g-3 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2">                                      
+    <div class="row d-flex g-4 row-cols-xxl-{{ xxlcard }} row-cols-xl-{{ xlcard }} row-cols-lg-{{ lcard }} row-cols-md-{{ mcard }} row-cols-sm-{{ scard }} row-cols-{{ xscard }} row-cols-{{ xsoverride }} py-2">                                      
         {% render 'prd-card' for collection.products as product , section_id : section_id , cardwidth : cardwidth , cardheight : cardheight %}       
     </div>
   
@@ -208,4 +208,3 @@
     });
   </script>-->
   {% comment %}theme-check-enable{% endcomment %}
-  
