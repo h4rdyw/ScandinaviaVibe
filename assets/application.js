@@ -381,17 +381,11 @@ function getProductAnchors(prdId) {
                 prd_badge_tag = '';
               }
 
-              //let productFeaturedImg = data.featured_image.split('?');
-              //if (productFeaturedImg.length > 0) {
-              //  document.getElementById('productInfoImg').style = `background: url(${productFeaturedImg[0]});`;
-              //}
+             
 
               document.getElementById('productInfoImg').src =
                 data.featured_image;
-              //const modalimg = document.getElementById('modalimgcol');
-              //modalimg.style.background = `url(${data.featured_image}) no-repeat center center`;
-              //modalimg.style.backgroundSize = "100%";
-
+              
               document.getElementById('productInfoTitle').innerHTML =
                 data.title + finalsaletag + prd_badge_tag;
 
